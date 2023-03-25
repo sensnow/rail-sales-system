@@ -15,6 +15,25 @@ import org.springframework.stereotype.Service;
 public class PassengerServiceImpl extends ServiceImpl<PassengerMapper, Passenger>
     implements PassengerService {
 
+    @Override
+    public boolean addPassenger(Passenger passenger) {
+        return false;
+    }
+
+    @Override
+    public boolean deletePassengerById(Integer id) {
+        return false;
+    }
+
+    @Override
+    public boolean updatePassenger(Passenger passenger) {
+        return false;
+    }
+
+    @Override
+    public Passenger getPassengerById(Integer id) {
+        return null;
+    }
 }
 
 
