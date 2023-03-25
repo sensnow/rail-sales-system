@@ -1,7 +1,8 @@
 package com.scausw215.train.mapper;
 
-import com.scausw215.train.entity.TrainInfo;
+import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author sensnow
@@ -9,7 +10,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-03-25 14:10:16
 * @Entity com.scausw215.train.entity.TrainInfo
 */
-public interface TrainInfoMapper extends BaseMapper<TrainInfo> {
+@Mapper
+public interface TrainInfoMapper extends BaseMapper<TrainInfoDO> {
+
 
 }
 

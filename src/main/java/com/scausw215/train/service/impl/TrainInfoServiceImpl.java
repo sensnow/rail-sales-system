@@ -1,7 +1,7 @@
 package com.scausw215.train.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.scausw215.train.entity.TrainInfo;
+import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.service.TrainInfoService;
 import com.scausw215.train.mapper.TrainInfoMapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-25 14:10:16
 */
 @Service
-public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo>
+public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfoDO>
     implements TrainInfoService{
 
 }

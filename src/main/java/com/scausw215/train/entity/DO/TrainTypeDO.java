@@ -1,4 +1,4 @@
-package com.scausw215.train.entity;
+package com.scausw215.train.entity.DO;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 动车类型
@@ -13,7 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="train_type")
 @Data
-public class TrainType implements Serializable {
+public class TrainTypeDO implements Serializable {
     /**
      * 动车id
      */
@@ -79,7 +81,7 @@ public class TrainType implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        TrainType other = (TrainType) that;
+        TrainTypeDO other = (TrainTypeDO) that;
         return (this.getTrainTypeId() == null ? other.getTrainTypeId() == null : this.getTrainTypeId().equals(other.getTrainTypeId()))
             && (this.getTrainName() == null ? other.getTrainName() == null : this.getTrainName().equals(other.getTrainName()))
             && (this.getTrainCode() == null ? other.getTrainCode() == null : this.getTrainCode().equals(other.getTrainCode()))

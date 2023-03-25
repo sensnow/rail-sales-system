@@ -1,7 +1,7 @@
 package com.scausw215.train.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.scausw215.train.entity.Passenger;
+import com.scausw215.train.entity.DO.PassengerDO;
 import com.scausw215.train.service.PassengerService;
 import com.scausw215.train.mapper.PassengerMapper;
 import org.springframework.stereotype.Service;
@@ -12,28 +12,9 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-25 14:10:16
 */
 @Service
-public class PassengerServiceImpl extends ServiceImpl<PassengerMapper, Passenger>
+public class PassengerServiceImpl extends ServiceImpl<PassengerMapper, PassengerDO>
     implements PassengerService {
 
-    @Override
-    public boolean addPassenger(Passenger passenger) {
-        return false;
-    }
-
-    @Override
-    public boolean deletePassengerById(Integer id) {
-        return false;
-    }
-
-    @Override
-    public boolean updatePassenger(Passenger passenger) {
-        return false;
-    }
-
-    @Override
-    public Passenger getPassengerById(Integer id) {
-        return null;
-    }
 }
 
 

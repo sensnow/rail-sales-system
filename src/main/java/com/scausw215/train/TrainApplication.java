@@ -11,8 +11,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @description 项目启动类
  */
 @SpringBootApplication
-@MapperScan("com.scausw215.train.mapper")
 @EnableWebMvc
+@MapperScan("com.scausw215.train.mapper")
 public class TrainApplication {
 
     public static void main(String[] args) {

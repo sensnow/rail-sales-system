@@ -1,7 +1,8 @@
 package com.scausw215.train.mapper;
 
-import com.scausw215.train.entity.StationInfo;
+import com.scausw215.train.entity.DO.StationInfoDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author sensnow
@@ -9,14 +10,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-03-25 14:10:16
 * @Entity com.scausw215.train.entity.StationInfo
 */
-public interface StationInfoMapper extends BaseMapper<StationInfo> {
+@Mapper
+public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
 
     /**
      * 插入一条站点信息
-     * @param stationInfo 站点信息
+     * @param stationInfoDO 站点信息
      * @return 插入结果
      */
-    int insertStationInfo(StationInfo stationInfo);
+    int insertStationInfo(StationInfoDO stationInfoDO);
 
     /**
      * 根据站点id删除一条站点信息
@@ -27,17 +29,17 @@ public interface StationInfoMapper extends BaseMapper<StationInfo> {
 
     /**
      * 更新一条站点信息
-     * @param stationInfo 站点信息
+     * @param stationInfoDO 站点信息
      * @return 更新结果
      */
-    int updateStationInfo(StationInfo stationInfo);
+    int updateStationInfo(StationInfoDO stationInfoDO);
 
     /**
      * 根据站点id查询一条站点信息
      * @param stationId 站点id
      * @return 站点信息
      */
-    StationInfo selectStationInfoById(String stationId);
+    StationInfoDO selectStationInfoById(String stationId);
 
 
 }

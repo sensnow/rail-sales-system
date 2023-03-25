@@ -1,7 +1,8 @@
 package com.scausw215.train.mapper;
 
-import com.scausw215.train.entity.SeatType;
+import com.scausw215.train.entity.DO.SeatTypeDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author sensnow
@@ -9,13 +10,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-03-25 14:10:16
 * @Entity com.scausw215.train.entity.SeatType
 */
-public interface SeatTypeMapper extends BaseMapper<SeatType> {
+@Mapper
+public interface SeatTypeMapper extends BaseMapper<SeatTypeDO> {
     /**
      * 插入座位类型
-     * @param seatType 座位类型实体类
+     * @param seatTypeDO 座位类型实体类
      * @return 插入成功的记录数
      */
-    int insertSeatType(SeatType seatType);
+    int insertSeatType(SeatTypeDO seatTypeDO);
 
     /**
      * 根据座位类型id删除座位类型
@@ -26,17 +28,17 @@ public interface SeatTypeMapper extends BaseMapper<SeatType> {
 
     /**
      * 更新座位类型信息
-     * @param seatType 座位类型实体类
+     * @param seatTypeDO 座位类型实体类
      * @return 更新成功的记录数
      */
-    int updateSeatType(SeatType seatType);
+    int updateSeatType(SeatTypeDO seatTypeDO);
 
     /**
      * 根据座位类型id查询座位类型信息
      * @param id 座位类型id
      * @return 座位类型实体类
      */
-    SeatType selectSeatTypeById(Integer id);
+    SeatTypeDO selectSeatTypeById(Integer id);
 
 
 }

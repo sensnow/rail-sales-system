@@ -2,8 +2,14 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: user-center
   datasource:
-    driver-class-name: com.alibaba.druid.proxy.DruidDriver
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://175.178.79.245:3306/railsystem
     username: railsystem
     password: Fz5M4raeGpDs6P4e
+
+  # MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:com/scausw215/train/mapper/*.xml

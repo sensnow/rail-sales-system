@@ -1,7 +1,7 @@
 package com.scausw215.train.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.scausw215.train.entity.TicketRefunded;
+import com.scausw215.train.entity.DTO.TicketRefundedDTO;
 import com.scausw215.train.service.TicketRefundedService;
 import com.scausw215.train.mapper.TicketRefundedMapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-03-25 14:10:16
 */
 @Service
-public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper, TicketRefunded>
+public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper, TicketRefundedDTO>
     implements TicketRefundedService{
 
 }

@@ -1,7 +1,10 @@
 package com.scausw215.train.mapper;
 
-import com.scausw215.train.entity.TicketInfo;
+import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
 * @author sensnow
@@ -9,7 +12,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-03-25 14:10:16
 * @Entity com.scausw215.train.entity.TicketInfo
 */
-public interface TicketInfoMapper extends BaseMapper<TicketInfo> {
+@Mapper
+public interface TicketInfoMapper extends BaseMapper<TicketInfoDTO> {
+
 
 }
 

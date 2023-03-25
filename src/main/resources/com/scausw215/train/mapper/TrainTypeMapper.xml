@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scausw215.train.mapper.TrainTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.DO.TrainTypeDO">
+        <id property="trainTypeId" column="train_type_id" jdbcType="BIGINT"/>
+        <result property="trainName" column="train_name" jdbcType="VARCHAR"/>
+        <result property="trainCode" column="train_code" jdbcType="VARCHAR"/>
+        <result property="trainDescription" column="train_description" jdbcType="VARCHAR"/>
+        <result property="firstSeatTypeId" column="first_seat_type_id" jdbcType="BIGINT"/>
+        <result property="firstSeatNum" column="first_seat_num" jdbcType="INTEGER"/>
+        <result property="secondSeatTypeId" column="second_seat_type_id" jdbcType="BIGINT"/>
+        <result property="secondSeatNum" column="second_seat_num" jdbcType="INTEGER"/>
+        <result property="thirdSeatTypeId" column="third_seat_type_id" jdbcType="BIGINT"/>
+        <result property="thirdSeatNum" column="third_seat_num" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <insert id="insertTrainType">
+        insert into train_type value (null,#{trainName},#{trainCode},#{trainDescription},#{firstSeatTypeId},#{firstSeatNum},#{secondSeatTypeId},#{secondSeatNum},#{thirdSeatTypeId},#{thirdSeatNum})
+    </insert>
+
+    <update id="updateTrainType">
+        update train_type set train_name=#{trainName},train_code=#{trainCode},train_description=#{trainDescription},first_seat_type_id=#{firstSeatTypeId},first_seat_num=#{firstSeatNum},second_seat_type_id=#{secondSeatTypeId},second_seat_num=#{secondSeatNum},third_seat_type_id=#{thirdSeatTypeId},third_seat_num=#{thirdSeatNum} where train_type_id=#{trainTypeId}
+    </update>
+
+    <delete id="deleteTrainTypeById">
+        delete from train_type where train_type_id=#{trainTypeId}
+    </delete>
+
+    <select id="selectTrainTypeById" resultType="com.scausw215.train.entity.DO.TrainTypeDO">
+        select * from train_type where train_type_id=#{trainTypeId}
+    </select>
+
+    <select id="selectTrainTypeByTrainCode" resultType="com.scausw215.train.entity.DO.TrainTypeDO">
+        select * from train_type where train_code=#{trainCode}
+    </select>
+
+    <select id="selectTrainTypeByType" resultType="com.scausw215.train.entity.DO.TrainTypeDO">
+        select * from train_type where train_name = #{trainName};
+    </select>
+
+
+</mapper>

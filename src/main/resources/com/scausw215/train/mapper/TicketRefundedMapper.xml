@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scausw215.train.mapper.TicketRefundedMapper">
+
+    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.DO.TicketRefundedDO">
+        <id property="refundedId" column="refunded_id" jdbcType="BIGINT"/>
+        <result property="ticketId" column="ticket_id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="passengerId" column="passenger_id" jdbcType="BIGINT"/>
+        <result property="refundedPrice" column="refunded_price" jdbcType="INTEGER"/>
+        <result property="refundedReason" column="refunded_reason" jdbcType="VARCHAR"/>
+        <result property="refundedTime" column="refunded_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+</mapper>

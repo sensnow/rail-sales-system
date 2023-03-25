@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.scausw215.train.mapper.SeatTypeMapper">
 
-    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.SeatType">
+    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.DO.SeatTypeDO">
         <id property="seatId" column="seat_id" jdbcType="BIGINT"/>
         <result property="seatName" column="seat_name" jdbcType="VARCHAR"/>
         <result property="seatDescription" column="seat_description" jdbcType="VARCHAR"/>
@@ -16,12 +16,12 @@
         WHERE seat_id = #{seatId}
     </select>
 
-    <insert id="insertSeatType" parameterType="com.scausw215.train.entity.SeatType">
+    <insert id="insertSeatType" parameterType="com.scausw215.train.entity.DO.SeatTypeDO">
         INSERT INTO seat_type (seat_name, seat_description)
         VALUES (#{seatName}, #{seatDescription})
     </insert>
 
-    <update id="updateSeatType" parameterType="com.scausw215.train.entity.SeatType">
+    <update id="updateSeatType" parameterType="com.scausw215.train.entity.DO.SeatTypeDO">
         UPDATE seat_type
         SET seat_name        = #{seatName},
             seat_description = #{seatDescription}

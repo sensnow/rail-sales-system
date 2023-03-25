@@ -1,7 +1,9 @@
 package com.scausw215.train.mapper;
 
-import com.scausw215.train.entity.UserInfo;
+import com.scausw215.train.entity.DO.UserInfoDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
 * @author sensnow
@@ -9,13 +11,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-03-25 14:10:16
 * @Entity com.scausw215.train.entity.UserInfo
 */
-public interface UserInfoMapper extends BaseMapper<UserInfo> {
+@Mapper
+public interface UserInfoMapper extends BaseMapper<UserInfoDO> {
     /**
      * 插入用户信息
-     * @param userInfo 用户信息
+     * @param userInfoDO 用户信息
      * @return 插入结果
      */
-    int insertUserInfo(UserInfo userInfo);
+    int insertUserInfo(UserInfoDO userInfoDO);
 
     /**
      * 根据用户ID删除用户信息
@@ -26,17 +29,25 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     /**
      * 更新用户信息
-     * @param userInfo 用户信息
+     * @param userInfoDO 用户信息
      * @return 更新结果
      */
-    int updateUserInfo(UserInfo userInfo);
+    int updateUserInfo(UserInfoDO userInfoDO);
 
     /**
      * 根据用户ID查询用户信息
      * @param userId 用户ID
      * @return 用户信息
      */
-    UserInfo selectUserInfoById(String userId);
+    UserInfoDO selectUserInfoById(String userId);
+
+    /**
+     * 根据用户名查询用户信息
+     * @param userAccount 账号
+     * @return 用户信息
+     */
+    UserInfoDO selectUserInfoByAccount(String userAccount);
+
 
 }
 
