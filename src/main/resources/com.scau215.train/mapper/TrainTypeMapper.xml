@@ -17,10 +17,5 @@
             <result property="thirdSeatNum" column="third_seat_num" jdbcType="INTEGER"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        train_type_id,train_name,train_code,
-        train_description,first_seat_type_id,first_seat_num,
-        second_seat_type_id,second_seat_num,third_seat_type_id,
-        third_seat_num
-    </sql>
+
 </mapper>

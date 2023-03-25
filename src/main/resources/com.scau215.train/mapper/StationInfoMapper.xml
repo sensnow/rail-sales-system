@@ -5,14 +5,37 @@
 <mapper namespace="com.scausw215.train.mapper.StationInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.scausw215.train.entity.StationInfo">
-            <id property="stationId" column="station_id" jdbcType="BIGINT"/>
-            <result property="stationName" column="station_name" jdbcType="VARCHAR"/>
-            <result property="stationCity" column="station_city" jdbcType="VARCHAR"/>
-            <result property="stationProvince" column="station_province" jdbcType="VARCHAR"/>
+        <id property="stationId" column="station_id" jdbcType="BIGINT"/>
+        <result property="stationName" column="station_name" jdbcType="VARCHAR"/>
+        <result property="stationCity" column="station_city" jdbcType="VARCHAR"/>
+        <result property="stationProvince" column="station_province" jdbcType="VARCHAR"/>
     </resultMap>
+    <insert id="insertStationInfo" parameterType="com.scausw215.train.entity.StationInfo">
+        INSERT INTO station_info (station_id, station_name, station_city, station_province)
+        VALUES (#{stationId}, #{stationName}, #{stationCity}, #{stationProvince})
+    </insert>
+    <update id="updateStationInfo" parameterType="com.scausw215.train.entity.StationInfo">
+        UPDATE station_info
+        SET station_name=#{stationName},
+            station_city=#{stationCity},
+            station_province=#{stationProvince}
+        WHERE station_id = #{stationId}
 
-    <sql id="Base_Column_List">
-        station_id,station_name,station_city,
-        station_province
-    </sql>
+    </update>
+    <delete id="deleteStationInfoById" parameterType="java.lang.String">
+        DELETE
+        FROM station_info
+        WHERE station_id = #{stationId}
+
+
+    </delete>
+    <select id="selectStationInfoById" resultType="com.scausw215.train.entity.StationInfo"
+            parameterType="java.lang.String">
+        SELECT *
+        FROM station_info
+        WHERE station_id = #{stationId}
+
+    </select>
+
+
 </mapper>

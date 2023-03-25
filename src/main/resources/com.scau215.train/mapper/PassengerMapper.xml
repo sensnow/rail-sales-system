@@ -5,24 +5,38 @@
 <mapper namespace="com.scausw215.train.mapper.PassengerMapper">
 
     <resultMap id="BaseResultMap" type="com.scausw215.train.entity.Passenger">
-            <id property="passengerId" column="passenger_id" jdbcType="BIGINT"/>
-            <result property="passengerName" column="passenger_name" jdbcType="VARCHAR"/>
-            <result property="passengerType" column="passenger_type" jdbcType="INTEGER"/>
-            <result property="passengerCardNumber" column="passenger_card_number" jdbcType="VARCHAR"/>
-            <result property="passengerPhone" column="passenger_phone" jdbcType="VARCHAR"/>
-            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <id property="passengerId" column="passenger_id" jdbcType="BIGINT"/>
+        <result property="passengerName" column="passenger_name" jdbcType="VARCHAR"/>
+        <result property="passengerType" column="passenger_type" jdbcType="INTEGER"/>
+        <result property="passengerCardNumber" column="passenger_card_number" jdbcType="VARCHAR"/>
+        <result property="passengerPhone" column="passenger_phone" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
     </resultMap>
 
-    <insert id="addPassenger" parameterType="">
-
+    <insert id="insertPassenger" parameterType="com.scausw215.train.entity.Passenger">
+        insert into passenger (passenger_name, passenger_type, passenger_card_number, passenger_phone, user_id)
+        values (#{passengerName}, #{passengerType}, #{passengerCardNumber}, #{passengerPhone}, #{userId})
     </insert>
+
     <update id="updatePassenger">
-
+        UPDATE passenger
+        SET passenger_name        = #{passengerName},
+            passenger_type        = #{passengerType},
+            passenger_card_number = #{passengerCardNumber},
+            passenger_phone       = #{passengerPhone},
+            user_id               = #{userId}
+        WHERE passenger_id = #{passengerId}
     </update>
+
     <delete id="deletePassengerById">
-
+        DELETE
+        FROM passenger
+        WHERE passenger_id = #{passengerId}
     </delete>
-    <select id="getPassengerById" resultType="com.scausw215.train.entity.Passenger">
-
+    <select id="selectPassengerById" resultMap="BaseResultMap">
+        SELECT *
+        FROM passenger
+        WHERE passenger_id = #{passengerId}
     </select>
+
 </mapper>

@@ -14,9 +14,6 @@
             <result property="refundedTime" column="refunded_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        refunded_id,ticket_id,user_id,
-        passenger_id,refunded_price,refunded_reason,
-        refunded_time
-    </sql>
+
+
 </mapper>

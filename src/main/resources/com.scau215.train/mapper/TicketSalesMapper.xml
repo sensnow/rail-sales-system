@@ -14,9 +14,5 @@
             <result property="isRefunded" column="is_refunded" jdbcType="INTEGER"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        sale_id,user_id,passenger_id,
-        ticket_id,purchase_price,purchase_time,
-        is_refunded
-    </sql>
+
 </mapper>

@@ -13,8 +13,5 @@
             <result property="trainTypeId" column="train_type_id" jdbcType="BIGINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        train_id,start_time,end_time,
-        start_station,end_station,train_type_id
-    </sql>
+
 </mapper>

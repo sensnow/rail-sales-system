@@ -5,14 +5,37 @@
 <mapper namespace="com.scausw215.train.mapper.UserInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.scausw215.train.entity.UserInfo">
-            <id property="userId" column="user_id" jdbcType="BIGINT"/>
-            <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
-            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
-            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <id property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+        <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
     </resultMap>
+    <insert id="insertUserInfo" parameterType="com.scausw215.train.entity.UserInfo">
+        INSERT INTO user_info(user_account, user_password, user_name)
+        VALUES (#{userAccount}, #{userPassword}, #{userName})
 
-    <sql id="Base_Column_List">
-        user_id,user_account,user_password,
-        user_name
-    </sql>
+    </insert>
+    <update id="updateUserInfo" parameterType="com.scausw215.train.entity.UserInfo">
+        UPDATE user_info
+        SET user_account=#{userAccount},
+            user_password=#{userPassword},
+            user_name=#{userName}
+        WHERE user_id = #{userId}
+
+    </update>
+    <delete id="deleteUserInfoById" parameterType="java.lang.String">
+        DELETE
+        FROM user_info
+        WHERE user_id = #{userId}
+
+    </delete>
+    <select id="selectUserInfoById" resultType="com.scausw215.train.entity.UserInfo"
+            parameterType="java.lang.String">
+        SELECT *
+        FROM user_info
+        WHERE user_id = #{userId}
+
+    </select>
+
+
 </mapper>

@@ -17,10 +17,6 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        ticket_id,train_id,car_number,
-        seat_type_id,seat_number,is_sold,
-        ticket_price,start_sale_time,end_sale_time,
-        update_time
-    </sql>
+
+
 </mapper>
