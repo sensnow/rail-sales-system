@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scausw215.train.mapper.StationInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.StationInfo">
+            <id property="stationId" column="station_id" jdbcType="BIGINT"/>
+            <result property="stationName" column="station_name" jdbcType="VARCHAR"/>
+            <result property="stationCity" column="station_city" jdbcType="VARCHAR"/>
+            <result property="stationProvince" column="station_province" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        station_id,station_name,station_city,
+        station_province
+    </sql>
+</mapper>

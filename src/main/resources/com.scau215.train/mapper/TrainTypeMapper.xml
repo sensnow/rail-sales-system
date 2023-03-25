@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scausw215.train.mapper.TrainTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.TrainType">
+            <id property="trainTypeId" column="train_type_id" jdbcType="BIGINT"/>
+            <result property="trainName" column="train_name" jdbcType="VARCHAR"/>
+            <result property="trainCode" column="train_code" jdbcType="VARCHAR"/>
+            <result property="trainDescription" column="train_description" jdbcType="VARCHAR"/>
+            <result property="firstSeatTypeId" column="first_seat_type_id" jdbcType="BIGINT"/>
+            <result property="firstSeatNum" column="first_seat_num" jdbcType="INTEGER"/>
+            <result property="secondSeatTypeId" column="second_seat_type_id" jdbcType="BIGINT"/>
+            <result property="secondSeatNum" column="second_seat_num" jdbcType="INTEGER"/>
+            <result property="thirdSeatTypeId" column="third_seat_type_id" jdbcType="BIGINT"/>
+            <result property="thirdSeatNum" column="third_seat_num" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        train_type_id,train_name,train_code,
+        train_description,first_seat_type_id,first_seat_num,
+        second_seat_type_id,second_seat_num,third_seat_type_id,
+        third_seat_num
+    </sql>
+</mapper>

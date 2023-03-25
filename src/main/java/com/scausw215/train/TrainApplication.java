@@ -1,7 +1,9 @@
 package com.scausw215.train;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author Sen
@@ -9,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description 项目启动类
  */
 @SpringBootApplication
+@MapperScan("com.scausw215.train.mapper")
+@EnableWebMvc
 public class TrainApplication {
 
     public static void main(String[] args) {

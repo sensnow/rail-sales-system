@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scausw215.train.mapper.TicketInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.TicketInfo">
+            <id property="ticketId" column="ticket_id" jdbcType="BIGINT"/>
+            <result property="trainId" column="train_id" jdbcType="BIGINT"/>
+            <result property="carNumber" column="car_number" jdbcType="INTEGER"/>
+            <result property="seatTypeId" column="seat_type_id" jdbcType="BIGINT"/>
+            <result property="seatNumber" column="seat_number" jdbcType="INTEGER"/>
+            <result property="isSold" column="is_sold" jdbcType="INTEGER"/>
+            <result property="ticketPrice" column="ticket_price" jdbcType="INTEGER"/>
+            <result property="startSaleTime" column="start_sale_time" jdbcType="TIMESTAMP"/>
+            <result property="endSaleTime" column="end_sale_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ticket_id,train_id,car_number,
+        seat_type_id,seat_number,is_sold,
+        ticket_price,start_sale_time,end_sale_time,
+        update_time
+    </sql>
+</mapper>
