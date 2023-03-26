@@ -15,19 +15,19 @@ public class UserInfoVO implements Serializable {
     /**
      * 用户id
      */
-    private Long userId;
+    private Long id;
     /**
      * 用户姓名
      */
-    private String userName;
+    private String name;
     /**
      * 用户名
      */
-    private String userAccount;
+    private String account;
     /**
      * 用户权限
      */
-    private Integer userAuthority;
+    private Integer authority;
 
     @Serial
     private static final long serialVersionUID = 1L;

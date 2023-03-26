@@ -11,10 +11,10 @@ import com.scausw215.train.entity.VO.UserInfoVO;
 public class ToSafetyEntityUtils {
     public static UserInfoVO toUserInfoVO(UserInfoDO userInfoDO) {
         UserInfoVO userInfoVO = new UserInfoVO();
-        userInfoVO.setUserId(userInfoDO.getUserId());
-        userInfoVO.setUserName(userInfoDO.getUserName());
-        userInfoVO.setUserAccount(userInfoDO.getUserAccount());
-        userInfoVO.setUserAuthority(userInfoDO.getUserAuthority());
+        userInfoVO.setId(userInfoDO.getUserId());
+        userInfoVO.setName(userInfoDO.getUserName());
+        userInfoVO.setAccount(userInfoDO.getUserAccount());
+        userInfoVO.setAuthority(userInfoDO.getUserAuthority());
         return userInfoVO;
     }
 
