@@ -12,9 +12,9 @@ public class ResultUtils {
         return new Result<>(0,data,"ok","");
     }
 
-    public static Result error(int code, String message, String description)
+    public static Result<String> error(int code, String message, String description)
     {
-        return new Result(code,message,description);
+        return new Result<String>(code,message,description);
     }
 
 

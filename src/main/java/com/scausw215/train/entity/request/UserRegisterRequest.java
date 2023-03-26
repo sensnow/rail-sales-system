@@ -9,7 +9,6 @@ import lombok.Data;
  * @author sensnow
  */
 @Data
-@AllArgsConstructor
 public class UserRegisterRequest {
     private String account;
     private String password;

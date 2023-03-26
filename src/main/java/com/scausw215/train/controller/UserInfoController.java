@@ -14,17 +14,16 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
  * 用户信息Controller
  * @author sensnow
  */
-@RestController("/user")
 @Slf4j
+@RestController
+@RequestMapping("/user")
 public class UserInfoController {
 
     @Resource
@@ -34,7 +33,7 @@ public class UserInfoController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Result<UserInfoVO> login(UserLoginRequest userLoginRequest, HttpServletRequest httpServletRequest) {
+    public Result<UserInfoVO> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest httpServletRequest) {
         // 请求体校验
         if (httpServletRequest == null) {
             log.error("UserInfoController.login: 请求体为空");
@@ -55,7 +54,7 @@ public class UserInfoController {
      * 用户注册
      */
     @PostMapping("/register")
-    public Result<Long> register(UserRegisterRequest userRegisterRequest, HttpServletRequest httpServletRequest) {
+    public Result<Long> register(@RequestBody UserRegisterRequest userRegisterRequest, HttpServletRequest httpServletRequest) {
         // 请求体校验
         if (httpServletRequest == null) {
             log.error("UserInfoController.register: 请求体为空");
@@ -70,7 +69,7 @@ public class UserInfoController {
         return ResultUtils.success(register);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public Result<Integer> logout(HttpServletRequest httpServletRequest) {
         // 请求体校验
         if (httpServletRequest == null) {

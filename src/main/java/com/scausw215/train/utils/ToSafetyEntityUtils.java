@@ -1,5 +1,6 @@
 package com.scausw215.train.utils;
 
+import com.scausw215.train.entity.DO.PassengerDO;
 import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.VO.UserInfoVO;
 
@@ -16,4 +17,5 @@ public class ToSafetyEntityUtils {
         userInfoVO.setUserAuthority(userInfoDO.getUserAuthority());
         return userInfoVO;
     }
+
 }

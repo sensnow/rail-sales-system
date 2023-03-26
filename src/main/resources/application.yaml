@@ -5,11 +5,25 @@ spring:
   application:
     name: user-center
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://175.178.79.245:3306/railsystem
     username: railsystem
     password: Fz5M4raeGpDs6P4e
+    druid:
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      initial-size: 5
+      in-idle: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+
 
   # MyBatis-Plus配置
 mybatis-plus:
   mapper-locations: classpath:com/scausw215/train/mapper/*.xml
+
+
+
+

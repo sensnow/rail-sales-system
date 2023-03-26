@@ -44,6 +44,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO>
             log.error("用户注册失败，用户名或密码不能为空，用户名：{}",userRegisterRequest.getAccount());
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户名或密码不能为空");
         }
+        // 用户名不能包含特殊字符
+        if(!StringUtils.isAlphanumeric(userRegisterRequest.getAccount()))
+        {
+            log.error("用户注册失败，用户名不能包含特殊字符，用户名：{}",userRegisterRequest.getAccount());
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户名不能包含特殊字符");
+        }
+        // 用户名和密码不能包含空格
+        if(StringUtils.containsAny(userRegisterRequest.getAccount()," ") || StringUtils.containsAny(userRegisterRequest.getPassword()," "))
+        {
+            log.error("用户注册失败，用户名或密码不能包含空格，用户名：{}",userRegisterRequest.getAccount());
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户名或密码不能包含空格");
+        }
         // 用户名长度限制
         if(userRegisterRequest.getAccount().length() < 4)
         {
@@ -101,12 +113,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO>
             log.error("用户登录失败，用户名或密码不能为空，用户名：{}",userLoginRequest.getAccount());
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户名或密码不能为空");
         }
+        // 用户名和密码不能包含空格
+        if(StringUtils.containsAny(userLoginRequest.getAccount()," ") || StringUtils.containsAny(userLoginRequest.getPassword()," "))
+        {
+            log.error("用户登录失败，用户名或密码不能包含空格，用户名：{}",userLoginRequest.getAccount());
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户名或密码不能包含空格");
+        }
         // 查询用户信息
         UserInfoDO userInfoDO = userInfoMapper.selectUserInfoByAccount(userLoginRequest.getAccount());
         if(userInfoDO == null)
         {
             log.error("用户登录失败，用户名不存在，用户名：{}",userLoginRequest.getAccount());
-            throw new BusinessException(ErrorCode.NOT_FOUND,"用户名不存在");
+            throw new BusinessException(ErrorCode.NOT_FOUND,"用户名或密码错误");
         }
         // md5密码加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT+userLoginRequest.getPassword()).getBytes());
@@ -114,7 +132,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO>
         if(!userInfoDO.getUserPassword().equals(encryptPassword))
         {
             log.error("用户登录失败，密码错误，用户名：{}",userLoginRequest.getAccount());
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"密码错误");
+            throw new BusinessException(ErrorCode.NOT_FOUND,"用户名或密码错误");
         }
         // 保存用户信息到session
         httpServletRequest.getSession().setAttribute(UserInfoConstant.USER_INFO_STATE,userInfoDO);
