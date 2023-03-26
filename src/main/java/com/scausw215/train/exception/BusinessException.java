@@ -2,22 +2,19 @@ package com.scausw215.train.exception;
 
 import com.scausw215.train.common.ErrorCode;
 
+import java.io.Serial;
+
 /**
  * 自定义异常类
  * @author sensnow
  */
 public class BusinessException extends RuntimeException{
+    @Serial
     private static final long serialVersionUID = -4926126368570947722L;
 
-    private int code;
+    private final int code;
 
-    private String description;
-
-    public BusinessException(int code,String message, String description) {
-        super(message);
-        this.code = code;
-        this.description = description;
-    }
+    private final String description;
 
     public BusinessException(ErrorCode errorCode)
     {

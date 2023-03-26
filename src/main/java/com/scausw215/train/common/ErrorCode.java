@@ -1,7 +1,5 @@
 package com.scausw215.train.common;
 
-import lombok.Data;
-
 /**
  * 错误码
  * @author sensnow
@@ -16,11 +14,31 @@ public enum ErrorCode {
     /**
      * 请求参数错误
      */
-    PARAMS_ERROR(40000, "请求参数错误", ""),
+    PARAMS_ERROR(40000 ,"请求参数错误", ""),
     /**
+     * 用户名或密码错误
+     */
+    NOT_FOUND(40001, "密码错误", "密码错误"),
+    /**
+     * 未登录
+     */
+    NOT_LOGIN(40002, "未登录", "未登录"),
+    /**
+     * 用户名已存在
+     */
+    USER_EXIST(40003, "用户名已存在", "用户名已存在"),
+    /**
+     *
      * 系统错误
      */
-    SYSTEM_ERROR(50000, "系统错误", "系统错误");
+    SYSTEM_ERROR(50000, "系统错误", "系统错误"),
+    /**
+     * 请求体为空
+     */
+    EMPTY_REQUEST(500001, "请求体为空", "请求体为空");
+
+
+
 
     /**
      * 错误码

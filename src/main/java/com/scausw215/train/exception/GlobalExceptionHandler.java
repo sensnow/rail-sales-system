@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
-    public Result businessExceptionHandler(BusinessException e)
+    public Result<String> businessExceptionHandler(BusinessException e)
     {
         log.error("BusinessException",e);
         return ResultUtils.error(e.getCode(), e.getMessage(), e.getDescription());

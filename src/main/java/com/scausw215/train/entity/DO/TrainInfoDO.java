@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -12,6 +14,7 @@ import lombok.ToString;
 
 /**
  * 车次信息表
+ * @author sensnow
  * @TableName train_info
  */
 @TableName(value ="train_info")
@@ -48,6 +51,7 @@ public class TrainInfoDO implements Serializable {
      */
     private Long trainTypeId;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

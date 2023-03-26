@@ -3,17 +3,17 @@ package com.scausw215.train.entity.DTO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 import com.scausw215.train.entity.DO.PassengerDO;
-import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import lombok.Data;
 
 /**
  * 售票信息表
  * @author sensnow
- * @TableName ticket_sales
  */
 @TableName(value ="ticket_sales")
 @Data
@@ -54,6 +54,7 @@ public class TicketSaleDTO implements Serializable {
      */
     private Integer isRefunded;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

@@ -4,17 +4,16 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * 用户信息表
  * @author sensnow
- * @TableName user_info
  */
 @TableName(value ="user_info")
 @Data
@@ -39,6 +38,12 @@ public class UserInfoDO implements Serializable {
      */
     private String userPassword;
 
+    /**
+     * 用户权限
+     */
+    private Integer userAuthority;
+
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

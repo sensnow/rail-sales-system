@@ -3,6 +3,8 @@ package com.scausw215.train.entity.DO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ import lombok.ToString;
 
 /**
  * 售票信息表
+ * @author sensnow
  * @TableName ticket_sales
  */
 @TableName(value ="ticket_sales")
@@ -55,6 +58,7 @@ public class TicketSaleDO implements Serializable {
      */
     private Integer isRefunded;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

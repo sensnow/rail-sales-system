@@ -15,19 +15,20 @@ public class Result<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private int code;
-    private String message;
     private T data;
+    private String message;
+
     private String description;
 
-    public Result(int code, String message, T data, String description) {
+    public Result(int code, T data,String message ,String description) {
         this.code = code;
         this.message = message;
         this.data = data;
         this.description = description;
     }
 
-    public Result(int code,T data, String message) {
-        this(code, message, data, "");
+    public Result(int code,String message, String description) {
+        this(code, null,message, description);
     }
 
 

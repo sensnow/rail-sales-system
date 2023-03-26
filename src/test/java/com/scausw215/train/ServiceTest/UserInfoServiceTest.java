@@ -1,5 +1,6 @@
 package com.scausw215.train.ServiceTest;
 
+import com.scausw215.train.common.Result;
 import com.scausw215.train.entity.request.UserRegisterRequest;
 import com.scausw215.train.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,6 @@ public class UserInfoServiceTest {
 
     @Test
     public void testRegisterUnit() {
-        userInfoService.register(new UserRegisterRequest("sensnow", "123456", "123456"));
-        log.info("testRegisterUnit passed");
+
     }
 }

@@ -3,11 +3,9 @@ package com.scausw215.train.entity.DO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -53,6 +51,7 @@ public class TicketRefundedDO implements Serializable {
      */
     private Date refundedTime;
 
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
