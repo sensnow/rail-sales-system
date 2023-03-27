@@ -13,7 +13,7 @@
 
     <insert id="insertStation" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
         INSERT INTO station_info (station_name, station_city, station_province)
-        VALUE (#{stationName}, #{stationCity}, #{stationProvince})
+            VALUE (#{stationName}, #{stationCity}, #{stationProvince})
     </insert>
     <update id="updateStation" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
         update station_info
@@ -31,21 +31,39 @@
 
 
     </delete>
-    <select id="selectStationInfoById" resultType="com.scausw215.train.entity.DO.StationInfoDO"
+    <select id="selectStationById" resultType="com.scausw215.train.entity.DO.StationInfoDO"
             parameterType="java.lang.String">
         SELECT *
         FROM station_info
         WHERE station_id = #{stationId}
 
     </select>
-    <select id="selectStationInfoByStationName" resultType="com.scausw215.train.entity.DO.StationInfoDO"
+    <select id="selectStationByName" resultType="com.scausw215.train.entity.DO.StationInfoDO"
             parameterType="java.lang.String">
         SELECT *
         FROM station_info
         WHERE station_name = #{stationName}
     </select>
-    <select id="getStationIdByName" resultType="java.lang.Long" parameterType="java.lang.String">
-        select station_id from station_info where station_name = #{name}
+    <select id="getIdByName" resultType="java.lang.Long" parameterType="java.lang.String">
+        select station_id
+        from station_info
+        where station_name = #{name}
+    </select>
+    <select id="getAll" resultType="com.scausw215.train.entity.DO.StationInfoDO">
+        select *
+        from station_info
+    </select>
+    <select id="getByCity" resultType="com.scausw215.train.entity.DO.StationInfoDO"
+            parameterType="java.lang.String">
+        select *
+        from station_info
+        where station_city = #{city}
+    </select>
+    <select id="getByProvince" resultType="com.scausw215.train.entity.DO.StationInfoDO"
+            parameterType="java.lang.String">
+        select *
+        from station_info
+        where station_province = #{province}
     </select>
 
 

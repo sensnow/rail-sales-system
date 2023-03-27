@@ -4,6 +4,8 @@ import com.scausw215.train.entity.DO.StationInfoDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.scausw215.train.entity.VO.StationVO;
 
+import java.util.List;
+
 /**
 * @author sensnow
 * @description 针对表【station_info】的数据库操作Service
@@ -16,4 +18,8 @@ public interface StationInfoService extends IService<StationInfoDO> {
     Long getStationIdByName(String Name);
     Integer insertStation(StationInfoDO stationInfoDO);
     Integer delete(String id);
+    List<StationInfoDO> getAll();
+    List<StationInfoDO> getByCity(String city);
+    List<StationInfoDO> getByProvince(String province);
+
 }

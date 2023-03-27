@@ -7,6 +7,8 @@ import com.scausw215.train.mapper.StationInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author sensnow
 * @description 针对表【station_info】的数据库操作Service实现
@@ -20,12 +22,12 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
 
     @Override
     public StationInfoDO getStationById(String id) {
-        return stationInfoMapper.selectStationInfoById(id);
+        return stationInfoMapper.selectStationById(id);
     }
     @Override
     public StationInfoDO getStationByStationName(String stationName) {
 
-        return stationInfoMapper.selectStationInfoByStationName(stationName);
+        return stationInfoMapper.selectStationByName(stationName);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
 
     @Override
     public Long getStationIdByName(String name) {
-        return stationInfoMapper.getStationIdByName(name);
+        return stationInfoMapper.getIdByName(name);
     }
 
     @Override
@@ -48,7 +50,20 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
         return stationInfoMapper.deleteStationInfoById(id);
     }
 
+    @Override
+    public List<StationInfoDO> getAll() {
+        return stationInfoMapper.getAll();
+    }
 
+    @Override
+    public List<StationInfoDO> getByCity(String city) {
+        return stationInfoMapper.getByCity(city);
+    }
+
+    @Override
+    public List<StationInfoDO> getByProvince(String province) {
+        return stationInfoMapper.getByProvince(province);
+    }
 }
 
 

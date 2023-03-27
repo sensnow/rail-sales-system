@@ -4,6 +4,8 @@ import com.scausw215.train.entity.DO.StationInfoDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author sensnow
 * @description 针对表【station_info】的数据库操作Mapper
@@ -40,10 +42,14 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
      * @param stationId 站点id
      * @return 站点信息
      */
-    StationInfoDO selectStationInfoById(String stationId);
-    StationInfoDO selectStationInfoByStationName(String stationName);
+    StationInfoDO selectStationById(String stationId);
+    StationInfoDO selectStationByName(String stationName);
 
-    Long getStationIdByName(String name);
+    Long getIdByName(String name);
+    List<StationInfoDO> getAll();
+
+    List<StationInfoDO> getByCity(String city);
+    List<StationInfoDO> getByProvince(String province);
 
 
 }

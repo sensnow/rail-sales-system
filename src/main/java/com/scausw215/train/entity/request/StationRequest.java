@@ -15,6 +15,8 @@ public class StationRequest{
     private String name;
     private String city;
     private String province;
-
+    private String isAll;
+    private String isCity;
+    private String isProvince;
 
 }
