@@ -24,8 +24,12 @@ public class ToSafetyEntityUtils {
     public static PassengerVO toPassengerVO(PassengerDO passengerDO)
     {
         PassengerVO passengerVO = new PassengerVO();
-
-
+        passengerVO.setId(passengerDO.getPassengerId());
+        passengerVO.setName(passengerDO.getPassengerName());
+        passengerVO.setNumber(passengerDO.getPassengerName());
+        passengerVO.setPhone(passengerDO.getPassengerPhone());
+        passengerVO.setType(passengerDO.getPassengerType());
+        passengerVO.setUserId(passengerDO.getUserId());
         return passengerVO;
 
     }
@@ -37,5 +41,6 @@ public class ToSafetyEntityUtils {
         stationVO.setProvince(stationInfoDO.getStationProvince());
         return stationVO;
     }
+
 
 }

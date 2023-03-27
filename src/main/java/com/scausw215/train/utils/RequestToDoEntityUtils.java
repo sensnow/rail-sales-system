@@ -16,6 +16,7 @@ public class RequestToDoEntityUtils {
      */
     public static PassengerDO toPassengerDO(PassengerRequest passengerRequest) {
         PassengerDO passengerDO = new PassengerDO();
+        passengerDO.setPassengerId(passengerRequest.getId());
         passengerDO.setPassengerName(passengerRequest.getName());
         passengerDO.setPassengerCardNumber(passengerRequest.getNumber());
         passengerDO.setPassengerPhone(passengerRequest.getPhone());

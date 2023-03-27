@@ -36,11 +36,6 @@ public enum ErrorCode {
      */
     NOT_EXIST_PASSENGER(40011, "该购票人不存在", "该购票人不存在"),
     /**
-     * 没有删除乘客人权限
-     */
-    NOT_DELETE_PASSENGER_PERMISSION(40012, "没有删除乘客人权限", "没有删除乘客人权限"),
-
-    /**
      *
      * 系统错误
      */
@@ -56,7 +51,12 @@ public enum ErrorCode {
     /**
      * 数据库操作失败
      */
-    DATABASE_ERROR(50003, "数据库操作失败", "数据库操作失败");
+    DATABASE_ERROR(50003, "数据库操作失败", "数据库操作失败"),
+    /**
+     * 非法状态
+     */
+    ILLEGAL_STATUS(50004, "非法状态", "非法状态");
+
 
 
     /**

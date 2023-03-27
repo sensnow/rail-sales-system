@@ -17,7 +17,7 @@ import java.util.List;
  * @description web配置类
  * @author sensnow
  */
-//@Configuration
+@Configuration
 @Slf4j
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
@@ -41,6 +41,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/**/admin/**");;
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/**/*admin*/**");;
     }
 }

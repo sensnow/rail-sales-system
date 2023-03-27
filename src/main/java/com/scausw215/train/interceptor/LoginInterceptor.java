@@ -37,7 +37,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.setStatus(401);
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter writer = response.getWriter();
-            writer.write(JSON.toJSONString(ResultUtils.error(ErrorCode.NO_PERMISSION, "没有权限")));
+            writer.write(JSON.toJSONString(ResultUtils.error(ErrorCode.NOT_LOGIN, "没有登录")));
             writer.flush();
             writer.close();
             return false;

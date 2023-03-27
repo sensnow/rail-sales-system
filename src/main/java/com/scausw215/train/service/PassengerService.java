@@ -55,4 +55,5 @@ public interface PassengerService extends IService<PassengerDO> {
      * @return 查询结果
      */
     List<PassengerDO> getPassengersByUserId(Long userId, HttpServletRequest httpServletRequest);
+
 }

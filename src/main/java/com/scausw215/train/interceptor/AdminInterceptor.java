@@ -30,7 +30,7 @@ public class AdminInterceptor implements HandlerInterceptor {
             response.setStatus(401);
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter writer = response.getWriter();
-            writer.write(JSON.toJSONString(ResultUtils.error(ErrorCode.NOT_LOGIN, "未登录")));
+            writer.write(JSON.toJSONString(ResultUtils.error(ErrorCode.NO_PERMISSION, "没有访问权限")));
             writer.flush();
             writer.close();
             return false;
