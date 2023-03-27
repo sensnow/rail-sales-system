@@ -40,6 +40,15 @@ public interface PassengerMapper extends BaseMapper<PassengerDO> {
      */
     PassengerDO selectPassengerById(Integer id);
 
+    /**
+     * 根据用户id和身份证查询购票人信息
+     *
+     * @param userId              用户id
+     * @param passengerCardNumber 身份证号
+     * @return 返回购票人信息
+     */
+    PassengerDO selectPassengerByUserIdAndPassengerCardNumber(Long userId, String passengerCardNumber);
+
 
 
 }

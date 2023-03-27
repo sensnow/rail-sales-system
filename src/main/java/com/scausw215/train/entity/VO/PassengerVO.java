@@ -30,7 +30,7 @@ public class PassengerVO implements Serializable {
     /**
      * 证据类型，0：身份证，1：护照，2：台湾，3：港澳
      */
-    private long type;
+    private Long type;
     /**
      * 所属账号id
      */

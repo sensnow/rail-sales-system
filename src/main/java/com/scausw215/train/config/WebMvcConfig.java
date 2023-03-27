@@ -1,9 +1,12 @@
 package com.scausw215.train.config;
 
+import com.scausw215.train.interceptor.AdminInterceptor;
+import com.scausw215.train.interceptor.LoginInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -30,4 +33,14 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         converters.add(0,mappingJackson2HttpMessageConverter);
     }
 
+
+    /**
+     * 配置拦截器
+     * @param registry 静态资源注册器
+     */
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/**/admin/**");;
+    }
 }

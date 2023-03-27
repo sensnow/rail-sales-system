@@ -35,9 +35,9 @@ public enum ErrorCode {
     /**
      * 请求体为空
      */
-    EMPTY_REQUEST(500001, "请求体为空", "请求体为空");
+    EMPTY_REQUEST(500001, "请求体为空", "请求体为空"),
 
-
+    EXIST_PASSENGER(40010, "该购票人已存在", "该购票人已存在");
 
 
     /**

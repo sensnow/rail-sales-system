@@ -27,9 +27,9 @@ public class PassengerRequest{
         /**
          * 证据类型，0：身份证，1：护照，2：台湾，3：港澳
          */
-        private long type;
+        private int type;
         /**
          * 所属账号id
          */
-        private String userId;
+        private Long userId;
 }
