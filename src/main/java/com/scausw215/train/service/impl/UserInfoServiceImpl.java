@@ -100,7 +100,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO>
         if(i == 0)
         {
             log.error("用户注册失败，用户名：{}",userRegisterRequest.getAccount());
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"系统错误，注册失败");
+            throw new BusinessException(ErrorCode.DATABASE_ERROR,"系统错误，注册失败");
         }
         log.info("用户注册成功，用户名：{}",userRegisterRequest.getAccount());
         return i;

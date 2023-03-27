@@ -28,16 +28,22 @@
         WHERE passenger_id = #{passengerId}
     </update>
 
-    <delete id="deletePassengerById">
+    <delete id="deletePassengerByPassengerId">
         DELETE FROM passenger WHERE passenger_id = #{passengerId}
     </delete>
-    <select id="selectPassengerById" resultMap="BaseResultMap">
+
+    <select id="selectPassengerByPassengerId" resultMap="BaseResultMap">
         SELECT *
         FROM passenger
         WHERE passenger_id = #{passengerId}
     </select>
+
     <select id="selectPassengerByUserIdAndPassengerCardNumber" resultType="com.scausw215.train.entity.DO.PassengerDO">
         SELECT * FROM passenger WHERE user_id = #{userId} AND passenger_card_number = #{passengerCardNumber}
     </select>
+    <select id="selectPassengerByUserId" resultType="com.scausw215.train.entity.DO.PassengerDO">
+        SELECT * FROM passenger WHERE user_id = #{userId}
+    </select>
+
 
 </mapper>
