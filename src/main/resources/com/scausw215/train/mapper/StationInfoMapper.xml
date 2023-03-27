@@ -12,8 +12,8 @@
     </resultMap>
 
     <insert id="insertStation" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
-        INSERT INTO station_info (station_id, station_name, station_city, station_province)
-        VALUES (#{stationId}, #{stationName}, #{stationCity}, #{stationProvince})
+        INSERT INTO station_info (station_name, station_city, station_province)
+        VALUE (#{stationName}, #{stationCity}, #{stationProvince})
     </insert>
     <update id="updateStation" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
         update station_info
