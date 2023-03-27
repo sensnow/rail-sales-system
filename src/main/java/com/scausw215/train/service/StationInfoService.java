@@ -14,4 +14,6 @@ public interface StationInfoService extends IService<StationInfoDO> {
     StationInfoDO getStationByStationName(String stationName);
     Integer updateStation(StationInfoDO stationInfoDO);
     Long getStationIdByName(String Name);
+    Integer insertStation(StationInfoDO stationInfoDO);
+    Integer delete(String id);
 }

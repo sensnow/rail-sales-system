@@ -18,7 +18,7 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
      * @param stationInfoDO 站点信息
      * @return 插入结果
      */
-    int insertStationInfo(StationInfoDO stationInfoDO);
+    int insertStation(StationInfoDO stationInfoDO);
 
     /**
      * 根据站点id删除一条站点信息
@@ -33,7 +33,7 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
      *
      * @return 更新结果
      */
-    Integer updateStationInfo(StationInfoDO stationInfoDO);
+    Integer updateStation(StationInfoDO stationInfoDO);
 
     /**
      * 根据站点id查询一条站点信息

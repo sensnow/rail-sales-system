@@ -23,7 +23,7 @@ public class RequestToDoEntityUtils {
         passengerDO.setUserId(passengerRequest.getUserId());
         return passengerDO;
     }
-    public static StationInfoDO toStationINfoDo(StationRequest stationRequest) {
+    public static StationInfoDO toStationInfoDo(StationRequest stationRequest) {
         StationInfoDO stationInfoDO = new StationInfoDO();
         stationInfoDO.setStationName(stationRequest.getName());
         stationInfoDO.setStationId(stationRequest.getId());

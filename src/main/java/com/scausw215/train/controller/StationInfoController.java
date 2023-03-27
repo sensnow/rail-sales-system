@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.scausw215.train.utils.RequestToDoEntityUtils.toStationINfoDo;
+import static com.scausw215.train.utils.RequestToDoEntityUtils.toStationInfoDo;
 
 @Slf4j
 @RestController
@@ -31,16 +31,16 @@ public class StationInfoController {
     /**
      * 获取车站信息，需要传入需要获取的车站名
      */
-    @PostMapping("/getStationInfo")
-    public Result<StationVO> getStationInfo(@RequestBody StationRequest stationRequest){
+    @GetMapping("/get")
+    public Result<StationVO> get(@RequestBody StationRequest stationRequest) {
         //先判断信息是否为空
         //获取车站信息需要传入id参数
         if (StringUtils.isBlank(stationRequest.getName())) {
             log.error("StationInfoController.getStationInfo: 车站名为空,{}", stationRequest);
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"车站名为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "车站名为空");
         }
         StationInfoDO stationInfoDO = stationInfoService.getStationByStationName(stationRequest.getName());
-        if (stationInfoDO == null){
+        if (stationInfoDO == null) {
             return ResultUtils.success(null);
         }
         StationVO stationVO = ToSafetyEntityUtils.toStationVO(stationInfoDO);
@@ -51,22 +51,42 @@ public class StationInfoController {
 
     /**
      * 更新车站信息，需要管理员权限，需要传入新的车站信息，以及要修改的车站对应的名字
+     *
      * @param stationRequest
      * @return
      */
-    @PostMapping("/admin/updateStationInfo")
-    public Result<Integer> updateStationInfo(@RequestBody StationRequest stationRequest){
+    @PutMapping("/admin")
+    public Result<Integer> update(@RequestBody StationRequest stationRequest) {
 
-        if (StringUtils.isAnyBlank(stationRequest.getName(),
-                                   stationRequest.getCity(),
-                                   stationRequest.getProvince()
-                )) {
+        if (StringUtils.isAnyBlank(stationRequest.getName(), stationRequest.getCity(), stationRequest.getProvince()
+        )) {
             log.error("StationInfoController.getStationInfo: 新的车站信息不能为空,{}", stationRequest);
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"提交的新车站信息为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "提交的新车站信息为空");
         }
-        StationInfoDO stationInfoDO = toStationINfoDo(stationRequest);
+        StationInfoDO stationInfoDO = toStationInfoDo(stationRequest);
         Integer integer = stationInfoService.updateStation(stationInfoDO);
         return ResultUtils.success(integer);
+    }
 
+    @PostMapping("/admin")
+    public Result<Integer> add(@RequestBody StationRequest stationRequest) {
+        if (StringUtils.isAnyBlank(stationRequest.getName(), stationRequest.getCity(), stationRequest.getProvince()
+        )) {
+            log.error("StationInfoController.getStationInfo: 新的车站信息不能为空,{}", stationRequest);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "提交的新车站信息为空");
+        }
+        StationInfoDO stationInfoDO = toStationInfoDo(stationRequest);
+        Integer integer = stationInfoService.insertStation(stationInfoDO);
+        return ResultUtils.success(integer);
+    }
+
+    @DeleteMapping("/admin")
+    public Result<Integer> delete(@RequestBody StationRequest stationRequest) {
+        if (StringUtils.isBlank(String.valueOf(stationRequest.getId()))) {
+            log.error("StationInfoController.getStationInfo: 删除车站信息不能为空,{}", stationRequest);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "删除的车站信息为空");
+        }
+        Integer delete = stationInfoService.delete(String.valueOf(stationRequest.getId()));
+        return ResultUtils.success(delete);
     }
 }

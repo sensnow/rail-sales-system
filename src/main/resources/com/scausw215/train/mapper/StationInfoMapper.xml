@@ -11,11 +11,11 @@
         <result property="stationProvince" column="station_province" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <insert id="insertStationInfo" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
+    <insert id="insertStation" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
         INSERT INTO station_info (station_id, station_name, station_city, station_province)
         VALUES (#{stationId}, #{stationName}, #{stationCity}, #{stationProvince})
     </insert>
-    <update id="updateStationInfo" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
+    <update id="updateStation" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
         update station_info
         set station_name=#{stationName},
             station_city=#{stationCity},

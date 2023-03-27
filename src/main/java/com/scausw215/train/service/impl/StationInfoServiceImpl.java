@@ -2,13 +2,10 @@ package com.scausw215.train.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.entity.DO.StationInfoDO;
-import com.scausw215.train.entity.VO.StationVO;
 import com.scausw215.train.service.StationInfoService;
 import com.scausw215.train.mapper.StationInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static com.scausw215.train.utils.ToSafetyEntityUtils.toStationVO;
 
 /**
 * @author sensnow
@@ -33,12 +30,22 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
 
     @Override
     public Integer updateStation(StationInfoDO stationInfoDO) {
-        return stationInfoMapper.updateStationInfo(stationInfoDO);
+        return stationInfoMapper.updateStation(stationInfoDO);
     }
 
     @Override
     public Long getStationIdByName(String name) {
         return stationInfoMapper.getStationIdByName(name);
+    }
+
+    @Override
+    public Integer insertStation(StationInfoDO stationInfoDO) {
+        return stationInfoMapper.insertStation(stationInfoDO);
+    }
+
+    @Override
+    public Integer delete(String id) {
+        return stationInfoMapper.deleteStationInfoById(id);
     }
 
 
