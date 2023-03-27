@@ -12,9 +12,8 @@ import java.io.Serializable;
 public class StationRequest{
     //前端发送的请求数据
     private String name;
-    private String newName;
-    private String newCity;
-    private String newProvince;
-    private String id;
+    private String city;
+    private String province;
+    private Long id;
 
 }

@@ -15,12 +15,12 @@
         INSERT INTO station_info (station_id, station_name, station_city, station_province)
         VALUES (#{stationId}, #{stationName}, #{stationCity}, #{stationProvince})
     </insert>
-    <update id="updateStationInfo">
-        UPDATE station_info
-        SET station_name=#{stationNewName},
-            station_city=#{stationNewCity},
-            station_province=#{stationNewProvince}
-        WHERE station_name = #{stationName}
+    <update id="updateStationInfo" parameterType="com.scausw215.train.entity.DO.StationInfoDO">
+        update station_info
+        set station_name=#{stationName},
+            station_city=#{stationCity},
+            station_province=#{stationProvince}
+        where station_id = #{stationId}
     </update>
 
 
@@ -43,6 +43,9 @@
         SELECT *
         FROM station_info
         WHERE station_name = #{stationName}
+    </select>
+    <select id="getStationIdByName" resultType="java.lang.Long" parameterType="java.lang.String">
+        select station_id from station_info where station_name = #{name}
     </select>
 
 

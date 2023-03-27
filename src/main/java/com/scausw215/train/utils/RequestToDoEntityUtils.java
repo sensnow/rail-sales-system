@@ -1,7 +1,9 @@
 package com.scausw215.train.utils;
 
 import com.scausw215.train.entity.DO.PassengerDO;
+import com.scausw215.train.entity.DO.StationInfoDO;
 import com.scausw215.train.entity.request.PassengerRequest;
+import com.scausw215.train.entity.request.StationRequest;
 
 /**
  * 请求转换工具类
@@ -20,5 +22,13 @@ public class RequestToDoEntityUtils {
         passengerDO.setPassengerType(passengerRequest.getType());
         passengerDO.setUserId(passengerRequest.getUserId());
         return passengerDO;
+    }
+    public static StationInfoDO toStationINfoDo(StationRequest stationRequest) {
+        StationInfoDO stationInfoDO = new StationInfoDO();
+        stationInfoDO.setStationName(stationRequest.getName());
+        stationInfoDO.setStationId(stationRequest.getId());
+        stationInfoDO.setStationCity(stationRequest.getCity());
+        stationInfoDO.setStationProvince(stationRequest.getProvince());
+        return stationInfoDO;
     }
 }

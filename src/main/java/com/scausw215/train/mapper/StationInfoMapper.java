@@ -30,13 +30,10 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
     /**
      * 更新一条站点信息
      *
-     *        站点信息
-     * @param stationNewName
-     * @param stationNewCity
-     * @param stationNewProvince
+     *
      * @return 更新结果
      */
-    Boolean updateStationInfo(String stationName,String stationNewName,String stationNewCity,String stationNewProvince);
+    Integer updateStationInfo(StationInfoDO stationInfoDO);
 
     /**
      * 根据站点id查询一条站点信息
@@ -45,6 +42,8 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
      */
     StationInfoDO selectStationInfoById(String stationId);
     StationInfoDO selectStationInfoByStationName(String stationName);
+
+    Long getStationIdByName(String name);
 
 
 }

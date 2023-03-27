@@ -27,13 +27,21 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
     }
     @Override
     public StationInfoDO getStationByStationName(String stationName) {
+
         return stationInfoMapper.selectStationInfoByStationName(stationName);
     }
 
     @Override
-    public Boolean upStationByStationName(String stringName,String stationNewName,String stationNewCity,String stationNewProvince) {
-        return stationInfoMapper.updateStationInfo(stringName,stationNewName,stationNewCity,stationNewProvince);
+    public Integer updateStation(StationInfoDO stationInfoDO) {
+        return stationInfoMapper.updateStationInfo(stationInfoDO);
     }
+
+    @Override
+    public Long getStationIdByName(String name) {
+        return stationInfoMapper.getStationIdByName(name);
+    }
+
+
 }
 
 

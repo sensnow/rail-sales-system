@@ -12,5 +12,6 @@ import com.scausw215.train.entity.VO.StationVO;
 public interface StationInfoService extends IService<StationInfoDO> {
     StationInfoDO getStationById(String id);
     StationInfoDO getStationByStationName(String stationName);
-    Boolean upStationByStationName(String stationName,String stationNewName,String stationNewCity,String stationNewProvince);
+    Integer updateStation(StationInfoDO stationInfoDO);
+    Long getStationIdByName(String Name);
 }

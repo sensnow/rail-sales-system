@@ -10,6 +10,7 @@ import com.scausw215.train.entity.request.StationRequest;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.UserInfoMapper;
 import com.scausw215.train.service.impl.StationInfoServiceImpl;
+import com.scausw215.train.utils.RequestToDoEntityUtils;
 import com.scausw215.train.utils.ResultUtils;
 import com.scausw215.train.utils.ToSafetyEntityUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import static com.scausw215.train.utils.RequestToDoEntityUtils.toStationINfoDo;
 
 @Slf4j
 @RestController
@@ -52,22 +55,18 @@ public class StationInfoController {
      * @return
      */
     @PostMapping("/admin/updateStationInfo")
-    public Result<Boolean> updateStationInfo(@RequestBody StationRequest stationRequest){
+    public Result<Integer> updateStationInfo(@RequestBody StationRequest stationRequest){
 
-        if (StringUtils.isAllBlank(stationRequest.getName(),
-                                   stationRequest.getNewName(),
-                                   stationRequest.getNewCity(),
-                                   stationRequest.getNewProvince()
+        if (StringUtils.isAnyBlank(stationRequest.getName(),
+                                   stationRequest.getCity(),
+                                   stationRequest.getProvince()
                 )) {
             log.error("StationInfoController.getStationInfo: 新的车站信息不能为空,{}", stationRequest);
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"提交的新车站信息为空");
         }
-        StationInfoDO stationInfoDO = stationInfoService.getStationByStationName(stationRequest.getName());
-        Boolean aBoolean = stationInfoService.upStationByStationName(stationInfoDO.getStationName(),
-                                                                     stationRequest.getNewName(),
-                                                                     stationRequest.getNewCity(),
-                                                                     stationRequest.getNewProvince());
-        return ResultUtils.success(aBoolean);
+        StationInfoDO stationInfoDO = toStationINfoDo(stationRequest);
+        Integer integer = stationInfoService.updateStation(stationInfoDO);
+        return ResultUtils.success(integer);
 
     }
 }
