@@ -2,6 +2,7 @@ package com.scausw215.train.service;
 
 import com.scausw215.train.entity.DO.StationInfoDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.scausw215.train.entity.VO.StationVO;
 
 /**
 * @author sensnow
@@ -9,5 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-03-25 14:10:16
 */
 public interface StationInfoService extends IService<StationInfoDO> {
-
+    StationInfoDO getStationById(String id);
+    StationInfoDO getStationByStationName(String stationName);
+    Boolean upStationByStationName(String stationName,String stationNewName,String stationNewCity,String stationNewProvince);
 }

@@ -1,7 +1,10 @@
 package com.scausw215.train.utils;
 
 import com.scausw215.train.entity.DO.PassengerDO;
+import com.scausw215.train.entity.DO.StationInfoDO;
 import com.scausw215.train.entity.DO.UserInfoDO;
+import com.scausw215.train.entity.VO.PassengerVO;
+import com.scausw215.train.entity.VO.StationVO;
 import com.scausw215.train.entity.VO.UserInfoVO;
 
 /**
@@ -16,6 +19,23 @@ public class ToSafetyEntityUtils {
         userInfoVO.setAccount(userInfoDO.getUserAccount());
         userInfoVO.setAuthority(userInfoDO.getUserAuthority());
         return userInfoVO;
+    }
+
+    public static PassengerVO toPassengerVO(PassengerDO passengerDO)
+    {
+        PassengerVO passengerVO = new PassengerVO();
+
+
+        return passengerVO;
+
+    }
+    public static StationVO toStationVO(StationInfoDO stationInfoDO){
+        StationVO stationVO = new StationVO();
+        stationVO.setId(stationInfoDO.getStationId());
+        stationVO.setName(stationInfoDO.getStationName());
+        stationVO.setCity(stationInfoDO.getStationCity());
+        stationVO.setProvince(stationInfoDO.getStationProvince());
+        return stationVO;
     }
 
 }

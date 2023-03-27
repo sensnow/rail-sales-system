@@ -9,5 +9,9 @@ class TrainApplicationTests {
     @Test
     void contextLoads() {
     }
+    @Test
+    void getStation(){
+
+    }
 
 }

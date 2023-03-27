@@ -1,49 +1,40 @@
-package com.scausw215.train.entity.DO;
+package com.scausw215.train.entity.VO;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-import com.scausw215.train.entity.VO.StationVO;
-import lombok.Data;
 
-/**
- * 
- * @author sensnow
- * @TableName station_info
- */
-@TableName(value ="station_info")
 @Data
-public class StationInfoDO implements Serializable {
+public class StationVO implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
-    private Long stationId;
+    private Long Id;
 
     /**
-     * 
+     *
      */
-    private String stationName;
+    private String Name;
 
     /**
-     * 
+     *
      */
-    private String stationCity;
+    private String City;
 
     /**
-     * 
+     *
      */
-    private String stationProvince;
+    private String Province;
 
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-
 
 }
