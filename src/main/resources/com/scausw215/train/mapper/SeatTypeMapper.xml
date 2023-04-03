@@ -15,6 +15,10 @@
         FROM seat_type
         WHERE seat_id = #{seatId}
     </select>
+    <select id="selectAllSeatType" resultType="com.scausw215.train.entity.DO.SeatTypeDO">
+        SELECT *
+        FROM seat_type
+    </select>
 
     <insert id="insertSeatType" parameterType="com.scausw215.train.entity.DO.SeatTypeDO">
         INSERT INTO seat_type (seat_name, seat_description)

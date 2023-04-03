@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 乘客信息Controller
+ * 乘客人管理
  * @author sensnow
  */
 @RestController
@@ -30,7 +30,11 @@ public class PassengerController {
     PassengerService passengerService;
 
     /**
-     * 通过用户id获取所有乘客信息
+     * 获取用户的所有乘客信息
+     * 根据用户id获取乘客信息
+     * @param id 用户id
+     * @param httpServletRequest 请求体
+     * @return 乘客信息
      */
     @GetMapping("")
     public Result<List<PassengerVO>> getPassengerByUserId(@RequestParam("id") Long id,HttpServletRequest httpServletRequest){
@@ -54,6 +58,9 @@ public class PassengerController {
 
     /**
      * 通过乘客id获取乘客信息
+     * @param id 乘客id
+     * @param httpServletRequest 请求体
+     * @return 乘客信息
      */
     @GetMapping("/{id}")
     public Result<PassengerVO> getPassengerById(@PathVariable Long id, HttpServletRequest httpServletRequest){
@@ -75,7 +82,10 @@ public class PassengerController {
     }
 
     /**
-     * 添加乘客
+     * 添加
+     * @param passengerRequest 乘客信息
+     * @param httpServletRequest 请求体
+     * @return 结果
      */
     @PostMapping("")
     public Result<Integer> addPassenger(@RequestBody PassengerRequest passengerRequest, HttpServletRequest httpServletRequest){
@@ -95,7 +105,10 @@ public class PassengerController {
     }
 
     /**
-     * 删除乘客
+     * 删除
+     * @param id 乘客id
+     * @param httpServletRequest 请求体
+     * @return 结果
      */
     @DeleteMapping("/{id}")
     public Result<Integer> deletePassenger(@PathVariable Long id,HttpServletRequest httpServletRequest)
@@ -116,7 +129,10 @@ public class PassengerController {
     }
 
     /**
-     * 更新乘客信息
+     * 更新
+     * @param passengerRequest 乘客信息
+     * @param httpServletRequest 请求体
+     * @return 结果
      */
     @PutMapping()
     public Result<Integer> updatePassenger(@RequestBody PassengerRequest passengerRequest,HttpServletRequest httpServletRequest)

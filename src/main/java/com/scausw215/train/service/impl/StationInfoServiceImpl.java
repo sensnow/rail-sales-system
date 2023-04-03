@@ -21,7 +21,7 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
     StationInfoMapper stationInfoMapper;
 
     @Override
-    public StationInfoDO getStationById(String id) {
+    public StationInfoDO getStationById(Long id) {
         return stationInfoMapper.selectStationById(id);
     }
     @Override
@@ -46,7 +46,7 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
     }
 
     @Override
-    public Integer delete(String id) {
+    public Integer delete(Long id) {
         return stationInfoMapper.deleteStationInfoById(id);
     }
 

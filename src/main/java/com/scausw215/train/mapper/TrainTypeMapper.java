@@ -3,13 +3,15 @@ package com.scausw215.train.mapper;
 import com.scausw215.train.entity.DO.TrainTypeDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+
+import java.util.Date;
+import java.util.List;
 
 /**
 * @author sensnow
 * @description 针对表【train_type(动车类型)】的数据库操作Mapper
 * @createDate 2023-03-25 14:10:16
-* @Entity com.scausw215.train.entity.TrainType
+* @Entity com.scausw215.train.entity.TrainTypeDTO
 */
 @Mapper
 public interface TrainTypeMapper extends BaseMapper<TrainTypeDO> {
@@ -55,6 +57,12 @@ public interface TrainTypeMapper extends BaseMapper<TrainTypeDO> {
      * @return 返回查询到的动车类型DO对象
      */
     TrainTypeDO selectTrainTypeByType(String trainName);
+
+    /**
+     * 查询所有动车类型
+     * @return 返回查询到的动车类型DO对象列表
+     */
+    List<TrainTypeDO> selectAllTrainType();
 
 
 }

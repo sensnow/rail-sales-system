@@ -3,38 +3,31 @@ package com.scausw215.train.entity.VO;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-
 /**
- * 站点视图类
+ * 座位类型视图类
+ * @author sensnow
  */
 @Data
-public class StationVO implements Serializable {
+public class SeatTypeVO implements Serializable {
     /**
-     *
+     * 座位类型id
      */
-    @TableId(type = IdType.AUTO)
-    private Long Id;
+    private Long id;
 
     /**
-     *
+     * 座位类型名称
      */
-    private String Name;
+    private String name;
 
     /**
-     *
+     * 座位类型描述
      */
-    private String City;
-
-    /**
-     *
-     */
-    private String Province;
+    private String description;
 
     @Serial
     @TableField(exist = false)

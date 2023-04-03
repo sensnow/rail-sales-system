@@ -4,13 +4,78 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.scausw215.train.mapper.TrainInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.scausw215.train.entity.DO.TrainInfoDO">
+    <resultMap id="DTOMap" type="com.scausw215.train.entity.DTO.TrainInfoDTO">
+        <id property="trainId" column="train_id" jdbcType="BIGINT"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+        <result property="firstPrice" column="first_price" jdbcType="INTEGER"/>
+        <result property="secondPrice" column="second_price" jdbcType="INTEGER"/>
+        <result property="thirdPrice" column="third_price" jdbcType="INTEGER"/>
+        <result property="total" column="total" jdbcType="INTEGER"/>
+        <result property="isAvailable" column="is_available" jdbcType="INTEGER"/>
+        <association property="startStation" javaType="com.scausw215.train.entity.DO.StationInfoDO" >
+            <id property="stationId" column="sst_start_station" jdbcType="BIGINT"/>
+            <result property="stationName" column="sst_station_name" jdbcType="VARCHAR"/>
+            <result property="stationProvince" column="sst_station_province" jdbcType="VARCHAR"/>
+            <result property="stationCity" column="sst_station_city" jdbcType="VARCHAR"/>
+        </association>
+        <association property="endStation" javaType="com.scausw215.train.entity.DO.StationInfoDO">
+            <id property="stationId" column="est_start_station" jdbcType="BIGINT"/>
+            <result property="stationName" column="est_station_name" jdbcType="VARCHAR"/>
+            <result property="stationProvince" column="est_station_province" jdbcType="VARCHAR"/>
+            <result property="stationCity" column="est_station_city" jdbcType="VARCHAR"/>
+        </association>
+        <association property="trainType" javaType="com.scausw215.train.entity.DO.TrainTypeDO">
+            <id property="trainTypeId" column="train_type_id" jdbcType="BIGINT"/>
+            <result property="trainCode" column="train_code" jdbcType="VARCHAR"/>
+            <result property="trainName" column="train_name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="DOMap" type="com.scausw215.train.entity.DO.TrainInfoDO">
         <id property="trainId" column="train_id" jdbcType="BIGINT"/>
         <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
         <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
         <result property="startStation" column="start_station" jdbcType="BIGINT"/>
         <result property="endStation" column="end_station" jdbcType="BIGINT"/>
         <result property="trainTypeId" column="train_type_id" jdbcType="BIGINT"/>
+        <result property="firstPrice" column="train_name" jdbcType="INTEGER"/>
+        <result property="secondPrice" column="train_name" jdbcType="INTEGER"/>
+        <result property="thirdPrice" column="train_name" jdbcType="INTEGER"/>
+        <result property="isAvailable" column="is_available" jdbcType="VARCHAR"/>
     </resultMap>
+    <insert id="insertTrainInfo">
+        INSERT INTO train_info
+        (start_time, end_time, start_station, end_station, train_type_id, first_price, second_price, third_price, is_available)
+        VALUES
+        (#{startTime}, #{endTime}, #{startStation}, #{endStation}, #{trainTypeId}, #{firstPrice}, #{secondPrice}, #{thirdPrice}, 1)
+    </insert>
+    <update id="deleteByTrainId">
+        update train_info set is_available = 0 where train_id = #{trainId}
+    </update>
+    <update id="updateByTrainId">
+        update train_info set start_time = #{startTime}, end_time = #{endTime}, start_station = #{startStation}, end_station = #{endStation}, train_type_id = #{trainTypeId}, first_price = #{firstPrice}, second_price = #{secondPrice}, third_price = #{thirdPrice} where train_id = #{trainId}
+    </update>
 
+
+    <select id="selectTrainInfoByTime" resultMap="DOMap">
+        SELECT * FROM train_info WHERE start_time <![CDATA[>= ]]> #{startTime} AND end_time <![CDATA[<= ]]> #{endTime} AND is_available = 1 AND train_type_id = #{trainTypeId}
+    </select>
+
+    <select id="selectByTrainId" resultType="com.scausw215.train.entity.DTO.TrainInfoDTO" resultMap="DTOMap">
+        select * from train_detail_info where train_id = #{trainId}
+    </select>
+
+    <select id="selectTrainInfoListByAnyCondition" resultType="com.scausw215.train.entity.DTO.TrainInfoDTO" resultMap="DTOMap">
+        call selectTrainInfoListByAnyCondition(#{mode},#{startStationId},#{endStationId},#{startCity},#{endCity},#{trainName},#{trainCode},#{startTime},#{endTime},#{isAvailable},#{page},#{size})
+    </select>
+    <select id="selectDOByTrainId" resultType="com.scausw215.train.entity.DO.TrainInfoDO">
+        SELECT * FROM train_info WHERE train_id = #{trainId}
+    </select>
+    <select id="selectTrainInfoCountByAnyCondition" resultType="java.lang.Integer" >
+        call selectTrainInfoListCountByAnyCondition(#{mode},#{startStationId},#{endStationId},#{startCity},#{endCity},#{trainName},#{trainCode},#{startTime},#{endTime},#{isAvailable})
+    </select>
+    <select id="selectUnscheduledTrainTypeByTime" resultType="com.scausw215.train.entity.DO.TrainTypeDO" resultMap="com.scausw215.train.mapper.TrainTypeMapper.BaseResultMap">
+        call selectUnscheduledTrainType(#{startTime},#{endTime})
+    </select>
 </mapper>

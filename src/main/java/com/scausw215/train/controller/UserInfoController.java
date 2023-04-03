@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 用户信息Controller
+ * 用户信息管理
  * @author sensnow
  */
 @Slf4j
@@ -30,7 +30,12 @@ public class UserInfoController {
     UserInfoService userInfoService;
 
     /**
-     * 用户登录
+     * 登录
+     * @param userLoginRequest 用户登录请求体
+     *                         account: 用户名
+     *                         password: 密码
+     * @param httpServletRequest 请求体
+     * @return 登录结果
      */
     @PostMapping("/login")
     public Result<UserInfoVO> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest httpServletRequest) {
@@ -51,7 +56,13 @@ public class UserInfoController {
     }
 
     /**
-     * 用户注册
+     * 注册
+     * @param userRegisterRequest 用户注册请求体
+     *                            account: 用户名
+     *                            password: 密码
+     *                            checkPassword: 确认密码
+     * @param httpServletRequest 请求体
+     * @return 注册结果
      */
     @PostMapping("/register")
     public Result<Long> register(@RequestBody UserRegisterRequest userRegisterRequest, HttpServletRequest httpServletRequest) {
@@ -69,6 +80,11 @@ public class UserInfoController {
         return ResultUtils.success(register);
     }
 
+    /**
+     * 登出
+     * @param httpServletRequest 请求体
+     * @return 登出结果
+     */
     @PostMapping("/logout")
     public Result<Integer> logout(HttpServletRequest httpServletRequest) {
         // 请求体校验

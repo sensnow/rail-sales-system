@@ -40,6 +40,8 @@
     <select id="selectTrainTypeByType" resultType="com.scausw215.train.entity.DO.TrainTypeDO">
         select * from train_type where train_name = #{trainName};
     </select>
-
+    <select id="selectAllTrainType" resultType="com.scausw215.train.entity.DO.TrainTypeDO">
+        select * from train_type
+    </select>
 
 </mapper>

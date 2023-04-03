@@ -1,6 +1,7 @@
 server:
   port: 8080
-
+  servlet:
+    context-path: /api
 spring:
   application:
     name: user-center
@@ -19,11 +20,12 @@ spring:
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
 
-
   # MyBatis-Plus配置
 mybatis-plus:
   mapper-locations: classpath:com/scausw215/train/mapper/*.xml
-
+logging:
+  level:
+    ROOT: INFO
 
 
 

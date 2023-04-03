@@ -4,6 +4,8 @@ import com.scausw215.train.entity.DO.SeatTypeDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author sensnow
 * @description 针对表【seat_type(座位类型表)】的数据库操作Mapper
@@ -24,7 +26,7 @@ public interface SeatTypeMapper extends BaseMapper<SeatTypeDO> {
      * @param id 座位类型id
      * @return 删除成功的记录数
      */
-    int deleteSeatTypeById(Integer id);
+    int deleteSeatTypeById(Long id);
 
     /**
      * 更新座位类型信息
@@ -38,7 +40,13 @@ public interface SeatTypeMapper extends BaseMapper<SeatTypeDO> {
      * @param id 座位类型id
      * @return 座位类型实体类
      */
-    SeatTypeDO selectSeatTypeById(Integer id);
+    SeatTypeDO selectSeatTypeById(Long id);
+
+    /**
+     * 查询所有座位类型
+     * @return 座位类型实体类列表
+     */
+    List<SeatTypeDO> selectAllSeatType();
 
 
 }

@@ -12,12 +12,12 @@ import java.util.List;
 * @createDate 2023-03-25 14:10:16
 */
 public interface StationInfoService extends IService<StationInfoDO> {
-    StationInfoDO getStationById(String id);
+    StationInfoDO getStationById(Long id);
     StationInfoDO getStationByStationName(String stationName);
     Integer updateStation(StationInfoDO stationInfoDO);
     Long getStationIdByName(String Name);
     Integer insertStation(StationInfoDO stationInfoDO);
-    Integer delete(String id);
+    Integer delete(Long id);
     List<StationInfoDO> getAll();
     List<StationInfoDO> getByCity(String city);
     List<StationInfoDO> getByProvince(String province);

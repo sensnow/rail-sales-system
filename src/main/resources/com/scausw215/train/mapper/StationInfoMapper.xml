@@ -24,7 +24,7 @@
     </update>
 
 
-    <delete id="deleteStationInfoById" parameterType="java.lang.String">
+    <delete id="deleteStationInfoById" parameterType="java.lang.Long">
         DELETE
         FROM station_info
         WHERE station_id = #{stationId}
@@ -32,7 +32,7 @@
 
     </delete>
     <select id="selectStationById" resultType="com.scausw215.train.entity.DO.StationInfoDO"
-            parameterType="java.lang.String">
+            parameterType="java.lang.Long">
         SELECT *
         FROM station_info
         WHERE station_id = #{stationId}

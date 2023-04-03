@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 用户信息VO类
+ * 用户信息视图类
  * @author sensnow
  */
 @Data

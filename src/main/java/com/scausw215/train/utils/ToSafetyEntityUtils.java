@@ -1,11 +1,8 @@
 package com.scausw215.train.utils;
 
-import com.scausw215.train.entity.DO.PassengerDO;
-import com.scausw215.train.entity.DO.StationInfoDO;
-import com.scausw215.train.entity.DO.UserInfoDO;
-import com.scausw215.train.entity.VO.PassengerVO;
-import com.scausw215.train.entity.VO.StationVO;
-import com.scausw215.train.entity.VO.UserInfoVO;
+import com.scausw215.train.entity.DO.*;
+import com.scausw215.train.entity.VO.*;
+import com.scausw215.train.entity.request.TrainTypeRequest;
 
 /**
  * @description 用于将entity转换为VO类
@@ -40,6 +37,31 @@ public class ToSafetyEntityUtils {
         stationVO.setCity(stationInfoDO.getStationCity());
         stationVO.setProvince(stationInfoDO.getStationProvince());
         return stationVO;
+    }
+
+    public static SeatTypeVO toSeatTypeVO(SeatTypeDO seatTypeDO)
+    {
+        SeatTypeVO seatTypeVO = new SeatTypeVO();
+        seatTypeVO.setId(seatTypeDO.getSeatId());
+        seatTypeVO.setName(seatTypeDO.getSeatName());
+        seatTypeVO.setDescription(seatTypeDO.getSeatDescription());
+        return seatTypeVO;
+    }
+
+    public static TrainTypeVO toTrainTypeVO(TrainTypeDO trainTypeDO)
+    {
+        TrainTypeVO trainTypeVO = new TrainTypeVO();
+        trainTypeVO.setId(trainTypeDO.getTrainTypeId());
+        trainTypeVO.setName(trainTypeDO.getTrainName());
+        trainTypeVO.setCode(trainTypeDO.getTrainCode());
+        trainTypeVO.setDescription(trainTypeDO.getTrainDescription());
+        trainTypeVO.setFirstSeatTypeId(trainTypeDO.getFirstSeatTypeId());
+        trainTypeVO.setFirstSeatNum(trainTypeDO.getFirstSeatNum());
+        trainTypeVO.setSecondSeatTypeId(trainTypeDO.getSecondSeatTypeId());
+        trainTypeVO.setSecondSeatNum(trainTypeDO.getSecondSeatNum());
+        trainTypeVO.setThirdSeatTypeId(trainTypeDO.getThirdSeatTypeId());
+        trainTypeVO.setThirdSeatNum(trainTypeDO.getThirdSeatNum());
+        return trainTypeVO;
     }
 
 

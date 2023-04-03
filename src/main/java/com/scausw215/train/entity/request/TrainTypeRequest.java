@@ -1,42 +1,36 @@
-package com.scausw215.train.entity.DO;
+package com.scausw215.train.entity.request;
+
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serial;
-import java.io.Serializable;
 import lombok.Data;
 
+import java.io.Serial;
+
 /**
- * 动车类型
+ * 动车类型请求类
  * @TableName train_type
  */
-@TableName(value ="train_type")
 @Data
-public class TrainTypeDO implements Serializable {
-    /**
-     * 动车id
-     */
-    @TableId(type = IdType.AUTO)
-    private Long trainTypeId;
+public class TrainTypeRequest {
+
+    private Long id;
 
     /**
      * 动车类型名称
-     * 只有普通动车，高铁动车，火车
      */
-    private String trainName;
+    private String name;
 
     /**
      * 动车类型代码
      */
-    private String trainCode;
+    private String code;
 
     /**
      * 动车类型描述
      */
-    private String trainDescription;
+    private String description;
 
     /**
      * 一等座座位类型id
@@ -67,9 +61,5 @@ public class TrainTypeDO implements Serializable {
      * 三等座座位数
      */
     private Integer thirdSeatNum;
-
-    @Serial
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 
 }

@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 
 import static com.scausw215.train.utils.RequestToDoEntityUtils.toStationInfoDo;
 
+/**
+ * 车站信息管理
+ */
 @Slf4j
 @RestController
 @RequestMapping("/station")
@@ -35,7 +38,7 @@ public class StationInfoController {
     /**
      * 获取车站信息，需要传入需要获取的车站名
      */
-    @GetMapping("/get")
+    @GetMapping("/user")
     public Result<StationVO> get(@RequestBody StationRequest stationRequest) {
 
         //先判断信息是否为空
@@ -51,7 +54,6 @@ public class StationInfoController {
         StationVO stationVO = ToSafetyEntityUtils.toStationVO(stationInfoDO);
         return ResultUtils.success(stationVO);
 
-
     }
     /**
      * 根据信息获取多个车站信息
@@ -60,7 +62,7 @@ public class StationInfoController {
      * 3.根据省名查询相关车站
      *
      */
-    @GetMapping("/getAll")
+    @GetMapping("/user/getAll")
     public Result<List<StationVO>> getAll(@RequestBody StationRequest stationRequest){
 
         //先判断三个参数是否全部为空
@@ -94,10 +96,10 @@ public class StationInfoController {
     }
 
     /**
-     * 更新车站信息，需要管理员权限，需要传入新的车站信息，以及要修改的车站对应的名字
+     * 更新
      *
-     * @param stationRequest
-     * @return
+     * @param stationRequest 列车请求体
+     * @return 列车信息
      */
     @PutMapping("/admin")
     public Result<Integer> update(@RequestBody StationRequest stationRequest) {
@@ -112,6 +114,11 @@ public class StationInfoController {
         return ResultUtils.success(integer);
     }
 
+    /**
+     * 添加
+     * @param stationRequest 列车请求体
+     * @return 列车信息
+     */
     @PostMapping("/admin")
     public Result<Integer> add(@RequestBody StationRequest stationRequest) {
         if (StringUtils.isAnyBlank(stationRequest.getName(), stationRequest.getCity(), stationRequest.getProvince()
@@ -124,13 +131,19 @@ public class StationInfoController {
         return ResultUtils.success(integer);
     }
 
+    /**
+     * 删除
+     * @param stationRequest 列车请求体
+     * @return 列车信息
+     */
     @DeleteMapping("/admin")
     public Result<Integer> delete(@RequestBody StationRequest stationRequest) {
-        if (StringUtils.isBlank(String.valueOf(stationRequest.getId()))) {
-            log.error("StationInfoController.getStationInfo: 删除车站信息不能为空,{}", stationRequest);
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "删除的车站信息为空");
+        // ID是不是数字
+        if (stationRequest.getId()== null) {
+            log.error("StationInfoController.delete: 车站ID为空,{}", stationRequest);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "车站ID为空");
         }
-        Integer delete = stationInfoService.delete(String.valueOf(stationRequest.getId()));
+        Integer delete = stationInfoService.delete(stationRequest.getId());
         return ResultUtils.success(delete);
     }
 

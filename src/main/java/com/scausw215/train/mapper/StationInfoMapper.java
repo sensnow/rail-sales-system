@@ -27,7 +27,7 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
      * @param stationId 站点id
      * @return 删除结果
      */
-    int deleteStationInfoById(String stationId);
+    int deleteStationInfoById(Long stationId);
 
     /**
      * 更新一条站点信息
@@ -42,7 +42,7 @@ public interface StationInfoMapper extends BaseMapper<StationInfoDO> {
      * @param stationId 站点id
      * @return 站点信息
      */
-    StationInfoDO selectStationById(String stationId);
+    StationInfoDO selectStationById(Long stationId);
     StationInfoDO selectStationByName(String stationName);
 
     Long getIdByName(String name);

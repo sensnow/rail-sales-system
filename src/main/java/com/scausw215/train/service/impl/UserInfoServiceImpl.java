@@ -90,7 +90,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO>
         if(userInfoMapper.selectUserInfoByAccount(userRegisterRequest.getAccount()) != null)
         {
             log.error("用户注册失败，用户名已存在，用户名：{}",userRegisterRequest.getAccount());
-            throw new BusinessException(ErrorCode.USER_EXIST,"用户名已存在");
+            throw new BusinessException(ErrorCode.ENTITY_EXIST,"用户名已存在");
         }
         // md5密码加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT+userRegisterRequest.getPassword()).getBytes());

@@ -182,7 +182,7 @@ public class PassengerServiceImpl extends ServiceImpl<PassengerMapper, Passenger
         if(checkPassenger == null)
         {
             log.error("该购票人不存在，参数：{}", passengerId);
-            throw new BusinessException(ErrorCode.NOT_EXIST_PASSENGER, "该购票人不存在");
+            throw new BusinessException(ErrorCode.ENTITY_NOT_EXIST, "该购票人不存在");
         }
         // 检测登录号是不是插入购票人的用户
         CheckUtils.isLoginStatusLegal(checkPassenger.getUserId(), httpServletRequest);
@@ -199,7 +199,7 @@ public class PassengerServiceImpl extends ServiceImpl<PassengerMapper, Passenger
         PassengerDO checkPassenger = passengerMapper.selectPassengerByUserIdAndPassengerCardNumber(userId,number);
         if (checkPassenger != null) {
             log.error("添加购票人失败，该购票人已存在，参数：{}",userId);
-            throw new BusinessException(ErrorCode.EXIST_PASSENGER, "该购票人已存在");
+            throw new BusinessException(ErrorCode.ENTITY_EXIST, "该购票人已存在");
         }
     }
 
