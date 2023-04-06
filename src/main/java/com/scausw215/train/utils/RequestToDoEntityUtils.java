@@ -1,13 +1,7 @@
 package com.scausw215.train.utils;
 
-import com.scausw215.train.entity.DO.PassengerDO;
-import com.scausw215.train.entity.DO.SeatTypeDO;
-import com.scausw215.train.entity.DO.StationInfoDO;
-import com.scausw215.train.entity.DO.TrainTypeDO;
-import com.scausw215.train.entity.request.PassengerRequest;
-import com.scausw215.train.entity.request.SeatTypeRequest;
-import com.scausw215.train.entity.request.StationRequest;
-import com.scausw215.train.entity.request.TrainTypeRequest;
+import com.scausw215.train.entity.DO.*;
+import com.scausw215.train.entity.request.*;
 
 /**
  * 请求转换工具类
@@ -60,5 +54,20 @@ public class RequestToDoEntityUtils {
         trainTypeDO.setThirdSeatTypeId(trainTypeRequest.getThirdSeatTypeId());
         trainTypeDO.setThirdSeatNum(trainTypeRequest.getThirdSeatNum());
         return trainTypeDO;
+    }
+    public static TicketInfoDO toTicketInfoDO(TicketRequest ticketRequest){
+        TicketInfoDO ticketInfoDO = new TicketInfoDO();
+        ticketInfoDO.setTicketId(ticketRequest.getTicketId());
+        ticketInfoDO.setTrainId(ticketRequest.getTrainId());
+        ticketInfoDO.setCarNumber(ticketRequest.getCarNumber());
+        ticketInfoDO.setSeatTypeId(ticketRequest.getSeatTypeId());
+        ticketInfoDO.setSeatNumber(ticketRequest.getSeatNumber());
+        ticketInfoDO.setIsSold(ticketRequest.getIsSold());
+        ticketInfoDO.setTicketPrice(ticketRequest.getTicketPrice());
+        ticketInfoDO.setStartSaleTime(ticketRequest.getStartSaleTime());
+        ticketInfoDO.setEndSaleTime(ticketRequest.getEndSaleTime());
+        ticketInfoDO.setUpdateTime(ticketRequest.getUpdateTime());
+        ticketInfoDO.setIsAvailable(ticketRequest.getIsAvailable());
+        return ticketInfoDO;
     }
 }

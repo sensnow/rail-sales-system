@@ -1,5 +1,6 @@
 package com.scausw215.train.mapper;
 
+import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,7 @@ import java.util.List;
 * @Entity com.scausw215.train.entity.TicketInfo
 */
 @Mapper
-public interface TicketInfoMapper extends BaseMapper<TicketInfoDTO> {
+public interface TicketInfoMapper extends BaseMapper<TicketInfoDO> {
 
 
 }

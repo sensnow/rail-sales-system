@@ -38,6 +38,20 @@ public class ToSafetyEntityUtils {
         stationVO.setProvince(stationInfoDO.getStationProvince());
         return stationVO;
     }
+    public static TicketVO toTicketVO(TicketInfoDO ticketInfoDO){
+        TicketVO ticketVO = new TicketVO();
+        ticketVO.setId(ticketInfoDO.getTicketId());
+        ticketVO.setTrainId(ticketInfoDO.getTrainId());
+        ticketVO.setCarNumber(ticketInfoDO.getCarNumber());
+        ticketVO.setSeatTypeId(ticketInfoDO.getSeatTypeId());
+        ticketVO.setSeatNumber(ticketInfoDO.getSeatNumber());
+        ticketVO.setIsSold(ticketInfoDO.getIsSold());
+        ticketVO.setTicketPrice(ticketInfoDO.getTicketPrice());
+        ticketVO.setStartSaleTime(ticketInfoDO.getStartSaleTime());
+        ticketVO.setEndSaleTime(ticketInfoDO.getEndSaleTime());
+        ticketVO.setUpdateTime(ticketInfoDO.getUpdateTime());
+        return ticketVO;
+    }
 
     public static SeatTypeVO toSeatTypeVO(SeatTypeDO seatTypeDO)
     {

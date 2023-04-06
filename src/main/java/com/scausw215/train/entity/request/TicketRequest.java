@@ -1,61 +1,44 @@
-package com.scausw215.train.entity.VO;
+package com.scausw215.train.entity.request;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.Date;
-
-/**
- * 车票信息视图类
- *
- * @author sensnow
- */
 @Data
-public class TicketVO implements java.io.Serializable{
+public class TicketRequest {
 
-    private Long id;
-    /**
-     * 车次id
-     */
+    private Long ticketId;
     private Long trainId;
-    /**
-     * 车厢号
-     */
     private Integer carNumber;
-    /**
-     * 座位类型id
-     */
     private Long seatTypeId;
-    /**
-     * 座位号
-     */
     private Integer seatNumber;
-    /**
-     * 是否已经出售 0-未出售 1-已出售
-     */
     private Integer isSold;
-    /**
-     * 车票价格
-     */
     private Integer ticketPrice;
+
     /**
      * 售票时间
      */
+//    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime startSaleTime;
+
     /**
      * 截止售票时间
      */
+//    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime endSaleTime;
+
     /**
      * 更新时间
      */
+//    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+    /**
+     * 是否可用 0-不可用 1-可用
+     */
+    private Integer isAvailable;
 }

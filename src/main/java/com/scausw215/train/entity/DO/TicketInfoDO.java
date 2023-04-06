@@ -1,11 +1,9 @@
 package com.scausw215.train.entity.DO;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -51,17 +49,20 @@ public class TicketInfoDO {
     /**
      * 售票时间
      */
-    private Date startSaleTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime startSaleTime;
 
     /**
      * 截止售票时间
      */
-    private Date endSaleTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime endSaleTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     /**
      * 是否可用 0-不可用 1-可用
