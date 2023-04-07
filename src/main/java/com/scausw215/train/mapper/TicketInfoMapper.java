@@ -15,6 +15,33 @@ import java.util.List;
 */
 @Mapper
 public interface TicketInfoMapper extends BaseMapper<TicketInfoDO> {
+    /**
+     * 增加车票信息
+     * @param ticketInfoDO
+     * @return
+     */
+    int insertTicket(TicketInfoDO ticketInfoDO);
+
+    /**
+     * 删除车票信息
+     * @param id
+     * @return
+     */
+    int deleteTicket(Long id);
+
+    /**
+     * 更新车票信息
+     * @param id
+     * @return
+     */
+    int updateTicket(Long id);
+
+    /**
+     * 查询车票信息
+     * @param id
+     * @return
+     */
+    TicketInfoDO selectTicket(Long id);
 
 
 }

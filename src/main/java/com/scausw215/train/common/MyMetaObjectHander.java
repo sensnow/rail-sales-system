@@ -23,8 +23,6 @@ public class MyMetaObjectHander implements MetaObjectHandler {
         log.info("公共字段自动填充[insert]...");
         log.info(metaObject.toString());
         metaObject.setValue("updateTime", LocalDateTime.now());
-        metaObject.setValue("startSaleTime", LocalDateTime.now());
-        metaObject.setValue("endSaleTime", LocalDateTime.now());
 
     }
 

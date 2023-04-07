@@ -14,4 +14,5 @@ import java.util.List;
 public interface TicketInfoService extends IService<TicketInfoDO> {
     public TicketInfoDTO getByIdWithTrain(Long id);
     public void delete(List<Long> ids);
+
 }

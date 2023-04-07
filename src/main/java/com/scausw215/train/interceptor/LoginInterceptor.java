@@ -24,8 +24,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String loginUrl = "/user/login";
-        String registerUrl = "/user/register";
+        String loginUrl = "/api/user/login";
+        String registerUrl = "/api/user/register";
         // 登录和注册不需要拦截
         if (request.getRequestURI().equals(loginUrl) || request.getRequestURI().equals(registerUrl)) {
             return true;

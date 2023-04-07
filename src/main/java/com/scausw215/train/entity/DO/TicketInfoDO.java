@@ -49,13 +49,11 @@ public class TicketInfoDO {
     /**
      * 售票时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime startSaleTime;
 
     /**
      * 截止售票时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime endSaleTime;
 
     /**

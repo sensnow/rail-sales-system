@@ -49,8 +49,13 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         return null;
     }
 
+    /**
+     * 删除车票信息
+     * @param ids
+     */
     @Override
     public void delete(List<Long> ids) {
+        //条件构造器
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TicketInfoDO::getIsSold,1);
         queryWrapper.in(TicketInfoDO::getTicketId,ids);
@@ -63,6 +68,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         //可以删除则删除
         this.removeByIds(ids);
     }
+
 }
 
 

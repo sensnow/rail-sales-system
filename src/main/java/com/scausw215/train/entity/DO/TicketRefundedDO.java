@@ -1,13 +1,11 @@
 package com.scausw215.train.entity.DO;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -20,7 +18,7 @@ public class TicketRefundedDO implements Serializable {
     /**
      * 退票信息id
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long refundedId;
     /**
      * 车票id
@@ -50,8 +48,7 @@ public class TicketRefundedDO implements Serializable {
     /**
      * 退票时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date refundedTime;
+    private LocalDateTime refundedTime;
 
     @Serial
     @TableField(exist = false)

@@ -5,17 +5,47 @@
 <mapper namespace="com.scausw215.train.mapper.TicketInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.scausw215.train.entity.DO.TicketInfoDO">
-            <id property="ticketId" column="ticket_id" jdbcType="BIGINT"/>
-            <result property="trainId" column="train_id" jdbcType="BIGINT"/>
-            <result property="carNumber" column="car_number" jdbcType="INTEGER"/>
-            <result property="seatTypeId" column="seat_type_id" jdbcType="BIGINT"/>
-            <result property="seatNumber" column="seat_number" jdbcType="INTEGER"/>
-            <result property="isSold" column="is_sold" jdbcType="INTEGER"/>
-            <result property="ticketPrice" column="ticket_price" jdbcType="INTEGER"/>
-            <result property="startSaleTime" column="start_sale_time" jdbcType="TIMESTAMP"/>
-            <result property="endSaleTime" column="end_sale_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="ticketId" column="ticket_id" jdbcType="BIGINT"/>
+        <result property="trainId" column="train_id" jdbcType="BIGINT"/>
+        <result property="carNumber" column="car_number" jdbcType="INTEGER"/>
+        <result property="seatTypeId" column="seat_type_id" jdbcType="BIGINT"/>
+        <result property="seatNumber" column="seat_number" jdbcType="INTEGER"/>
+        <result property="isSold" column="is_sold" jdbcType="INTEGER"/>
+        <result property="ticketPrice" column="ticket_price" jdbcType="INTEGER"/>
+        <result property="startSaleTime" column="start_sale_time" jdbcType="TIMESTAMP"/>
+        <result property="endSaleTime" column="end_sale_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <insert id="insertTicket" parameterType="com.scausw215.train.entity.DO.TicketInfoDO">
+        insert into ticket_info(train_id, car_number, seat_type_id, seat_number, is_sold, ticket_price, start_sale_time,
+                                end_sale_time, update_time, is_available)
+        VALUES (#{trainId}, #{carNumber}, #{seatTypeId}, #{seatNumber}, #{isSold}, #{ticketPrice}, #{startSaleTime},
+                #{endSaleTime}, #{updateTime}, #{isAvailable})
+    </insert>
+    <update id="updateTicket" parameterType="java.lang.Long">
+        update ticket_info
+        set car_number      = #{carNumber},
+            seat_type_id    = #{seatTypeId},
+            seat_number     = #{seatNumber},
+            is_sold         = #{isSold},
+            ticket_price    = #{ticketPrice},
+            start_sale_time = #{startSaleTime},
+            end_sale_time   = #{endSaleTime},
+            update_time     = #{updateTime},
+            is_available    = #{isAvailable}
+        where ticket_id = #{ticketId}
+    </update>
+    <delete id="deleteTicket" parameterType="java.lang.Long">
+        delete
+        from ticket_info
+        where ticket_id = #{ticketId}
+    </delete>
+    <select id="selectTicket" resultType="com.scausw215.train.entity.DO.TicketInfoDO"
+            parameterType="java.lang.Long">
+        select *
+        from ticket_info
+        where ticket_id = #{ticketId}
+    </select>
 
 
 </mapper>

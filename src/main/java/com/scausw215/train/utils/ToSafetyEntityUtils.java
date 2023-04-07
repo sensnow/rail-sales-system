@@ -77,6 +77,17 @@ public class ToSafetyEntityUtils {
         trainTypeVO.setThirdSeatNum(trainTypeDO.getThirdSeatNum());
         return trainTypeVO;
     }
+    public static TicketRefundedVO toTicketRefundedVO(TicketRefundedDO ticketRefundedDO){
+        TicketRefundedVO ticketRefundedVO = new TicketRefundedVO();
+        ticketRefundedVO.setTicketId(ticketRefundedDO.getTicketId());
+        ticketRefundedVO.setRefundedId(ticketRefundedDO.getRefundedId());
+        ticketRefundedVO.setUserId(ticketRefundedDO.getUserId());
+        ticketRefundedVO.setPassengerId(ticketRefundedDO.getPassengerId());
+        ticketRefundedVO.setRefundedPrice(ticketRefundedDO.getRefundedPrice());
+        ticketRefundedVO.setRefundedReason(ticketRefundedDO.getRefundedReason());
+        ticketRefundedVO.setRefundedTime(ticketRefundedDO.getRefundedTime());
+        return ticketRefundedVO;
+    }
 
 
 }

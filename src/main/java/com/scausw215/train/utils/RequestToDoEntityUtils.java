@@ -70,4 +70,15 @@ public class RequestToDoEntityUtils {
         ticketInfoDO.setIsAvailable(ticketRequest.getIsAvailable());
         return ticketInfoDO;
     }
+    public static TicketRefundedDO toTicketRefundedDO(TicketRefundedRequest ticketRefundedRequest){
+        TicketRefundedDO ticketRefundedDO = new TicketRefundedDO();
+        ticketRefundedDO.setRefundedId(ticketRefundedRequest.getRefundedId());
+        ticketRefundedDO.setTicketId(ticketRefundedRequest.getTicketId());
+        ticketRefundedDO.setUserId(ticketRefundedRequest.getUserId());
+        ticketRefundedDO.setPassengerId(ticketRefundedRequest.getPassengerId());
+        ticketRefundedDO.setRefundedPrice(ticketRefundedRequest.getRefundedPrice());
+        ticketRefundedDO.setRefundedReason(ticketRefundedRequest.getRefundedReason());
+        ticketRefundedDO.setRefundedTime(ticketRefundedRequest.getRefundedTime());
+        return ticketRefundedDO;
+    }
 }

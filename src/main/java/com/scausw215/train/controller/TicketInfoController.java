@@ -2,16 +2,19 @@ package com.scausw215.train.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.VO.TicketVO;
 import com.scausw215.train.entity.request.TicketRequest;
+import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.utils.RequestToDoEntityUtils;
 import com.scausw215.train.utils.ResultUtils;
 import com.scausw215.train.utils.ToSafetyEntityUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -81,8 +84,30 @@ public class TicketInfoController {
     @DeleteMapping
     public Result<String> delete(@RequestParam List<Long> ids){
         log.info("ids:{}",ids);
+        if (StringUtils.isBlank(String.valueOf(ids))){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数为空");
+        }
         ticketInfoService.delete(ids);
         return ResultUtils.success("删除成功");
+    }
+
+    /**
+     * 更新车票信息
+     * @param ticketRequest
+     * @return
+     */
+    @PutMapping
+    public Result<String> update(@RequestBody TicketRequest ticketRequest){
+
+        log.info("ticketRequest:{}",ticketRequest);
+        TicketInfoDO ticketInfoDO = RequestToDoEntityUtils.toTicketInfoDO(ticketRequest);
+        if (StringUtils.isAnyBlank(String.valueOf(ticketInfoDO.getTicketId()),String.valueOf(ticketInfoDO.getTrainId()),String.valueOf(ticketInfoDO.getTicketPrice()),String.valueOf(ticketInfoDO.getCarNumber()),String.valueOf(ticketInfoDO.getSeatNumber()),String.valueOf(ticketInfoDO.getSeatTypeId()),String.valueOf(ticketInfoDO.getIsSold()),String.valueOf(ticketInfoDO.getIsAvailable()))){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数为空");
+        }
+        ticketInfoService.updateById(ticketInfoDO);
+
+        return ResultUtils.success("车票信息修改成功");
+
     }
 
 }
