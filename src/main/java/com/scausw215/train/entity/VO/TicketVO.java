@@ -1,14 +1,9 @@
 package com.scausw215.train.entity.VO;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 车票信息视图类

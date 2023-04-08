@@ -2,7 +2,6 @@ package com.scausw215.train.utils;
 
 import com.scausw215.train.entity.DO.*;
 import com.scausw215.train.entity.VO.*;
-import com.scausw215.train.entity.request.TrainTypeRequest;
 
 /**
  * @description 用于将entity转换为VO类
@@ -87,6 +86,17 @@ public class ToSafetyEntityUtils {
         ticketRefundedVO.setRefundedReason(ticketRefundedDO.getRefundedReason());
         ticketRefundedVO.setRefundedTime(ticketRefundedDO.getRefundedTime());
         return ticketRefundedVO;
+    }
+    public static TicketSaleVO toTicketSaleVO(TicketSaleDO ticketSaleDO){
+        TicketSaleVO ticketSaleVO = new TicketSaleVO();
+        ticketSaleVO.setSaleId(ticketSaleDO.getSaleId());
+        ticketSaleVO.setUserId(ticketSaleDO.getUserId());
+        ticketSaleVO.setPassengerId(ticketSaleDO.getPassengerId());
+        ticketSaleVO.setTicketId(ticketSaleDO.getTicketId());
+        ticketSaleVO.setPurchasePrice(ticketSaleDO.getPurchasePrice());
+        ticketSaleVO.setPurchaseTime(ticketSaleDO.getPurchaseTime());
+        ticketSaleVO.setIsRefunded(ticketSaleDO.getIsRefunded());
+        return ticketSaleVO;
     }
 
 

@@ -50,7 +50,7 @@ public class TicketRefundedController {
     @GetMapping("/page")
     public Result<Page> page(int page,int pageSize){
         //构造分页构造器对象
-        Page<TicketRefundedDO> pageInfo = new Page<>();
+        Page<TicketRefundedDO> pageInfo = new Page<>(page,pageSize);
         //条件构造器
         LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
         //添加过滤条件

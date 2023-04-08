@@ -1,5 +1,6 @@
 package com.scausw215.train.mapper;
 
+import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity com.scausw215.train.entity.TicketSales
 */
 @Mapper
-public interface TicketSaleMapper extends BaseMapper<TicketSaleDTO> {
+public interface TicketSaleMapper extends BaseMapper<TicketSaleDO> {
 
 }
 
