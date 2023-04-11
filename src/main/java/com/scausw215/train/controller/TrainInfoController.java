@@ -55,7 +55,7 @@ public class TrainInfoController {
      * @param request 请求体
      * @return  车次信息
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result<UserTrainInfoListVO> getTrainInfoList(@RequestBody TrainInfoSearchRequest trainInfoSearchRequest, HttpServletRequest request) {
         // 检查参数
         if (trainInfoSearchRequest == null || request == null) {
