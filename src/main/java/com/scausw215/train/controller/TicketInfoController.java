@@ -52,10 +52,10 @@ public class TicketInfoController {
         //条件构造器
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         //添加过滤条件
-        queryWrapper.orderByAsc(TicketInfoDO::getStartSaleTime);
+        queryWrapper.orderByAsc(TicketInfoDO::getUpdateTime);
         //执行分页查询
         ticketInfoService.page(pageInfo, queryWrapper);
-
+        log.info("{}",pageInfo.getRecords());
         return ResultUtils.success(pageInfo);
 
     }

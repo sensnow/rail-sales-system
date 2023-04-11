@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -15,6 +16,6 @@ public class TicketSaleRequest {
     private Long passengerId;
     private Long ticketId;
     private Integer purchasePrice;
-    private Date purchaseTime;
+    private LocalDateTime purchaseTime;
     private Integer isRefunded;
 }

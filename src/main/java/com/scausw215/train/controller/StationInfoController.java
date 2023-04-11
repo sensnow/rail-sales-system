@@ -1,6 +1,8 @@
 package com.scausw215.train.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
 import com.scausw215.train.entity.DO.StationInfoDO;
@@ -38,16 +40,15 @@ public class StationInfoController {
     /**
      * 获取车站信息，需要传入需要获取的车站名
      */
-    @GetMapping("/user")
-    public Result<StationVO> get(@RequestBody StationRequest stationRequest) {
+    @GetMapping("/user/{id}")
+    public Result<StationVO> get(@PathVariable Long id) {
 
         //先判断信息是否为空
         //获取车站信息需要传入id参数
-        if (StringUtils.isBlank(stationRequest.getName())) {
-            log.error("station.get: 车站名为空,{}", stationRequest);
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "车站名为空");
+        if (StringUtils.isBlank(String.valueOf(id))) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "输入为空");
         }
-        StationInfoDO stationInfoDO = stationInfoService.getStationByStationName(stationRequest.getName());
+        StationInfoDO stationInfoDO = stationInfoService.getStationById(id);
         if (stationInfoDO == null) {
             return ResultUtils.success(null);
         }
@@ -56,45 +57,20 @@ public class StationInfoController {
 
     }
     /**
-     * 根据信息获取多个车站信息
-     * 1.直接查询所有
-     * 2.根据城市名查询相关车站
-     * 3.根据省名查询相关车站
+     * 分页查询
      *
      */
-    @GetMapping("/user/getAll")
-    public Result<List<StationVO>> getAll(@RequestBody StationRequest stationRequest){
-
-        //先判断三个参数是否全部为空
-        if (StringUtils.isAllBlank(stationRequest.getIsAll(),stationRequest.getIsCity(),stationRequest.getIsProvince())) {
-            log.error("station.getAll: 请求参数全为空");
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请输入对应的请求参数");
+    @GetMapping("/user/page")
+    public Result<Page> page(int page,int pageSize){
+        if (StringUtils.isAnyBlank(String.valueOf(page),String.valueOf(pageSize))){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数不能为空");
         }
-        //如果是查询所有
-        if (!StringUtils.isBlank(stationRequest.getIsAll())){
-//            1.直接查询所有
-            if (!stationRequest.getIsAll().equals("1")){
-                log.error("station.getAll: 请求参数不为1,{}",stationRequest.getIsAll());
-                throw new BusinessException(ErrorCode.PARAMS_ERROR);
-            }
-            List<StationInfoDO> stationInfoDOS = stationInfoService.getAll();
-            List<StationVO> stationVOS = stationInfoDOS.stream().map(ToSafetyEntityUtils::toStationVO).collect(Collectors.toList());
-            return ResultUtils.success(stationVOS);
-        }else if (!StringUtils.isBlank(stationRequest.getIsCity())){
-//            2.根据城市名查询相关车站
-            List<StationInfoDO> stationInfoDOS = stationInfoService.getByCity(stationRequest.getIsCity());
-            List<StationVO> stationVOS = stationInfoDOS.stream().map(ToSafetyEntityUtils::toStationVO).collect(Collectors.toList());
-            return ResultUtils.success(stationVOS);
-
-        }else {
-//            3.根据省名查询相关车站
-            List<StationInfoDO> stationInfoDOS = stationInfoService.getByProvince(stationRequest.getIsProvince());
-            List<StationVO> stationVOS = stationInfoDOS.stream().map(ToSafetyEntityUtils::toStationVO).collect(Collectors.toList());
-            return ResultUtils.success(stationVOS);
-        }
-
+        Page<StationInfoDO> pageInfo = new Page<>(page,pageSize);
+        LambdaQueryWrapper<StationInfoDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(StationInfoDO::getStationId);
+        stationInfoService.page(pageInfo,queryWrapper);
+        return ResultUtils.success(pageInfo);
     }
-
     /**
      * 更新
      *
@@ -133,18 +109,17 @@ public class StationInfoController {
 
     /**
      * 删除
-     * @param stationRequest 列车请求体
-     * @return 列车信息
+     * @param ids
+     * @return
      */
     @DeleteMapping("/admin")
-    public Result<Integer> delete(@RequestBody StationRequest stationRequest) {
+    public Result<String> delete(@RequestParam List<Long> ids) {
         // ID是不是数字
-        if (stationRequest.getId()== null) {
-            log.error("StationInfoController.delete: 车站ID为空,{}", stationRequest);
+        if (StringUtils.isBlank(String.valueOf(ids))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "车站ID为空");
         }
-        Integer delete = stationInfoService.delete(stationRequest.getId());
-        return ResultUtils.success(delete);
+        stationInfoService.deletePlus(ids);
+        return ResultUtils.success("删除成功");
     }
 
 }

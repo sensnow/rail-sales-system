@@ -1,12 +1,10 @@
 package com.scausw215.train.entity.DO;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.scausw215.train.entity.DO.PassengerDO;
@@ -20,13 +18,13 @@ import lombok.ToString;
  * @author sensnow
  * @TableName ticket_sales
  */
-@TableName(value ="ticket_sales")
+@TableName(value ="ticket_sale")
 @Data
 public class TicketSaleDO implements Serializable {
     /**
      * 售票信息id
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long saleId;
 
     /**
@@ -52,8 +50,8 @@ public class TicketSaleDO implements Serializable {
     /**
      * 购买时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date purchaseTime;
+
+    private LocalDateTime purchaseTime;
 
     /**
      * 是否退票

@@ -22,6 +22,8 @@ spring:
 
   # MyBatis-Plus配置
 mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:com/scausw215/train/mapper/*.xml
 logging:
   level:

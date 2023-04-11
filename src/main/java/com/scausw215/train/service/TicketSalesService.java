@@ -3,6 +3,9 @@ package com.scausw215.train.service;
 import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
 * @author sensnow
@@ -10,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-03-25 14:10:16
 */
 public interface TicketSalesService extends IService<TicketSaleDO> {
-
+    void addTicketSale(TicketSaleDO ticketSaleDO, HttpServletRequest request);
+    void delete(List<Long> ids);
+    void update(TicketSaleDO ticketSaleDO,HttpServletRequest request);
 }
