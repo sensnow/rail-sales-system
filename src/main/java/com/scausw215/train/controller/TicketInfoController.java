@@ -40,7 +40,6 @@ public class TicketInfoController {
         TicketVO ticketVO = ToSafetyEntityUtils.toTicketVO(ticketInfoDO);
         return ResultUtils.success(ticketVO);
     }
-
     /**
      * 分页查询
      * @param page
