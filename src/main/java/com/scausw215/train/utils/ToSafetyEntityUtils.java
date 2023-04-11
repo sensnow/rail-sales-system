@@ -22,7 +22,7 @@ public class ToSafetyEntityUtils {
         PassengerVO passengerVO = new PassengerVO();
         passengerVO.setId(passengerDO.getPassengerId());
         passengerVO.setName(passengerDO.getPassengerName());
-        passengerVO.setNumber(passengerDO.getPassengerName());
+        passengerVO.setNumber(passengerDO.getPassengerCardNumber());
         passengerVO.setPhone(passengerDO.getPassengerPhone());
         passengerVO.setType(passengerDO.getPassengerType());
         passengerVO.setUserId(passengerDO.getUserId());
