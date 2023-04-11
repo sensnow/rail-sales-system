@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ticket")
@@ -65,7 +67,7 @@ public class TicketInfoController {
      * @param ticketRequest
      * @return
      */
-    @PostMapping
+    @PostMapping("/admin")
     public Result<TicketVO> add(@RequestBody TicketRequest ticketRequest){
 
         TicketInfoDO ticketInfoDO = RequestToDoEntityUtils.toTicketInfoDO(ticketRequest);
@@ -79,7 +81,7 @@ public class TicketInfoController {
     /**
      * 删除车票
      */
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public Result<String> delete(@RequestParam List<Long> ids){
         log.info("ids:{}",ids);
         if (StringUtils.isBlank(String.valueOf(ids))){
@@ -94,7 +96,7 @@ public class TicketInfoController {
      * @param ticketRequest
      * @return
      */
-    @PutMapping
+    @PutMapping("/admin")
     public Result<String> update(@RequestBody TicketRequest ticketRequest){
 
         log.info("ticketRequest:{}",ticketRequest);
@@ -107,5 +109,27 @@ public class TicketInfoController {
         return ResultUtils.success("车票信息修改成功");
 
     }
+
+    /**
+     * 查询所有车票信息
+     * @return
+     */
+    @GetMapping("/getAll")
+    public Result<List<TicketVO>> getAll(){
+        LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(TicketInfoDO::getUpdateTime);
+        queryWrapper.eq(TicketInfoDO::getIsAvailable,1);
+        queryWrapper.eq(TicketInfoDO::getIsSold,0);
+        List<TicketVO> ticketVOS = ticketInfoService.list(queryWrapper).stream().map((item) -> {
+
+            TicketVO ticketVO = ToSafetyEntityUtils.toTicketVO(item);
+
+            return ticketVO;
+
+        }).collect(Collectors.toList());
+
+        return ResultUtils.success(ticketVOS);
+    }
+
 
 }
