@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.scausw215.train.entity.DO.PassengerDO;
+import com.scausw215.train.entity.DO.TicketInfoDO;
+import com.scausw215.train.entity.DO.TicketRefundedDO;
 import lombok.Data;
 
 /**
@@ -33,7 +35,7 @@ public class TicketRefundedDTO implements Serializable {
     /**
      * 车票信息
      */
-    private TicketInfoDTO ticketInfo;
+    private TicketInfoDO ticketInfo;
 
 
     /**
