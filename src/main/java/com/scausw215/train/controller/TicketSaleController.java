@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
+import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.VO.TicketSaleVO;
 import com.scausw215.train.entity.request.TicketSaleRequest;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ticketSale")
@@ -71,7 +73,7 @@ public class TicketSaleController {
      * @param request
      * @return
      */
-    @PostMapping
+    @PostMapping("/admin")
     public Result<String> add(@RequestBody TicketSaleRequest ticketSaleRequest, HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketSaleRequest.getIsRefunded()),String.valueOf(ticketSaleRequest.getUserId()),String.valueOf(ticketSaleRequest.getPassengerId()),String.valueOf(ticketSaleRequest.getTicketId()),String.valueOf(ticketSaleRequest.getPurchasePrice()))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的参数为空");
@@ -86,7 +88,7 @@ public class TicketSaleController {
      * @param ids
      * @return
      */
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public Result<String> delete(@RequestParam List<Long> ids){
         if (StringUtils.isBlank(String.valueOf(ids))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入参数为空");
@@ -101,7 +103,7 @@ public class TicketSaleController {
      * @param request
      * @return
      */
-    @PutMapping
+    @PutMapping("/admin")
     public Result<String> update(@RequestBody TicketSaleRequest ticketSaleRequest,HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketSaleRequest.getSaleId()),String.valueOf(ticketSaleRequest.getIsRefunded()),String.valueOf(ticketSaleRequest.getUserId()),String.valueOf(ticketSaleRequest.getPassengerId()),String.valueOf(ticketSaleRequest.getTicketId()),String.valueOf(ticketSaleRequest.getPurchasePrice()))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的参数为空");
@@ -109,6 +111,24 @@ public class TicketSaleController {
         TicketSaleDO ticketSaleDO = RequestToDoEntityUtils.toTicketSaleDO(ticketSaleRequest);
         ticketSalesService.update(ticketSaleDO,request);
         return ResultUtils.success("售票信息修改成功");
+    }
+
+    /**
+     * 查询所有
+     * @return
+     */
+    @GetMapping("/getAll")
+    public Result<List<TicketSaleVO>> getAll(){
+        LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(TicketSaleDO::getPurchaseTime);
+        queryWrapper.eq(TicketSaleDO::getIsRefunded,1);
+        List<TicketSaleVO> ticketSaleVOS = ticketSalesService.list(queryWrapper).stream().map((item) -> {
+            TicketSaleVO ticketSaleVO = ToSafetyEntityUtils.toTicketSaleVO(item);
+            return ticketSaleVO;
+        }).collect(Collectors.toList());
+
+        return ResultUtils.success(ticketSaleVOS);
+
     }
 
 

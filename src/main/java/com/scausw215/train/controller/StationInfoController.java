@@ -42,7 +42,6 @@ public class StationInfoController {
      */
     @GetMapping("/user/{id}")
     public Result<StationVO> get(@PathVariable Long id) {
-
         //先判断信息是否为空
         //获取车站信息需要传入id参数
         if (StringUtils.isBlank(String.valueOf(id))) {
@@ -72,7 +71,7 @@ public class StationInfoController {
         return ResultUtils.success(pageInfo);
     }
     /**
-     * 更新
+     * 更新车站信息
      *
      * @param stationRequest 列车请求体
      * @return 列车信息
@@ -91,7 +90,7 @@ public class StationInfoController {
     }
 
     /**
-     * 添加
+     * 添加车站信息
      * @param stationRequest 列车请求体
      * @return 列车信息
      */
@@ -120,6 +119,31 @@ public class StationInfoController {
         }
         stationInfoService.deletePlus(ids);
         return ResultUtils.success("删除成功");
+    }
+
+    /**
+     * 查询所有
+     * 查询城市对应车站
+     * 查询省份对应车站
+     * @param city
+     * @param province
+     * @return
+     */
+    @GetMapping("/getAll")
+    public Result<List<StationVO>> getAll(String city,String province){
+        LambdaQueryWrapper<StationInfoDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(StationInfoDO::getStationId);
+        if (!StringUtils.isBlank(city)){
+            queryWrapper.eq(StationInfoDO::getStationCity,city);
+        }
+        if (!StringUtils.isBlank(province)){
+            queryWrapper.eq(StationInfoDO::getStationProvince,province);
+        }
+        List<StationVO> stationVOS = stationInfoService.list(queryWrapper).stream().map((item) -> {
+            StationVO stationVO = ToSafetyEntityUtils.toStationVO(item);
+            return stationVO;
+        }).collect(Collectors.toList());
+        return ResultUtils.success(stationVOS);
     }
 
 }

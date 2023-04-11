@@ -1,5 +1,6 @@
 package com.scausw215.train.entity.VO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serial;
@@ -41,14 +42,17 @@ public class TicketVO implements java.io.Serializable{
     /**
      * 售票时间
      */
+
     private LocalDateTime startSaleTime;
     /**
      * 截止售票时间
      */
+
     private LocalDateTime endSaleTime;
     /**
      * 更新时间
      */
+
     private LocalDateTime updateTime;
 
     @Serial

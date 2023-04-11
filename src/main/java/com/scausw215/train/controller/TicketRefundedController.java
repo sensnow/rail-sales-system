@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
+import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketRefundedDO;
 import com.scausw215.train.entity.VO.TicketRefundedVO;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/refunded")
@@ -62,12 +64,12 @@ public class TicketRefundedController {
     }
 
     /**
-     * 新增退票系统
+     * 新增退票信息
      * @param ticketRefundedRequest
      * @param request
      * @return
      */
-    @PostMapping()
+    @PostMapping
     public Result<TicketRefundedVO> add(@RequestBody TicketRefundedRequest ticketRefundedRequest, HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketRefundedRequest.getRefundedPrice()),String.valueOf(ticketRefundedRequest.getTicketId()),String.valueOf(ticketRefundedRequest.getPassengerId()),String.valueOf(ticketRefundedRequest.getRefundedReason()))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的参数");
@@ -82,7 +84,7 @@ public class TicketRefundedController {
      * @param ids
      * @return
      */
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public Result<String> delete(@RequestParam List<Long> ids){
         if (StringUtils.isBlank(String.valueOf(ids))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的参数");
@@ -97,12 +99,29 @@ public class TicketRefundedController {
      * @param request
      * @return
      */
-    @PutMapping
+    @PutMapping("/admin")
     public Result<String> update(@RequestBody TicketRefundedRequest ticketRefundedRequest,HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketRefundedRequest.getTicketId()),String.valueOf(ticketRefundedRequest.getTicketId()),String.valueOf(ticketRefundedRequest.getPassengerId()),String.valueOf(ticketRefundedRequest.getRefundedReason()))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的参数");
         }
         ticketRefundedService.update(ticketRefundedRequest,request);
         return ResultUtils.success("更新退票信息成功");
+    }
+
+    /**
+     * 查询所有
+     * @return
+     */
+    @GetMapping("/getAll")
+    public Result<List<TicketRefundedVO>> getAll(){
+        LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
+        List<TicketRefundedVO> ticketRefundedVOS = ticketRefundedService.list(queryWrapper).stream().map((item) -> {
+            TicketRefundedVO ticketRefundedVO = ToSafetyEntityUtils.toTicketRefundedVO(item);
+            return ticketRefundedVO;
+        }).collect(Collectors.toList());
+
+        return ResultUtils.success(ticketRefundedVOS);
+
     }
 }
