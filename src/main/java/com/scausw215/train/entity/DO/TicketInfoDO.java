@@ -1,6 +1,7 @@
 package com.scausw215.train.entity.DO;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -49,16 +50,19 @@ public class TicketInfoDO {
     /**
      * 售票时间
      */
+
     private LocalDateTime startSaleTime;
 
     /**
      * 截止售票时间
      */
+
     private LocalDateTime endSaleTime;
 
     /**
      * 更新时间
      */
+
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 

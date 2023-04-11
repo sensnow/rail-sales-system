@@ -17,7 +17,7 @@ import java.util.List;
  * @description web配置类
  * @author sensnow
  */
-//@Configuration
+@Configuration
 @Slf4j
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
