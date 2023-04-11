@@ -6,16 +6,21 @@ import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketSaleDO;
+import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.VO.TicketSaleVO;
 import com.scausw215.train.entity.request.TicketSaleRequest;
 import com.scausw215.train.exception.BusinessException;
+import com.scausw215.train.service.PassengerService;
+import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TicketSalesService;
+import com.scausw215.train.service.UserInfoService;
 import com.scausw215.train.utils.RequestToDoEntityUtils;
 import com.scausw215.train.utils.ResultUtils;
 import com.scausw215.train.utils.ToSafetyEntityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +33,10 @@ import java.util.stream.Collectors;
 public class TicketSaleController {
     @Autowired
     private TicketSalesService ticketSalesService;
+    @Autowired
+    private PassengerService passengerService;
+    @Autowired
+    private TicketInfoService ticketInfoService;
 
     /**
      * 根据id查询售票信息
@@ -35,13 +44,17 @@ public class TicketSaleController {
      * @return
      */
     @GetMapping("/{id}")
-    public Result<TicketSaleVO> get(@PathVariable Long id){
+    public Result<TicketSaleDTO> get(@PathVariable Long id){
         if (StringUtils.isBlank(String.valueOf(id))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的请求");
         }
         TicketSaleDO ticketSaleDO = ticketSalesService.getById(id);
-        TicketSaleVO ticketSaleVO = ToSafetyEntityUtils.toTicketSaleVO(ticketSaleDO);
-        return ResultUtils.success(ticketSaleVO);
+        TicketSaleDTO ticketSaleDTO = new TicketSaleDTO();
+        BeanUtils.copyProperties(ticketSaleDO,ticketSaleDTO);
+        ticketSaleDTO.setPassengerDO(passengerService.getById(ticketSaleDO.getPassengerId()));
+        ticketSaleDTO.setTicketInfo(ticketInfoService.getById(ticketSaleDO.getTicketId()));
+
+        return ResultUtils.success(ticketSaleDTO);
     }
 
     /**
@@ -60,6 +73,7 @@ public class TicketSaleController {
         LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
 
         queryWrapper.orderByAsc(TicketSaleDO::getPurchaseTime);
+
 
         ticketSalesService.page(pageInfo,queryWrapper);
 
@@ -118,16 +132,19 @@ public class TicketSaleController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketSaleVO>> getAll(){
+    public Result<List<TicketSaleDTO>> getAll(){
         LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketSaleDO::getPurchaseTime);
         queryWrapper.eq(TicketSaleDO::getIsRefunded,1);
-        List<TicketSaleVO> ticketSaleVOS = ticketSalesService.list(queryWrapper).stream().map((item) -> {
-            TicketSaleVO ticketSaleVO = ToSafetyEntityUtils.toTicketSaleVO(item);
-            return ticketSaleVO;
+        List<TicketSaleDTO> ticketSaleDTOS = ticketSalesService.list(queryWrapper).stream().map((item) -> {
+            TicketSaleDTO ticketSaleDTO = new TicketSaleDTO();
+            BeanUtils.copyProperties(item,ticketSaleDTO);
+            ticketSaleDTO.setPassengerDO(passengerService.getById(item.getPassengerId()));
+            ticketSaleDTO.setTicketInfo(ticketInfoService.getById(item.getTicketId()));
+            return ticketSaleDTO;
         }).collect(Collectors.toList());
 
-        return ResultUtils.success(ticketSaleVOS);
+        return ResultUtils.success(ticketSaleDTOS);
 
     }
 

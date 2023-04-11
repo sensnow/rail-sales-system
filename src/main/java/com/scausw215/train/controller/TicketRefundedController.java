@@ -6,15 +6,20 @@ import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketRefundedDO;
+import com.scausw215.train.entity.DTO.TicketRefundedDTO;
+import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.VO.TicketRefundedVO;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
 import com.scausw215.train.exception.BusinessException;
+import com.scausw215.train.service.PassengerService;
+import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TicketRefundedService;
 import com.scausw215.train.utils.ResultUtils;
 import com.scausw215.train.utils.ToSafetyEntityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +33,10 @@ public class TicketRefundedController {
 
     @Autowired
     private TicketRefundedService ticketRefundedService;
+    @Autowired
+    private PassengerService passengerService;
+    @Autowired
+    private TicketInfoService ticketInfoService;
 
     /**
      * 根据id查询
@@ -35,13 +44,17 @@ public class TicketRefundedController {
      * @return
      */
     @GetMapping("/{id}")
-    public Result<TicketRefundedVO> get(@PathVariable Long id){
+    public Result<TicketRefundedDTO> get(@PathVariable Long id){
         if (StringUtils.isBlank(String.valueOf(id))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入正确的id");
         }
         TicketRefundedDO ticketRefundedDO = ticketRefundedService.getById(id);
-        TicketRefundedVO ticketRefundedVO = ToSafetyEntityUtils.toTicketRefundedVO(ticketRefundedDO);
-        return ResultUtils.success(ticketRefundedVO);
+        TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
+        BeanUtils.copyProperties(ticketRefundedDO,ticketRefundedDTO);
+        ticketRefundedDTO.setPassengerDO(passengerService.getById(ticketRefundedDO.getPassengerId()));
+        ticketRefundedDTO.setTicketInfo(ticketInfoService.getById(ticketRefundedDO.getTicketId()));
+
+        return ResultUtils.success(ticketRefundedDTO);
     }
     /**
      * 分页查询
@@ -113,15 +126,18 @@ public class TicketRefundedController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketRefundedVO>> getAll(){
+    public Result<List<TicketRefundedDTO>> getAll(){
         LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
-        List<TicketRefundedVO> ticketRefundedVOS = ticketRefundedService.list(queryWrapper).stream().map((item) -> {
-            TicketRefundedVO ticketRefundedVO = ToSafetyEntityUtils.toTicketRefundedVO(item);
-            return ticketRefundedVO;
+        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.list(queryWrapper).stream().map((item) -> {
+            TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
+            BeanUtils.copyProperties(item,ticketRefundedDTO);
+            ticketRefundedDTO.setPassengerDO(passengerService.getById(item.getPassengerId()));
+            ticketRefundedDTO.setTicketInfo(ticketInfoService.getById(item.getTicketId()));
+            return ticketRefundedDTO;
         }).collect(Collectors.toList());
 
-        return ResultUtils.success(ticketRefundedVOS);
+        return ResultUtils.success(ticketRefundedDTOS);
 
     }
 }
