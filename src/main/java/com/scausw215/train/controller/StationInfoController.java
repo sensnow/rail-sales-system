@@ -108,16 +108,16 @@ public class StationInfoController {
 
     /**
      * 删除
-     * @param ids
+     * @param id
      * @return
      */
     @DeleteMapping("/admin")
-    public Result<String> delete(@RequestParam List<Long> ids) {
+    public Result<String> delete(@RequestParam Long id) {
         // ID是不是数字
-        if (StringUtils.isBlank(String.valueOf(ids))) {
+        if (StringUtils.isBlank(String.valueOf(id))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "车站ID为空");
         }
-        stationInfoService.deletePlus(ids);
+        stationInfoService.deletePlus(id);
         return ResultUtils.success("删除成功");
     }
 

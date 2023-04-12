@@ -11,6 +11,7 @@ import com.scausw215.train.entity.VO.UserTrainInfoListVO;
 import com.scausw215.train.entity.request.TrainInfoSearchRequest;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.StationInfoMapper;
+import com.scausw215.train.mapper.TicketInfoMapper;
 import com.scausw215.train.mapper.TrainTypeMapper;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TrainInfoService;
@@ -39,8 +40,7 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
     @Resource
     private TrainTypeMapper trainTypeMapper;
     @Resource
-    private TicketInfoService ticketInfoService;
-
+    private TicketInfoMapper ticketInfoMapper;
     @Resource
     private StationInfoMapper stationInfoMapper;
 
@@ -58,7 +58,7 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         }
         // 生成售票信息
         // TODO 生成售票信息
-        ticketInfoService.addTicketInfo(trainInfoDO.getTrainId(), trainInfoDO.getTrainTypeId(),
+        ticketInfoMapper.insertAllTicketByTrainInfo(trainInfoDO.getTrainId(), trainInfoDO.getTrainTypeId(),
                 trainInfoDO.getStartStation(), trainInfoDO.getEndStation(), trainInfoDO.getStartTime(),
                 trainInfoDO.getFirstPrice(), trainInfoDO.getSecondPrice(), trainInfoDO.getThirdPrice());
         return insert;

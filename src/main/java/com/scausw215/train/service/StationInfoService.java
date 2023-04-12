@@ -21,6 +21,6 @@ public interface StationInfoService extends IService<StationInfoDO> {
     List<StationInfoDO> getAll();
     List<StationInfoDO> getByCity(String city);
     List<StationInfoDO> getByProvince(String province);
-    void deletePlus(List<Long> ids);
+    void deletePlus(Long ids);
 
 }

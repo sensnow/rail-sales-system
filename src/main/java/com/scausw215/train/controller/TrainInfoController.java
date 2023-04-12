@@ -16,6 +16,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -117,7 +118,7 @@ public class TrainInfoController {
      * @return 未排班的车次类型
      */
     @GetMapping("/admin/unused")
-    public Result<List<TrainTypeDO>> getUnscheduledTrainTypeByTime(@PathParam("startTime") Date startTime, @PathParam("endTime") Date endTime) {
+    public Result<List<TrainTypeDO>> getUnscheduledTrainTypeByTime(@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime) {
         // 检查参数
         if (startTime == null || endTime == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");

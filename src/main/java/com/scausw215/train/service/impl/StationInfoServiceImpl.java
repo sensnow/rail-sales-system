@@ -69,14 +69,14 @@ public class StationInfoServiceImpl extends ServiceImpl<StationInfoMapper, Stati
     }
 
     @Override
-    public void deletePlus(List<Long> ids) {
+    public void deletePlus(Long ids) {
         LambdaQueryWrapper<StationInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(StationInfoDO::getStationId,ids);
         int count = (int) this.count(queryWrapper);
         if (count == 0){
             throw new BusinessException(ErrorCode.DATABASE_ERROR,"找不到要删除的数据");
         }
-        this.removeByIds(ids);
+        this.removeById(ids);
     }
 }
 
