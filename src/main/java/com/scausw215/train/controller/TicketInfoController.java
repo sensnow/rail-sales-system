@@ -96,7 +96,7 @@ public class TicketInfoController {
     @DeleteMapping("/admin")
     public Result<String> delete(@RequestParam List<Long> ids){
         log.info("ids:{}",ids);
-        if (StringUtils.isBlank(String.valueOf(ids))){
+        if (ids == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数为空");
         }
         ticketInfoService.delete(ids);

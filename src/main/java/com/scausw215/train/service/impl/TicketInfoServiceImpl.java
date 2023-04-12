@@ -8,6 +8,9 @@ import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.exception.BusinessException;
+import com.scausw215.train.mapper.PassengerMapper;
+import com.scausw215.train.mapper.TicketSaleMapper;
+import com.scausw215.train.mapper.TrainInfoMapper;
 import com.scausw215.train.service.PassengerService;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.mapper.TicketInfoMapper;
@@ -31,14 +34,13 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
     implements TicketInfoService {
 
     @Autowired
-    private TrainInfoService trainInfoService;
-
+    private TrainInfoMapper trainInfoMapper;
     @Autowired
     private TicketInfoMapper ticketInfoMapper;
     @Autowired
-    TicketSalesService ticketSalesService;
+    TicketSaleMapper ticketSaleMapper;
     @Autowired
-    PassengerService passengerService;
+    PassengerMapper passengerMapper;
     /**
      * 根据id查询车票信息和对应的车次信息
      * @param id
@@ -55,7 +57,8 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         //查询对应的车次信息
         LambdaQueryWrapper<TrainInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TrainInfoDO::getTrainId,ticketInfoDO.getTrainId());
-        TrainInfoDO trainInfoDO = trainInfoService.getOne(queryWrapper);
+        TrainInfoDO trainInfoDO = trainInfoMapper.selectOne(queryWrapper);
+
         ticketInfoDTO.setTrainInfoDO(trainInfoDO);
         return null;
     }
@@ -93,7 +96,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         ticketInfoDO.setIsSold(1);
         TicketSaleDO ticketSaleDO = new TicketSaleDO();
 
-        if (passengerService.getById(passengerId) == null){
+        if (passengerMapper.selectById(passengerId) == null){
             throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
         }
 
@@ -105,7 +108,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         ticketSaleDO.setIsRefunded(0);
         ticketSaleDO.setPurchaseTime(LocalDateTime.now());
 
-        ticketSalesService.save(ticketSaleDO);
+        ticketSaleMapper.insert(ticketSaleDO);
 
     }
 }

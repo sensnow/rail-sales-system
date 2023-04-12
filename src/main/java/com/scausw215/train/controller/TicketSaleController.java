@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
+import com.scausw215.train.constant.UserInfoConstant;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
+import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.VO.TicketSaleVO;
@@ -132,6 +134,25 @@ public class TicketSaleController {
         TicketSaleDO ticketSaleDO = RequestToDoEntityUtils.toTicketSaleDO(ticketSaleRequest);
         ticketSalesService.update(ticketSaleDO,request);
         return ResultUtils.success("售票信息修改成功");
+    }
+
+    /**
+     * 退票操作
+     * ticketInfo，ticketSale，ticketRefonded三表操作
+     * @param id
+     * @param request
+     * @param reason
+     * @return
+     */
+    @PutMapping
+    public Result<String> refunded(@RequestParam("saleId") Long id,HttpServletRequest request,@RequestParam("reason") String reason){
+        if (id == null||StringUtils.isBlank(reason)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的售票id为空或退票理由为空");
+        }
+        UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
+        ticketSalesService.refunded(id,userInfoDO.getUserId(),reason);
+
+        return ResultUtils.success("退票成功");
     }
 
     /**

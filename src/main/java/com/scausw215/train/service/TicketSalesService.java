@@ -16,4 +16,5 @@ public interface TicketSalesService extends IService<TicketSaleDO> {
     void addTicketSale(TicketSaleDO ticketSaleDO, HttpServletRequest request);
     void delete(List<Long> ids);
     void update(TicketSaleDO ticketSaleDO,HttpServletRequest request);
+    void refunded(Long saleId,Long userId,String reason);
 }
