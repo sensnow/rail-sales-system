@@ -50,9 +50,9 @@ public interface TrainTypeService extends IService<TrainTypeDO> {
     /**
      * 检查动车代码是否存在
      * @param trainTypeCode 动车类型id
-     * @return 1：存在，0：不存在
+     * @return 存在的那个
      */
-    boolean isTrainTypeExist(String trainTypeCode);
+    TrainTypeDO isTrainTypeExist(String trainTypeCode);
 
     /**
      * 检查动车类型信息

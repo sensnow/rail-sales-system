@@ -35,7 +35,7 @@ public class TrainTypeServiceImpl extends ServiceImpl<TrainTypeMapper, TrainType
     @Override
     public int addTrainType(TrainTypeRequest trainTypeRequest) {
         TrainTypeDO trainTypeDO = checkTrainTypeInfo(trainTypeRequest);
-        if(isTrainTypeExist(trainTypeDO.getTrainCode())) {
+        if(isTrainTypeExist(trainTypeDO.getTrainCode())!=null) {
             log.error("列车类型已存在 {}", trainTypeRequest);
             throw new BusinessException(ErrorCode.ENTITY_EXIST, "列车类型已存在");
         }
@@ -66,7 +66,8 @@ public class TrainTypeServiceImpl extends ServiceImpl<TrainTypeMapper, TrainType
     @Override
     public int updateTrainType(TrainTypeRequest trainTypeRequest) {
         TrainTypeDO trainTypeDO = checkTrainTypeInfo(trainTypeRequest);
-        if(isTrainTypeExist(trainTypeDO.getTrainCode()))
+        TrainTypeDO typeDO = isTrainTypeExist(trainTypeDO.getTrainCode());
+        if(typeDO!=null&&!trainTypeRequest.getId().equals(typeDO.getTrainTypeId()))
         {
             log.error("列车类型已存在 {}", trainTypeRequest);
             throw new BusinessException(ErrorCode.ENTITY_EXIST, "列车类型已存在");
@@ -100,9 +101,9 @@ public class TrainTypeServiceImpl extends ServiceImpl<TrainTypeMapper, TrainType
     }
 
     @Override
-    public boolean isTrainTypeExist(String trainTypeCode) {
+    public TrainTypeDO isTrainTypeExist(String trainTypeCode) {
         TrainTypeDO trainTypeDO = trainTypeMapper.selectTrainTypeByTrainCode(trainTypeCode);
-        return trainTypeDO != null;
+        return trainTypeDO;
     }
 
     @Override
