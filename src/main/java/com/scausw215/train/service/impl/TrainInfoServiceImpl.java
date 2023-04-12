@@ -12,6 +12,7 @@ import com.scausw215.train.entity.request.TrainInfoSearchRequest;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.StationInfoMapper;
 import com.scausw215.train.mapper.TrainTypeMapper;
+import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TrainInfoService;
 import com.scausw215.train.mapper.TrainInfoMapper;
 import jakarta.annotation.Resource;
@@ -37,6 +38,8 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
     private TrainInfoMapper trainInfoMapper;
     @Resource
     private TrainTypeMapper trainTypeMapper;
+    @Resource
+    private TicketInfoService ticketInfoService;
 
     @Resource
     private StationInfoMapper stationInfoMapper;
@@ -49,13 +52,16 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         // 校验数据
         checkTrainInfo(trainInfoDO);
         // 插入数据
-        int i = trainInfoMapper.insertTrainInfo(trainInfoDO);
-        if(i==0){
+        int insert = trainInfoMapper.insert(trainInfoDO);
+        if(insert==0){
             throw new BusinessException(ErrorCode.DATABASE_ERROR, "插入失败");
         }
         // 生成售票信息
         // TODO 生成售票信息
-        return i;
+        ticketInfoService.addTicketInfo(trainInfoDO.getTrainId(), trainInfoDO.getTrainTypeId(),
+                trainInfoDO.getStartStation(), trainInfoDO.getEndStation(), trainInfoDO.getStartTime(),
+                trainInfoDO.getFirstPrice(), trainInfoDO.getSecondPrice(), trainInfoDO.getThirdPrice());
+        return insert;
     }
 
     @Override
@@ -69,6 +75,7 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         }
         // 删除售票信息(逻辑删除)
         // TODO 删除售票信息
+        
         return i;
     }
 

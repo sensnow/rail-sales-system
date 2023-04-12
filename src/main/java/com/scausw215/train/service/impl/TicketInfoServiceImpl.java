@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
     @Autowired
     private TrainInfoService trainInfoService;
 
+    @Autowired
+    private TicketInfoMapper ticketInfoMapper;
     /**
      * 根据id查询车票信息和对应的车次信息
      * @param id
@@ -67,6 +70,11 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         }
         //可以删除则删除
         this.removeByIds(ids);
+    }
+
+    @Override
+    public void addTicketInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime, int firstPrice, int secondPrice, int thirdPrice) {
+        ticketInfoMapper.insertAllTicketByTrainInfo(trainId,trainTypeId,startStationId,endStationId,startTime,firstPrice,secondPrice,thirdPrice);
     }
 
 }

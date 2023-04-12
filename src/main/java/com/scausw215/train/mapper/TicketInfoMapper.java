@@ -5,6 +5,7 @@ import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +43,8 @@ public interface TicketInfoMapper extends BaseMapper<TicketInfoDO> {
      * @return
      */
     TicketInfoDO selectTicket(Long id);
+
+    int insertAllTicketByTrainInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime,int firstPrice,int secondPrice,int thirdPrice);
 
 
 }
