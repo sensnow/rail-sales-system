@@ -40,7 +40,7 @@ public class TicketSaleDTO extends TicketSaleDO {
     /**
      * 车票id
      */
-    private TicketInfoDO ticketInfo;
+    private TicketInfoDTO ticketInfo;
 
     /**
      * 售票价格

@@ -22,6 +22,9 @@
         VALUES (#{trainId}, #{carNumber}, #{seatTypeId}, #{seatNumber}, #{isSold}, #{ticketPrice}, #{startSaleTime},
                 #{endSaleTime}, #{updateTime}, #{isAvailable})
     </insert>
+    <insert id="insertAllTicketByTrainInfo">
+        call insertAllTicket(#{train.trainId}, #{train.trainTypeId}, #{train.startStationId}, #{train.endStationId}, #{train.startTime}, #{train.firstPrice}, #{train.secondPrice}, #{train.thirdPrice})
+    </insert>
     <update id="updateTicket" parameterType="java.lang.Long">
         update ticket_info
         set car_number      = #{carNumber},
