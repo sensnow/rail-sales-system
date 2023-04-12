@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
 import lombok.Data;
 
@@ -18,7 +20,7 @@ import lombok.Data;
  */
 @TableName(value ="ticket_info")
 @Data
-public class TicketInfoDTO implements Serializable {
+public class TicketInfoDTO extends TicketInfoDO {
 
     /**
      * 车票id
@@ -59,17 +61,17 @@ public class TicketInfoDTO implements Serializable {
     /**
      * 售票时间
      */
-    private Date startSaleTime;
+    private LocalDateTime startSaleTime;
 
     /**
      * 截止售票时间
      */
-    private Date endSaleTime;
+    private LocalDateTime endSaleTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     @Serial
     @TableField(exist = false)

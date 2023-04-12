@@ -144,6 +144,7 @@ public class TicketSaleController {
 
         LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
 
+        //判断查询条件
         if (startStation!=null){
             queryWrapper1.eq(TrainInfoDO::getStartStation,startStation);
         }
