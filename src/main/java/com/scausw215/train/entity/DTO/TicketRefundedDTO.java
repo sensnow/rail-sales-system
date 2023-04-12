@@ -19,44 +19,17 @@ import lombok.Data;
  */
 @TableName(value ="ticket_refunded")
 @Data
-public class TicketRefundedDTO implements Serializable {
-
-    /**
-     * 退票信息id
-     */
-    @TableId
-    private Long refundedId;
-
-    /**
-     * 退票用户id
-     */
-    private Long userId;
+public class TicketRefundedDTO extends TicketRefundedDO {
 
     /**
      * 车票信息
      */
     private TicketInfoDO ticketInfo;
 
-
     /**
      * 退票购票人
      */
     private PassengerDO passengerDO;
-
-    /**
-     * 退票金额
-     */
-    private Integer refundedPrice;
-
-    /**
-     * 退票理由
-     */
-    private String refundedReason;
-
-    /**
-     * 退票时间
-     */
-    private Date refundedTime;
 
     @Serial
     @TableField(exist = false)

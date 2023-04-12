@@ -122,9 +122,10 @@ public class StationInfoController {
     }
 
     /**
-     * 查询所有
-     * 查询城市对应车站
-     * 查询省份对应车站
+     * 1.查询所有
+     * 2.查询城市对应车站
+     * 3.查询省份对应车站
+     * 4.支持模糊查询
      * @param city
      * @param province
      * @return
@@ -134,14 +135,15 @@ public class StationInfoController {
         LambdaQueryWrapper<StationInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(StationInfoDO::getStationId);
         if (!StringUtils.isBlank(city)){
-            queryWrapper.eq(StationInfoDO::getStationCity,city);
+            queryWrapper.likeRight(StationInfoDO::getStationCity,city);
         }
         if (!StringUtils.isBlank(province)){
-            queryWrapper.eq(StationInfoDO::getStationProvince,province);
+            queryWrapper.likeRight(StationInfoDO::getStationProvince,province);
         }
         List<StationVO> stationVOS = stationInfoService.list(queryWrapper).stream().map((item) -> {
             StationVO stationVO = ToSafetyEntityUtils.toStationVO(item);
             return stationVO;
+
         }).collect(Collectors.toList());
         return ResultUtils.success(stationVOS);
     }

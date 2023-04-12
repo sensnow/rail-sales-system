@@ -30,5 +30,6 @@ public interface TicketInfoService extends IService<TicketInfoDO> {
      * @param thirdPrice 三等座价格
      */
     public void addTicketInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime, int firstPrice, int secondPrice, int thirdPrice);
+    void buy(Long id,Long passengerId,Long userId);
 
 }

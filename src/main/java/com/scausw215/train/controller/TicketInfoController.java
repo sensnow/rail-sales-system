@@ -4,17 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
+import com.scausw215.train.constant.UserInfoConstant;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
+import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.VO.TicketVO;
 import com.scausw215.train.entity.request.TicketRequest;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.service.TicketInfoService;
+import com.scausw215.train.service.TicketSalesService;
 import com.scausw215.train.service.TrainInfoService;
 import com.scausw215.train.utils.RequestToDoEntityUtils;
 import com.scausw215.train.utils.ResultUtils;
 import com.scausw215.train.utils.ToSafetyEntityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +40,8 @@ public class TicketInfoController {
     private TicketInfoService ticketInfoService;
     @Autowired
     private TrainInfoService trainInfoService;
+    @Autowired
+    private TicketSalesService ticketSalesService;
 
     /**
      * 根据id查询车票信息
@@ -68,7 +74,6 @@ public class TicketInfoController {
         return ResultUtils.success(pageInfo);
 
     }
-
     /**
      * 新增车票
      * @param ticketRequest
@@ -115,6 +120,26 @@ public class TicketInfoController {
 
         return ResultUtils.success("车票信息修改成功");
 
+    }
+
+    /**
+     * 购票操作
+     * 1.将车票设置为已出售
+     * 2.添加到车票售票表中
+     * @param id
+     * @return
+     */
+    @PutMapping
+    public Result<String> buy(@RequestParam("id") Long id, @RequestParam("passengerId") Long passengerId, HttpServletRequest request){
+
+        if (id == null||passengerId == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入id或passengerId不能为空");
+        }
+
+        UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
+        ticketInfoService.buy(id,passengerId,userInfoDO.getUserId());
+
+        return ResultUtils.success("购票成功");
     }
 
     /**

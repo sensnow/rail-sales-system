@@ -130,11 +130,15 @@ public class TicketRefundedController {
         LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
         List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.list(queryWrapper).stream().map((item) -> {
+
             TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
             BeanUtils.copyProperties(item,ticketRefundedDTO);
+
             ticketRefundedDTO.setPassengerDO(passengerService.getById(item.getPassengerId()));
             ticketRefundedDTO.setTicketInfo(ticketInfoService.getById(item.getTicketId()));
+
             return ticketRefundedDTO;
+
         }).collect(Collectors.toList());
 
         return ResultUtils.success(ticketRefundedDTOS);

@@ -4,16 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.entity.DO.TicketInfoDO;
+import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.exception.BusinessException;
+import com.scausw215.train.service.PassengerService;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.mapper.TicketInfoMapper;
+import com.scausw215.train.service.TicketSalesService;
 import com.scausw215.train.service.TrainInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +35,10 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
 
     @Autowired
     private TicketInfoMapper ticketInfoMapper;
+    @Autowired
+    TicketSalesService ticketSalesService;
+    @Autowired
+    PassengerService passengerService;
     /**
      * 根据id查询车票信息和对应的车次信息
      * @param id
@@ -77,6 +85,29 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         ticketInfoMapper.insertAllTicketByTrainInfo(trainId,trainTypeId,startStationId,endStationId,startTime,firstPrice,secondPrice,thirdPrice);
     }
 
+    @Override
+    public void buy(Long id,Long passengerId,Long userId) {
+
+        //根据id查询TicketInfoDO
+        TicketInfoDO ticketInfoDO = this.getById(id);
+        ticketInfoDO.setIsSold(1);
+        TicketSaleDO ticketSaleDO = new TicketSaleDO();
+
+        if (passengerService.getById(passengerId) == null){
+            throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
+        }
+
+        //封装TicketSaleDO对象
+        ticketSaleDO.setUserId(userId);
+        ticketSaleDO.setPassengerId(passengerId);
+        ticketSaleDO.setTicketId(ticketInfoDO.getTicketId());
+        ticketSaleDO.setPurchasePrice(ticketInfoDO.getTicketPrice());
+        ticketSaleDO.setIsRefunded(0);
+        ticketSaleDO.setPurchaseTime(LocalDateTime.now());
+
+        ticketSalesService.save(ticketSaleDO);
+
+    }
 }
 
 
