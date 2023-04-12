@@ -187,7 +187,10 @@ public class TicketSaleController {
             ticketSaleDTO.setPassengerDO(passengerService.getById(item.getPassengerId()));
 
             TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
-            BeanUtils.copyProperties(ticketInfoService.getById(item.getTicketId()),ticketInfoDTO);
+            TicketInfoDO ticketInfoDO = ticketInfoService.getById(item.getTicketId());
+
+            BeanUtils.copyProperties(ticketInfoDO,ticketInfoDTO);
+            ticketInfoDTO.setTrainInfoDO(trainInfoService.getById(ticketInfoDO.getTrainId()));
 
             ticketSaleDTO.setTicketInfo(ticketInfoDTO);
 

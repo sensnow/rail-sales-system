@@ -23,55 +23,10 @@ import lombok.Data;
 public class TicketInfoDTO extends TicketInfoDO {
 
     /**
-     * 车票id
-     */
-    @TableId(type = IdType.AUTO)
-    private Long ticketId;
-
-    /**
      * 车次信息
      */
     private TrainInfoDO trainInfoDO;
 
-    /**
-     * 车厢号
-     */
-    private Integer carNumber;
-
-    /**
-     * 座位类型id
-     */
-    private Long seatTypeId;
-
-    /**
-     * 座位号
-     */
-    private Integer seatNumber;
-
-    /**
-     * 是否已经出售
-     */
-    private Integer isSold;
-
-    /**
-     * 车票价格
-     */
-    private Integer ticketPrice;
-
-    /**
-     * 售票时间
-     */
-    private LocalDateTime startSaleTime;
-
-    /**
-     * 截止售票时间
-     */
-    private LocalDateTime endSaleTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 
     @Serial
     @TableField(exist = false)

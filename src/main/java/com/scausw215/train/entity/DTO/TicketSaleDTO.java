@@ -21,16 +21,6 @@ import lombok.Data;
 @TableName(value ="ticket_sales")
 @Data
 public class TicketSaleDTO extends TicketSaleDO {
-    /**
-     * 售票信息id
-     */
-    @TableId
-    private Long saleId;
-
-    /**
-     * 购票用户id
-     */
-    private Long userId;
 
     /**
      * 购票人信息
@@ -42,20 +32,7 @@ public class TicketSaleDTO extends TicketSaleDO {
      */
     private TicketInfoDTO ticketInfo;
 
-    /**
-     * 售票价格
-     */
-    private Integer purchasePrice;
 
-    /**
-     * 购买时间
-     */
-    private LocalDateTime purchaseTime;
-
-    /**
-     * 是否退票
-     */
-    private Integer isRefunded;
 
     @Serial
     @TableField(exist = false)
