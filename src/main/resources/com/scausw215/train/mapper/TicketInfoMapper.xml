@@ -16,6 +16,7 @@
         <result property="endSaleTime" column="end_sale_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+
     <insert id="insertTicket" parameterType="com.scausw215.train.entity.DO.TicketInfoDO">
         insert into ticket_info(train_id, car_number, seat_type_id, seat_number, is_sold, ticket_price, start_sale_time,
                                 end_sale_time, update_time, is_available)
@@ -48,6 +49,9 @@
         select *
         from ticket_info
         where ticket_id = #{ticketId}
+    </select>
+    <select id="getRestTicketNum" statementType="CALLABLE">
+        call selectRemainderOfTicket(#{trainId,mode=IN},#{firstClass,mode=OUT},#{secondClass,mode=OUT},#{thirdClass,mode=OUT})
     </select>
 
 

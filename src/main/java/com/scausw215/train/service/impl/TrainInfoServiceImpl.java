@@ -23,7 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author sensnow
@@ -110,7 +112,9 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         }
         // 获取剩下多少票
         // TODO 获取剩下多少票
+        setRemainderTicket(trainInfoDTO);
         return trainInfoDTO;
+
     }
 
     @Override
@@ -160,8 +164,13 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         }
         // 计算page和size
         trainInfoSearchRequest.setPage((trainInfoSearchRequest.getPage()-1)*trainInfoSearchRequest.getSize());
-        UserTrainInfoListVO userTrainInfoListVO = new UserTrainInfoListVO(trainInfoMapper.selectTrainInfoListByAnyCondition(trainInfoSearchRequest), trainInfoMapper.selectTrainInfoCountByAnyCondition(trainInfoSearchRequest));
-        // TODO 获取剩下多少票
+        UserTrainInfoListVO userTrainInfoListVO = new UserTrainInfoListVO(trainInfoMapper.selectTrainInfoListByAnyCondition(trainInfoSearchRequest).stream().map(
+                trainInfoDTO -> {
+                    setRemainderTicket(trainInfoDTO);
+                    return trainInfoDTO;
+                }).collect(Collectors.toList()
+        ), trainInfoMapper.selectTrainInfoCountByAnyCondition(trainInfoSearchRequest));
+
         return userTrainInfoListVO;
     }
 
@@ -225,6 +234,19 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         }
     }
 
+    public void setRemainderTicket(TrainInfoDTO trainInfoDTO)
+    {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("trainId", trainInfoDTO.getTrainId());
+        map.put("firstClass", null);
+        map.put("secondClass", null);
+        map.put("thirdClass", null);
+        ticketInfoMapper.getRestTicketNum(map);
+        // 设置剩下多少票
+        trainInfoDTO.setFirstSeatNum((Integer) map.get("firstClass"));
+        trainInfoDTO.setSecondSeatNum((Integer) map.get("secondClass"));
+        trainInfoDTO.setThirdSeatNum((Integer) map.get("thirdClass"));
+    }
 
 }
 

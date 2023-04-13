@@ -102,17 +102,16 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
 
     @Transactional
     public void buy(Long id,Long passengerId,Long userId) {
-
-        //根据id查询TicketInfoDO
-        TicketInfoDO ticketInfoDO = this.getById(id);
-        ticketInfoDO.setIsSold(1);
-        this.save(ticketInfoDO);
-
         //添加到售票表中
         TicketSaleDO ticketSaleDO = new TicketSaleDO();
         if (passengerMapper.selectById(passengerId) == null){
             throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
         }
+        //根据id查询TicketInfoDO
+        TicketInfoDO ticketInfoDO = this.getById(id);
+        ticketInfoDO.setIsSold(1);
+        this.save(ticketInfoDO);
+
         //封装TicketSaleDO对象
         ticketSaleDO.setUserId(userId);
         ticketSaleDO.setPassengerId(passengerId);
