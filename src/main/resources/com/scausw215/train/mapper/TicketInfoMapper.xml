@@ -20,11 +20,11 @@
     <insert id="insertTicket" parameterType="com.scausw215.train.entity.DO.TicketInfoDO">
         insert into ticket_info(train_id, car_number, seat_type_id, seat_number, is_sold, ticket_price, start_sale_time,
                                 end_sale_time, update_time, is_available)
-        VALUES (#{trainId}, #{carNumber}, #{seatTypeId}, #{seatNumber}, #{isSold}, #{ticketPrice}, #{startSaleTime},
-                #{endSaleTime}, #{updateTime}, #{isAvailable})
+        VALUES (#{trainId}, #{carNumber}, #{seatTypeId}, #{seatNumber}, #{isSold}, #{ticketPrice}, #{startSaleTime,jdbcType=TIMESTAMP},
+                #{endSaleTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isAvailable})
     </insert>
     <insert id="insertAllTicketByTrainInfo">
-        call insertAllTicket(#{train.trainId}, #{train.trainTypeId}, #{train.startStationId}, #{train.endStationId}, #{train.startTime}, #{train.firstPrice}, #{train.secondPrice}, #{train.thirdPrice})
+        call insertAllTicket(#{trainId}, #{trainTypeId},  #{startTime,jdbcType=TIMESTAMP}, #{firstPrice}, #{secondPrice}, #{thirdPrice})
     </insert>
     <update id="updateTicket" parameterType="java.lang.Long">
         update ticket_info
@@ -51,7 +51,7 @@
         where ticket_id = #{ticketId}
     </select>
     <select id="getRestTicketNum" statementType="CALLABLE">
-        call selectRemainderOfTicket(#{trainId,mode=IN},#{firstClass,mode=OUT,jdbcType=BIGINT},#{secondClass,mode=OUT,jdbcType=BIGINT},#{thirdClass,mode=OUT,jdbcType=BIGINT})
+        call selectRemainderOfTicket(#{trainId,mode=IN},#{firstClass,mode=OUT,jdbcType=INTEGER},#{secondClass,mode=OUT,jdbcType=INTEGER},#{thirdClass,mode=OUT,jdbcType=INTEGER})
     </select>
 
 

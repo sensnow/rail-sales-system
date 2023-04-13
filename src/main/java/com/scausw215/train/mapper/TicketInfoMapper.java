@@ -59,8 +59,7 @@ public interface TicketInfoMapper extends BaseMapper<TicketInfoDO> {
      * @param thirdPrice 三等座价格
      * @return
      */
-    int insertAllTicketByTrainInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime,int firstPrice,int secondPrice,int thirdPrice);
-
+    int insertAllTicketByTrainInfo(Long trainId, Long trainTypeId, Date startTime,int firstPrice,int secondPrice,int thirdPrice);
 
     /**
      * 根据车次id查询剩余

@@ -88,7 +88,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
 
     @Override
     public void addTicketInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime, int firstPrice, int secondPrice, int thirdPrice) {
-        ticketInfoMapper.insertAllTicketByTrainInfo(trainId,trainTypeId,startStationId,endStationId,startTime,firstPrice,secondPrice,thirdPrice);
+        ticketInfoMapper.insertAllTicketByTrainInfo(trainId,trainTypeId,startTime,firstPrice,secondPrice,thirdPrice);
     }
 
     /**

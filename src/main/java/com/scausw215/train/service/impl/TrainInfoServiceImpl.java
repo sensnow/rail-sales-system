@@ -61,8 +61,7 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
         // 生成售票信息
         // TODO 生成售票信息
         ticketInfoMapper.insertAllTicketByTrainInfo(trainInfoDO.getTrainId(), trainInfoDO.getTrainTypeId(),
-                trainInfoDO.getStartStation(), trainInfoDO.getEndStation(), trainInfoDO.getStartTime(),
-                trainInfoDO.getFirstPrice(), trainInfoDO.getSecondPrice(), trainInfoDO.getThirdPrice());
+                trainInfoDO.getStartTime(), trainInfoDO.getFirstPrice(), trainInfoDO.getSecondPrice(), trainInfoDO.getThirdPrice());
         return insert;
     }
 
