@@ -51,7 +51,7 @@
         where ticket_id = #{ticketId}
     </select>
     <select id="getRestTicketNum" statementType="CALLABLE">
-        call selectRemainderOfTicket(#{trainId,mode=IN},#{firstClass,mode=OUT},#{secondClass,mode=OUT},#{thirdClass,mode=OUT})
+        call selectRemainderOfTicket(#{trainId,mode=IN},#{firstClass,mode=OUT,jdbcType=BIGINT},#{secondClass,mode=OUT,jdbcType=BIGINT},#{thirdClass,mode=OUT,jdbcType=BIGINT})
     </select>
 
 
