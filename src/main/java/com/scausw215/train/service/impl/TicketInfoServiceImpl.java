@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -107,12 +108,11 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         ticketInfoDO.setIsSold(1);
         this.save(ticketInfoDO);
 
+        //添加到售票表中
         TicketSaleDO ticketSaleDO = new TicketSaleDO();
-
         if (passengerMapper.selectById(passengerId) == null){
             throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
         }
-
         //封装TicketSaleDO对象
         ticketSaleDO.setUserId(userId);
         ticketSaleDO.setPassengerId(passengerId);
@@ -122,6 +122,65 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         ticketSaleDO.setPurchaseTime(LocalDateTime.now());
 
         ticketSaleMapper.insert(ticketSaleDO);
+
+    }
+
+    /**
+     * 购买Plus
+     * 根据传入车次id和乘客集合自动分配车票，执行购买操作
+     * @param trainId
+     * @param passengerId
+     * @param userId
+     */
+    @Transactional
+    public void buyPlus(Long trainId, List<Long> passengerId, Long userId) {
+
+        LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TicketInfoDO::getTrainId,trainId);
+        queryWrapper.eq(TicketInfoDO::getIsSold,0);
+        queryWrapper.orderByAsc(TicketInfoDO::getTicketId);
+
+        int count = (int) this.count(queryWrapper);
+        if (count < passengerId.stream().count()){
+            throw new BusinessException(ErrorCode.DATABASE_ERROR,"当前车次剩余车票不足");
+        }
+
+        int passengerLen = (int) passengerId.stream().count();
+
+        List<TicketInfoDO> list = this.list(queryWrapper);
+        List<TicketInfoDO> list1 = new ArrayList<>();
+
+        for (int i = 0; i < passengerLen; i++) {
+            if (passengerMapper.selectById(passengerId.get(i)) == null){
+                throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
+            }
+            list1.add(list.get(i));
+        }
+
+
+        list1.stream().map((item)->{
+
+                //设置车票为已售
+                item.setIsSold(1);
+                this.save(item);
+
+                //添加到售票表中
+                TicketSaleDO ticketSaleDO = new TicketSaleDO();
+                if (passengerMapper.selectById(passengerId.get(passengerLen -1)) == null){
+                    throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
+                }
+                //封装TicketSaleDO对象
+                ticketSaleDO.setUserId(userId);
+                ticketSaleDO.setPassengerId(passengerId.get(passengerLen -1));
+                ticketSaleDO.setTicketId(item.getTicketId());
+                ticketSaleDO.setPurchasePrice(item.getTicketPrice());
+                ticketSaleDO.setIsRefunded(0);
+                ticketSaleDO.setPurchaseTime(LocalDateTime.now());
+
+                ticketSaleMapper.insert(ticketSaleDO);
+
+            return item;
+        });
 
     }
 

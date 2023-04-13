@@ -135,7 +135,7 @@ public class TicketInfoController {
      * @return
      */
     @PutMapping
-    public Result<String> buy(@RequestParam("id") Long id, @RequestParam("passengerId") Long passengerId, HttpServletRequest request){
+    public Result<String> buy(@RequestParam("id") Long id,@RequestParam("passengerId") Long passengerId, HttpServletRequest request){
 
         if (id == null||passengerId == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入id或passengerId不能为空");
@@ -146,6 +146,20 @@ public class TicketInfoController {
 
         return ResultUtils.success("购票成功");
     }
+
+    @PutMapping("/test")
+    public Result<String> buyPlus(@RequestParam("trainId") Long trainId,@RequestParam("passengerId") List<Long> passengerId, HttpServletRequest request){
+
+        if (trainId == null||passengerId == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入id或passengerId不能为空");
+        }
+
+        UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
+        ticketInfoService.buyPlus(trainId,passengerId,userInfoDO.getUserId());
+
+        return ResultUtils.success("购票成功");
+    }
+
 
     /**
      * 获取所有在售车票的信息
