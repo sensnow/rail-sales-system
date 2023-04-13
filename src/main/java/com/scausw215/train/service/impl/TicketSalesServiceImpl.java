@@ -144,7 +144,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
      * @return
      */
     @Override
-    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime) {
+    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long userId) {
 
         LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
 
@@ -171,6 +171,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         LambdaQueryWrapper<TicketInfoDO> queryWrapper2 = new LambdaQueryWrapper<>();
         queryWrapper2.in(TicketInfoDO::getTrainId,trainIds);
+        queryWrapper2.eq(TicketInfoDO::getIsSold,1);//已经出售
 
         List<TicketInfoDO> ticketInfoDOList = ticketInfoMapper.selectList(queryWrapper2);
         List<Long> ticketIds = ticketInfoDOList.stream().map((item) -> {
@@ -180,8 +181,10 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketSaleDO::getPurchaseTime);
-        queryWrapper.eq(TicketSaleDO::getIsRefunded,1);
+        queryWrapper.eq(TicketSaleDO::getIsRefunded,0);//0 表示没有被退票
         queryWrapper.in(TicketSaleDO::getTicketId,ticketIds);
+        queryWrapper.eq(TicketSaleDO::getUserId,userId);
+
 
         List<TicketSaleDTO> ticketSaleDTOS = this.list(queryWrapper).stream().map((item) -> {
 
@@ -203,6 +206,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         return ticketSaleDTOS;
     }
+
 }
 
 

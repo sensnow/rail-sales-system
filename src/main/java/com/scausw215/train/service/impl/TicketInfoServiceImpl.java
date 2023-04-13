@@ -157,30 +157,25 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
             list1.add(list.get(i));
         }
 
+        for (TicketInfoDO item:list1){
+            //设置车票为已售
+            item.setIsSold(1);
+            this.updateById(item);
+//            this.save(item);
 
-        list1.stream().map((item)->{
+            //添加到售票表中
+            TicketSaleDO ticketSaleDO = new TicketSaleDO();
 
-                //设置车票为已售
-                item.setIsSold(1);
-                this.save(item);
-
-                //添加到售票表中
-                TicketSaleDO ticketSaleDO = new TicketSaleDO();
-                if (passengerMapper.selectById(passengerId.get(passengerLen -1)) == null){
-                    throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
-                }
-                //封装TicketSaleDO对象
-                ticketSaleDO.setUserId(userId);
-                ticketSaleDO.setPassengerId(passengerId.get(passengerLen -1));
-                ticketSaleDO.setTicketId(item.getTicketId());
-                ticketSaleDO.setPurchasePrice(item.getTicketPrice());
-                ticketSaleDO.setIsRefunded(0);
-                ticketSaleDO.setPurchaseTime(LocalDateTime.now());
-
-                ticketSaleMapper.insert(ticketSaleDO);
-
-            return item;
-        });
+            //封装TicketSaleDO对象
+            ticketSaleDO.setUserId(userId);
+            ticketSaleDO.setPassengerId(passengerId.get(passengerLen-1));
+            ticketSaleDO.setTicketId(item.getTicketId());
+            ticketSaleDO.setPurchasePrice(item.getTicketPrice());
+            ticketSaleDO.setIsRefunded(0);
+            ticketSaleDO.setPurchaseTime(LocalDateTime.now());
+            passengerLen--;
+            ticketSaleMapper.insert(ticketSaleDO);
+        }
 
     }
 

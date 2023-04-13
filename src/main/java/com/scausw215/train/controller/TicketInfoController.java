@@ -147,8 +147,8 @@ public class TicketInfoController {
         return ResultUtils.success("购票成功");
     }
 
-    @PutMapping("/test")
-    public Result<String> buyPlus(@RequestParam("trainId") Long trainId,@RequestParam("passengerId") List<Long> passengerId, HttpServletRequest request){
+    @PostMapping("/test")
+    public Result<String> buyPlus(@RequestParam("trainId")Long trainId,@RequestParam("passengerId")List<Long> passengerId, HttpServletRequest request){
 
         if (trainId == null||passengerId == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入id或passengerId不能为空");
