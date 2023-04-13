@@ -5,6 +5,7 @@ import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,4 +18,6 @@ public interface TicketSalesService extends IService<TicketSaleDO> {
     void delete(List<Long> ids);
     void update(TicketSaleDO ticketSaleDO,HttpServletRequest request);
     void refunded(Long saleId,Long userId,String reason);
+    TicketSaleDTO getOneById(Long id);
+    List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime);
 }

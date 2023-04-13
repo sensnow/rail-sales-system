@@ -11,6 +11,8 @@ import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.VO.TicketRefundedVO;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
 import com.scausw215.train.exception.BusinessException;
+import com.scausw215.train.mapper.PassengerMapper;
+import com.scausw215.train.mapper.TicketInfoMapper;
 import com.scausw215.train.service.PassengerService;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TicketRefundedService;
@@ -34,9 +36,9 @@ public class TicketRefundedController {
     @Autowired
     private TicketRefundedService ticketRefundedService;
     @Autowired
-    private PassengerService passengerService;
+    private PassengerMapper passengerMapper;
     @Autowired
-    private TicketInfoService ticketInfoService;
+    private TicketInfoMapper ticketInfoMapper;
 
     /**
      * 根据id查询
@@ -48,11 +50,7 @@ public class TicketRefundedController {
         if (StringUtils.isBlank(String.valueOf(id))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入正确的id");
         }
-        TicketRefundedDO ticketRefundedDO = ticketRefundedService.getById(id);
-        TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
-        BeanUtils.copyProperties(ticketRefundedDO,ticketRefundedDTO);
-        ticketRefundedDTO.setPassengerDO(passengerService.getById(ticketRefundedDO.getPassengerId()));
-        ticketRefundedDTO.setTicketInfo(ticketInfoService.getById(ticketRefundedDO.getTicketId()));
+        TicketRefundedDTO ticketRefundedDTO = ticketRefundedService.getOneById(id);
 
         return ResultUtils.success(ticketRefundedDTO);
     }
@@ -83,13 +81,13 @@ public class TicketRefundedController {
      * @return
      */
     @PostMapping
-    public Result<TicketRefundedVO> add(@RequestBody TicketRefundedRequest ticketRefundedRequest, HttpServletRequest request){
+    public Result<String> add(@RequestBody TicketRefundedRequest ticketRefundedRequest, HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketRefundedRequest.getRefundedPrice()),String.valueOf(ticketRefundedRequest.getTicketId()),String.valueOf(ticketRefundedRequest.getPassengerId()),String.valueOf(ticketRefundedRequest.getRefundedReason()))){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的参数");
         }
-        TicketRefundedDO ticketRefundedDO = ticketRefundedService.addTicketRefunded(ticketRefundedRequest, request);
-        TicketRefundedVO ticketRefundedVO = ToSafetyEntityUtils.toTicketRefundedVO(ticketRefundedDO);
-        return ResultUtils.success(ticketRefundedVO);
+        ticketRefundedService.addTicketRefunded(ticketRefundedRequest, request);
+
+        return ResultUtils.success("添加退票信息成功");
     }
 
     /**
@@ -122,24 +120,13 @@ public class TicketRefundedController {
     }
 
     /**
-     * 查询所有
+     * 获取所有退票信息
      * @return
      */
     @GetMapping("/getAll")
     public Result<List<TicketRefundedDTO>> getAll(){
-        LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
-        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.list(queryWrapper).stream().map((item) -> {
 
-            TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
-            BeanUtils.copyProperties(item,ticketRefundedDTO);
-
-            ticketRefundedDTO.setPassengerDO(passengerService.getById(item.getPassengerId()));
-            ticketRefundedDTO.setTicketInfo(ticketInfoService.getById(item.getTicketId()));
-
-            return ticketRefundedDTO;
-
-        }).collect(Collectors.toList());
+        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.getAll();
 
         return ResultUtils.success(ticketRefundedDTOS);
 

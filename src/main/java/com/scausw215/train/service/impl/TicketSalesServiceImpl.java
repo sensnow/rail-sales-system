@@ -4,25 +4,24 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.constant.UserInfoConstant;
-import com.scausw215.train.entity.DO.TicketInfoDO;
-import com.scausw215.train.entity.DO.TicketRefundedDO;
-import com.scausw215.train.entity.DO.TicketSaleDO;
-import com.scausw215.train.entity.DO.UserInfoDO;
+import com.scausw215.train.entity.DO.*;
+import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.exception.BusinessException;
-import com.scausw215.train.mapper.TicketInfoMapper;
-import com.scausw215.train.mapper.TicketRefundedMapper;
+import com.scausw215.train.mapper.*;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TicketRefundedService;
 import com.scausw215.train.service.TicketSalesService;
-import com.scausw215.train.mapper.TicketSaleMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author sensnow
@@ -36,7 +35,16 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
     private TicketInfoMapper ticketInfoMapper;
     @Autowired
     private TicketRefundedMapper ticketRefundedMapper;
+    @Autowired
+    private PassengerMapper passengerMapper;
+    @Autowired
+    private TrainInfoMapper trainInfoMapper;
 
+    /**
+     * 添加新售票信息
+     * @param ticketSaleDO
+     * @param request
+     */
     @Transactional
     public void addTicketSale(TicketSaleDO ticketSaleDO, HttpServletRequest request) {
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
@@ -45,6 +53,10 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         this.save(ticketSaleDO);
     }
 
+    /**
+     * 删除售票信息
+     * @param ids
+     */
     @Override
     public void delete(List<Long> ids) {
         LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
@@ -56,6 +68,11 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         this.removeByIds(ids);
     }
 
+    /**
+     * 更新售票信息
+     * @param ticketSaleDO
+     * @param request
+     */
     @Override
     public void update(TicketSaleDO ticketSaleDO, HttpServletRequest request) {
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
@@ -65,8 +82,6 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         this.updateById(ticketSaleDO);
 
     }
-
-
     /**
      * 退票操作
      * @param saleId
@@ -101,6 +116,92 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         //删除售票信息
         this.removeById(saleId);
+    }
+
+    /**
+     * 根据id获取单个售票信息
+     * @param id
+     * @return
+     */
+    @Override
+    public TicketSaleDTO getOneById(Long id) {
+        TicketSaleDO ticketSaleDO = this.getById(id);
+        TicketSaleDTO ticketSaleDTO = new TicketSaleDTO();
+        BeanUtils.copyProperties(ticketSaleDO,ticketSaleDTO);
+        ticketSaleDTO.setPassengerDO(passengerMapper.selectById(ticketSaleDO.getPassengerId()));
+        TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
+        BeanUtils.copyProperties(ticketInfoMapper.selectById(ticketSaleDO.getTicketId()),ticketInfoDTO);
+        ticketSaleDTO.setTicketInfo(ticketInfoDTO);
+        return ticketSaleDTO;
+    }
+
+    /**
+     * 查询所有
+     * @param startStation
+     * @param endStation
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @Override
+    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime) {
+
+        LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
+
+        //判断查询条件
+        if (startStation!=null){
+            queryWrapper1.eq(TrainInfoDO::getStartStation,startStation);
+        }
+        if (endStation!=null){
+            queryWrapper1.eq(TrainInfoDO::getEndStation,endStation);
+        }
+        if (startTime!=null){
+            queryWrapper1.ge(TrainInfoDO::getStartTime,startTime);
+        }
+        if (endTime!=null){
+            queryWrapper1.le(TrainInfoDO::getEndTime,endTime);
+        }
+
+        List<TrainInfoDO> trainInfoDOList = trainInfoMapper.selectList(queryWrapper1);
+
+        List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
+            Long trainId = item.getTrainId();
+            return trainId;
+        }).collect(Collectors.toList());
+
+        LambdaQueryWrapper<TicketInfoDO> queryWrapper2 = new LambdaQueryWrapper<>();
+        queryWrapper2.in(TicketInfoDO::getTrainId,trainIds);
+
+        List<TicketInfoDO> ticketInfoDOList = ticketInfoMapper.selectList(queryWrapper2);
+        List<Long> ticketIds = ticketInfoDOList.stream().map((item) -> {
+            Long ticketId = item.getTicketId();
+            return ticketId;
+        }).collect(Collectors.toList());
+
+        LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(TicketSaleDO::getPurchaseTime);
+        queryWrapper.eq(TicketSaleDO::getIsRefunded,1);
+        queryWrapper.in(TicketSaleDO::getTicketId,ticketIds);
+
+        List<TicketSaleDTO> ticketSaleDTOS = this.list(queryWrapper).stream().map((item) -> {
+
+            TicketSaleDTO ticketSaleDTO = new TicketSaleDTO();
+            BeanUtils.copyProperties(item,ticketSaleDTO);
+
+            ticketSaleDTO.setPassengerDO(passengerMapper.selectById(item.getPassengerId()));
+
+            TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
+            TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(item.getTicketId());
+
+            BeanUtils.copyProperties(ticketInfoDO,ticketInfoDTO);
+            ticketInfoDTO.setTrainInfoDO(trainInfoMapper.selectById(ticketInfoDO.getTrainId()));
+
+            ticketSaleDTO.setTicketInfo(ticketInfoDTO);
+
+            return ticketSaleDTO;
+        }).collect(Collectors.toList());
+
+        return ticketSaleDTOS;
     }
 }
 

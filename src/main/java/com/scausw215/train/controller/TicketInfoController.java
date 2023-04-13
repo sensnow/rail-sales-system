@@ -12,6 +12,8 @@ import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.VO.TicketVO;
 import com.scausw215.train.entity.request.TicketRequest;
 import com.scausw215.train.exception.BusinessException;
+import com.scausw215.train.mapper.TicketSaleMapper;
+import com.scausw215.train.mapper.TrainInfoMapper;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TicketSalesService;
 import com.scausw215.train.service.TrainInfoService;
@@ -39,9 +41,9 @@ public class TicketInfoController {
     @Autowired
     private TicketInfoService ticketInfoService;
     @Autowired
-    private TrainInfoService trainInfoService;
+    private TrainInfoMapper trainInfoMapper;
     @Autowired
-    private TicketSalesService ticketSalesService;
+    private TicketSaleMapper ticketSaleMapper;
 
     /**
      * 根据id查询车票信息
@@ -49,10 +51,13 @@ public class TicketInfoController {
      * @return
      */
     @GetMapping("/{id}")
-    public Result<TicketVO> get(@PathVariable Long id){
-        TicketInfoDO ticketInfoDO = ticketInfoService.getById(id);
-        TicketVO ticketVO = ToSafetyEntityUtils.toTicketVO(ticketInfoDO);
-        return ResultUtils.success(ticketVO);
+    public Result<TicketInfoDTO> get(@PathVariable Long id){
+        if (id == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"id不能为空");
+        }
+        TicketInfoDTO ticketInfoDTO = ticketInfoService.getOneById(id);
+
+        return ResultUtils.success(ticketInfoDTO);
     }
     /**
      * 分页查询
@@ -150,43 +155,7 @@ public class TicketInfoController {
     @GetMapping("/getAll")
     public Result<List<TicketInfoDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime){
 
-        LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
-
-        //判断查询条件
-        if (startStation!=null){
-            queryWrapper1.eq(TrainInfoDO::getStartStation,startStation);
-        }
-        if (endStation!=null){
-            queryWrapper1.eq(TrainInfoDO::getEndStation,endStation);
-        }
-        if (startTime!=null){
-            queryWrapper1.ge(TrainInfoDO::getStartTime,startTime);
-        }
-        if (endTime!=null){
-            queryWrapper1.le(TrainInfoDO::getEndTime,endTime);
-        }
-
-        List<TrainInfoDO> trainInfoDOList = trainInfoService.list(queryWrapper1);
-
-        List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
-            Long trainId = item.getTrainId();
-            return trainId;
-        }).collect(Collectors.toList());
-
-        LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(TicketInfoDO::getUpdateTime);
-        queryWrapper.eq(TicketInfoDO::getIsAvailable,1);
-        queryWrapper.in(TicketInfoDO::getTrainId,trainIds);
-
-        List<TicketInfoDTO> ticketInfoDTOS = ticketInfoService.list(queryWrapper).stream().map((item) -> {
-
-            TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
-            BeanUtils.copyProperties(item,ticketInfoDTO);
-
-            ticketInfoDTO.setTrainInfoDO(trainInfoService.getById(item.getTrainId()));
-            return ticketInfoDTO;
-
-        }).collect(Collectors.toList());
+        List<TicketInfoDTO> ticketInfoDTOS = ticketInfoService.getAll(startStation, endStation, startTime, endTime);
 
         return ResultUtils.success(ticketInfoDTOS);
     }
