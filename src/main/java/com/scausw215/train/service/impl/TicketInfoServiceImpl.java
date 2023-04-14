@@ -198,7 +198,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
      * @return
      */
     @Override
-    public List<TicketInfoDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime) {
+    public List<TicketInfoDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long trainId) {
         LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
 
         //判断查询条件
@@ -214,12 +214,15 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         if (endTime!=null){
             queryWrapper1.le(TrainInfoDO::getEndTime,endTime);
         }
+        if (trainId!=null){
+            queryWrapper1.eq(TrainInfoDO::getTrainId,trainId);
+        }
 
         List<TrainInfoDO> trainInfoDOList = trainInfoMapper.selectList(queryWrapper1);
 
         List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
-            Long trainId = item.getTrainId();
-            return trainId;
+            Long trainId1 = item.getTrainId();
+            return trainId1;
         }).collect(Collectors.toList());
 
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();

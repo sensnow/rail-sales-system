@@ -162,14 +162,14 @@ public class TicketInfoController {
 
 
     /**
-     * 获取所有在售车票的信息
+     * 获取所有车票的信息
      * (startStation，endStation，startTime，endTime)可根据四个值添加限制条件
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketInfoDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime){
+    public Result<List<TicketInfoDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,Long trainId){
 
-        List<TicketInfoDTO> ticketInfoDTOS = ticketInfoService.getAll(startStation, endStation, startTime, endTime);
+        List<TicketInfoDTO> ticketInfoDTOS = ticketInfoService.getAll(startStation, endStation, startTime, endTime,trainId);
 
         return ResultUtils.success(ticketInfoDTOS);
     }
