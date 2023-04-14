@@ -54,8 +54,12 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
         ticketRefundedRequest.setUserId(userInfoDO.getUserId());
         ticketRefundedRequest.setRefundedTime(LocalDateTime.now());
+        TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketRefundedRequest.getTicketId());
+        ticketRefundedRequest.setRefundedPrice(ticketInfoDO.getTicketPrice());
+
         TicketRefundedDO ticketRefundedDO = RequestToDoEntityUtils.toTicketRefundedDO(ticketRefundedRequest);
         this.save(ticketRefundedDO);
+
         return ticketRefundedDO;
     }
 

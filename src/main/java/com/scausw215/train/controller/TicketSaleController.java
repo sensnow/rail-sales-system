@@ -118,6 +118,7 @@ public class TicketSaleController {
      * @param request
      * @return
      */
+
     @PutMapping("/admin")
     public Result<String> update(@RequestBody TicketSaleRequest ticketSaleRequest,HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketSaleRequest.getSaleId()),String.valueOf(ticketSaleRequest.getIsRefunded()),String.valueOf(ticketSaleRequest.getUserId()),String.valueOf(ticketSaleRequest.getPassengerId()),String.valueOf(ticketSaleRequest.getTicketId()),String.valueOf(ticketSaleRequest.getPurchasePrice()))){
@@ -137,7 +138,7 @@ public class TicketSaleController {
      * @return
      */
     @PutMapping
-    public Result<String> refunded(@RequestParam("saleId") Long id,HttpServletRequest request,@RequestParam("reason") String reason){
+    public Result<String> refunded(@RequestParam("saleId") Long id,HttpServletRequest request,@RequestParam(value = "reason",required = false,defaultValue = "无") String reason){
         if (id == null||StringUtils.isBlank(reason)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的售票id为空或退票理由为空");
         }
