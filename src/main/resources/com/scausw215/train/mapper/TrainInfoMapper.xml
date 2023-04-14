@@ -78,4 +78,7 @@
     <select id="selectUnscheduledTrainTypeByTime" resultType="com.scausw215.train.entity.DO.TrainTypeDO" resultMap="com.scausw215.train.mapper.TrainTypeMapper.BaseResultMap">
         call selectUnscheduledTrainType(#{startTime},#{endTime})
     </select>
+    <select id="selectTrainInfoDetailByTrainId" resultType="com.scausw215.train.entity.VO.PurchaseInfo" statementType="CALLABLE">
+        call selectSeatTypeBytrainTypeId(#{trainTypeId})
+    </select>
 </mapper>

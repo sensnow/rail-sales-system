@@ -7,6 +7,7 @@ import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.entity.DO.TrainTypeDO;
 import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TrainInfoDTO;
+import com.scausw215.train.entity.VO.PurchaseInfo;
 import com.scausw215.train.entity.VO.UserTrainInfoListVO;
 import com.scausw215.train.entity.request.TrainInfoSearchRequest;
 import com.scausw215.train.exception.BusinessException;
@@ -187,6 +188,18 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "开始时间不能大于结束时间");
         }
         return trainInfoMapper.selectUnscheduledTrainTypeByTime(startTime, endTime);
+    }
+
+    @Override
+    public PurchaseInfo getTrainInfoDetail(Long trainTypeId) {
+        if(trainTypeId==null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数不能为空");
+        }
+        PurchaseInfo purchaseInfo = trainInfoMapper.selectTrainInfoDetailByTrainId(trainTypeId);
+        if(purchaseInfo==null){
+            throw new BusinessException(ErrorCode.DATABASE_ERROR, "查询失败");
+        }
+        return purchaseInfo;
     }
 
 

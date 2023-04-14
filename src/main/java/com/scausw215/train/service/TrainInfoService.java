@@ -4,6 +4,7 @@ import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.scausw215.train.entity.DO.TrainTypeDO;
 import com.scausw215.train.entity.DTO.TrainInfoDTO;
+import com.scausw215.train.entity.VO.PurchaseInfo;
 import com.scausw215.train.entity.VO.UserTrainInfoListVO;
 import com.scausw215.train.entity.request.TrainInfoSearchRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,4 +64,10 @@ public interface TrainInfoService extends IService<TrainInfoDO> {
     List<TrainTypeDO> getUnscheduledTrainType(Date startTime, Date endTime);
 
 
+    /**
+     * 获取车次详情
+     * @param trainId 车次id
+     * @return 车次详情
+     */
+    PurchaseInfo getTrainInfoDetail(Long trainId);
 }

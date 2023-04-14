@@ -82,7 +82,6 @@ public class TrainInfoDTO implements Serializable {
      * 三等座价格
      */
     private Integer thirdPrice;
-
     /**
      * 是否可用 0-不可用 1-可用
      */

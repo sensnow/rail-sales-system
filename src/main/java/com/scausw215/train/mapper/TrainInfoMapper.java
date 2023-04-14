@@ -4,6 +4,7 @@ import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.scausw215.train.entity.DO.TrainTypeDO;
 import com.scausw215.train.entity.DTO.TrainInfoDTO;
+import com.scausw215.train.entity.VO.PurchaseInfo;
 import com.scausw215.train.entity.request.TrainInfoSearchRequest;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -86,6 +87,13 @@ public interface TrainInfoMapper extends BaseMapper<TrainInfoDO> {
      * @return 车次类型列表
      */
     List<TrainTypeDO> selectUnscheduledTrainTypeByTime(Date startTime, Date endTime);
+
+    /**
+     * 根据车次id查询座位信息
+     * @param trainId 车次id
+     * @return purchaseInfo
+     */
+    PurchaseInfo selectTrainInfoDetailByTrainId(Long trainId);
 }
 
 

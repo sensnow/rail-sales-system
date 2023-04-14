@@ -7,6 +7,7 @@ import com.scausw215.train.common.Result;
 import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.entity.DO.TrainTypeDO;
 import com.scausw215.train.entity.DTO.TrainInfoDTO;
+import com.scausw215.train.entity.VO.PurchaseInfo;
 import com.scausw215.train.entity.VO.UserTrainInfoListVO;
 import com.scausw215.train.entity.request.TrainInfoSearchRequest;
 import com.scausw215.train.exception.BusinessException;
@@ -67,18 +68,18 @@ public class TrainInfoController {
     }
 
     /**
-     * 更新车次信息
-     * @param trainId 车次id
+     * 获取车次的座位信息
+     * @param trainTypeId 列车的id
      * @return 车次信息
      */
     @GetMapping("/detail")
-    public Result<TrainInfoDTO> getTrainInfoDetail(@PathParam("id") Long trainId) {
+    public Result<PurchaseInfo> getTrainInfoDetail(@PathParam("id") Long trainTypeId) {
         // 检查参数
-        if (trainId == null) {
+        if (trainTypeId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
-        TrainInfoDTO trainInfoDTO = trainInfoService.getTrainInfoByTrainId(trainId);
-        return ResultUtils.success(trainInfoDTO);
+        PurchaseInfo purchaseInfo = trainInfoService.getTrainInfoDetail(trainTypeId);
+        return ResultUtils.success(purchaseInfo);
     }
 
     /**
