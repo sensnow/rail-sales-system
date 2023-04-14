@@ -90,10 +90,10 @@ public interface TrainInfoMapper extends BaseMapper<TrainInfoDO> {
 
     /**
      * 根据车次id查询座位信息
-     * @param trainId 车次id
+     * @param trainTypeId 座位id
      * @return purchaseInfo
      */
-    PurchaseInfo selectTrainInfoDetailByTrainId(Long trainId);
+    PurchaseInfo selectTrainInfoDetailByTrainId(Long trainTypeId);
 }
 
 
