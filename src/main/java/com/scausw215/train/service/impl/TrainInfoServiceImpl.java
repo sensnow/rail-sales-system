@@ -162,13 +162,14 @@ public class TrainInfoServiceImpl extends ServiceImpl<TrainInfoMapper, TrainInfo
             }
         }
         // 计算page和size
+        int i = trainInfoMapper.selectTrainInfoCountByAnyCondition(trainInfoSearchRequest);
         trainInfoSearchRequest.setPage((trainInfoSearchRequest.getPage()-1)*trainInfoSearchRequest.getSize());
         UserTrainInfoListVO userTrainInfoListVO = new UserTrainInfoListVO(trainInfoMapper.selectTrainInfoListByAnyCondition(trainInfoSearchRequest).stream().map(
                 trainInfoDTO -> {
                     setRemainderTicket(trainInfoDTO);
                     return trainInfoDTO;
                 }).collect(Collectors.toList()
-        ), trainInfoMapper.selectTrainInfoCountByAnyCondition(trainInfoSearchRequest));
+        ), i/trainInfoSearchRequest.getSize()+(i%trainInfoSearchRequest.getSize()!= 0 ? 1:0));
 
         return userTrainInfoListVO;
     }
