@@ -122,7 +122,7 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
      * @return
      */
     @Override
-    public List<TicketRefundedDTO> getAll(Long trainId,Long userId) {
+    public List<TicketRefundedDTO> getAll(Long trainId,UserInfoDO userInfoDO) {
         LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
         if (trainId!=null){
             queryWrapper1.eq(TrainInfoDO::getTrainId,trainId);
@@ -146,8 +146,9 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
         LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
         queryWrapper.in(TicketRefundedDO::getTicketId,ticketIds);
-        queryWrapper.eq(TicketRefundedDO::getUserId,userId);
-
+        if (userInfoDO.getUserAuthority() != 1){
+            queryWrapper.eq(TicketRefundedDO::getUserId,userInfoDO.getUserId());
+        }
 
         List<TicketRefundedDTO> ticketRefundedDTOS = this.list(queryWrapper).stream().map((item) -> {
 

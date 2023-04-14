@@ -129,7 +129,7 @@ public class TicketRefundedController {
     public Result<List<TicketRefundedDTO>> getAll(Long trainId,HttpServletRequest request){
 
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.getAll(trainId,userInfoDO.getUserId());
+        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.getAll(trainId,userInfoDO);
 
         return ResultUtils.success(ticketRefundedDTOS);
 

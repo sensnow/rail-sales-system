@@ -87,14 +87,15 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         this.updateById(ticketSaleDO);
 
     }
+
     /**
      * 退票操作
      * @param saleId
-     * @param userId
+     * @param userInfoDO
      * @param reason
      */
     @Transactional
-    public void refunded(Long saleId,Long userId,String reason) {
+    public void refunded(Long saleId,UserInfoDO userInfoDO ,String reason) {
 
         //更新车票出售信息
         TicketSaleDO ticketSaleDO = this.getById(saleId);
@@ -115,7 +116,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         ticketRefundedDO.setRefundedPrice(ticketSaleDO.getPurchasePrice());
         ticketRefundedDO.setRefundedReason(reason);
         ticketRefundedDO.setRefundedTime(LocalDateTime.now());
-        ticketRefundedDO.setUserId(userId);
+        ticketRefundedDO.setUserId(userInfoDO.getUserId());
         ticketRefundedDO.setPassengerId(ticketSaleDO.getPassengerId());
 
         ticketRefundedMapper.insert(ticketRefundedDO);
@@ -150,7 +151,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
      * @return
      */
     @Override
-    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long userId,Long trainId) {
+    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,UserInfoDO userInfoDO,Long trainId) {
 
         LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
 
@@ -192,8 +193,9 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         queryWrapper.orderByAsc(TicketSaleDO::getPurchaseTime);
         queryWrapper.eq(TicketSaleDO::getIsRefunded,0);//0 表示没有被退票
         queryWrapper.in(TicketSaleDO::getTicketId,ticketIds);
-        queryWrapper.eq(TicketSaleDO::getUserId,userId);
-
+        if (userInfoDO.getUserAuthority() != 1){
+            queryWrapper.eq(TicketSaleDO::getUserId,userInfoDO.getUserId());
+        }
 
         List<TicketSaleDTO> ticketSaleDTOS = this.list(queryWrapper).stream().map((item) -> {
 

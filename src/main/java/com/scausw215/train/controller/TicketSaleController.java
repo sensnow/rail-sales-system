@@ -142,7 +142,7 @@ public class TicketSaleController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的售票id为空或退票理由为空");
         }
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        ticketSalesService.refunded(id,userInfoDO.getUserId(),reason);
+        ticketSalesService.refunded(id,userInfoDO,reason);
 
         return ResultUtils.success("退票成功");
     }
@@ -156,7 +156,7 @@ public class TicketSaleController {
     public Result<List<TicketSaleDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,HttpServletRequest request,Long trainId){
 
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        List<TicketSaleDTO> ticketSaleDTOS = ticketSalesService.getAll(startStation, endStation, startTime, endTime,userInfoDO.getUserId(),trainId);
+        List<TicketSaleDTO> ticketSaleDTOS = ticketSalesService.getAll(startStation, endStation, startTime, endTime,userInfoDO,trainId);
 
         return ResultUtils.success(ticketSaleDTOS);
 
