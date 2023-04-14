@@ -133,14 +133,16 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
      * @param userId
      */
     @Transactional
-    public void buyPlus(Long trainId, List<Long> passengerId, Long userId) {
+    public void buyPlus(Long trainId, List<Long> passengerId, Long userId,Long seatTypeId) {
 
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TicketInfoDO::getTrainId,trainId);
         queryWrapper.eq(TicketInfoDO::getIsSold,0);
         queryWrapper.orderByAsc(TicketInfoDO::getTicketId);
+        queryWrapper.eq(TicketInfoDO::getSeatTypeId,seatTypeId);//筛选特定作为类型
 
-        int count = (int) this.count(queryWrapper);
+        int count = (int) this.count(queryWrapper);//查询对应车票总数
+
         if (count < passengerId.stream().count()){
             throw new BusinessException(ErrorCode.DATABASE_ERROR,"当前车次剩余车票不足");
         }
