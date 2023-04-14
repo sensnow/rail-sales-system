@@ -10,8 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import com.scausw215.train.entity.DO.TicketInfoDO;
-import com.scausw215.train.entity.DO.TrainInfoDO;
+import com.scausw215.train.entity.DO.*;
 import lombok.Data;
 
 /**
@@ -26,6 +25,11 @@ public class TicketInfoDTO extends TicketInfoDO {
      * 车次信息
      */
     private TrainInfoDO trainInfoDO;
+    private StationInfoDO startStation;
+    private StationInfoDO endStation;
+    private PassengerDO passengerDO;
+
+    private TicketSaleDO ticketSaleDO;
 
 
     @Serial

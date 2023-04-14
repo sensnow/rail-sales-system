@@ -3,20 +3,11 @@ package com.scausw215.train.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
-import com.scausw215.train.entity.DO.PassengerDO;
-import com.scausw215.train.entity.DO.TicketInfoDO;
-import com.scausw215.train.entity.DO.TicketSaleDO;
-import com.scausw215.train.entity.DO.TrainInfoDO;
+import com.scausw215.train.entity.DO.*;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.exception.BusinessException;
-import com.scausw215.train.mapper.PassengerMapper;
-import com.scausw215.train.mapper.TicketSaleMapper;
-import com.scausw215.train.mapper.TrainInfoMapper;
-import com.scausw215.train.service.PassengerService;
+import com.scausw215.train.mapper.*;
 import com.scausw215.train.service.TicketInfoService;
-import com.scausw215.train.mapper.TicketInfoMapper;
-import com.scausw215.train.service.TicketSalesService;
-import com.scausw215.train.service.TrainInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +36,8 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
     TicketSaleMapper ticketSaleMapper;
     @Autowired
     PassengerMapper passengerMapper;
+    @Autowired
+    StationInfoMapper stationInfoMapper;
     /**
      * 根据id查询车票信息和对应的车次信息
      * @param id
@@ -239,6 +232,21 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
             return ticketInfoDTO;
 
         }).collect(Collectors.toList());
+
+        for (TicketInfoDTO ticketInfoDTO : ticketInfoDTOS) {
+            ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketInfoDTO.getTrainInfoDO().getStartStation()));
+            ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketInfoDTO.getTrainInfoDO().getEndStation()));
+
+            if (ticketInfoDTO.getIsSold() == 1){
+                LambdaQueryWrapper<TicketSaleDO> queryWrapper2 = new LambdaQueryWrapper<>();
+                queryWrapper2.eq(TicketSaleDO::getTicketId,ticketInfoDTO.getTicketId());
+                ticketInfoDTO.setTicketSaleDO(ticketSaleMapper.selectOne(queryWrapper2));
+                ticketInfoDTO.setPassengerDO(passengerMapper.selectById(ticketInfoDTO.getTicketSaleDO().getPassengerId()));
+            }
+
+        }
+
+
         return ticketInfoDTOS;
     }
 
