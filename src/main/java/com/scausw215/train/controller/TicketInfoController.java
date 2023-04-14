@@ -167,7 +167,7 @@ public class TicketInfoController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketInfoDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,Long trainId){
+    public Result<List<TicketInfoDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,@RequestParam(value = "trainId",required = false) Long trainId){
 
         List<TicketInfoDTO> ticketInfoDTOS = ticketInfoService.getAll(startStation, endStation, startTime, endTime,trainId);
 
