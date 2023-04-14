@@ -44,6 +44,8 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
     private StationInfoMapper stationInfoMapper;
     @Autowired
     private SeatTypeMapper seatTypeMapper;
+    @Autowired
+    private TrainTypeMapper trainTypeMapper;
 
     /**
      * 添加新售票信息
@@ -220,8 +222,8 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
             ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketSaleDTO.getTicketInfo().getTrainInfoDO().getStartStation()));
             ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketSaleDTO.getTicketInfo().getTrainInfoDO().getEndStation()));
-
             ticketInfoDTO.setSeatTypeDO(seatTypeMapper.selectById(ticketSaleDTO.getTicketInfo().getSeatTypeId()));
+            ticketInfoDTO.setTrainTypeDO(trainTypeMapper.selectById(ticketSaleDTO.getTicketInfo().getTrainInfoDO().getTrainTypeId()));
         }
 
 

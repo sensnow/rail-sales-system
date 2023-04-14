@@ -28,8 +28,7 @@ public class TicketInfoDTO extends TicketInfoDO {
     private StationInfoDO startStation;
     private StationInfoDO endStation;
     private SeatTypeDO seatTypeDO;
-
-
+    private TrainTypeDO trainTypeDO;
 
     @Serial
     @TableField(exist = false)

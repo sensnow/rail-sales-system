@@ -34,6 +34,7 @@ public class TicketSaleDTO extends TicketSaleDO {
 
 
 
+
     @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

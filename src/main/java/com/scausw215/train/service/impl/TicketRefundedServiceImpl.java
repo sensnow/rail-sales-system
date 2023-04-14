@@ -41,6 +41,8 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
     private StationInfoMapper stationInfoMapper;
     @Autowired
     private SeatTypeMapper seatTypeMapper;
+    @Autowired
+    private TrainTypeMapper trainTypeMapper;
     /**
      * 新增退票信息
      * @param ticketRefundedRequest
@@ -174,8 +176,9 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
 
             ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketRefundedDTO.getTicketInfo().getTrainInfoDO().getStartStation()));
             ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketRefundedDTO.getTicketInfo().getTrainInfoDO().getEndStation()));
-
             ticketInfoDTO.setSeatTypeDO(seatTypeMapper.selectById(ticketRefundedDTO.getTicketInfo().getSeatTypeId()));
+
+            ticketInfoDTO.setTrainTypeDO(trainTypeMapper.selectById(ticketInfoDTO.getTrainInfoDO().getTrainTypeId()));
         }
 
 
