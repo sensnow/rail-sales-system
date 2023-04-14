@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.common.Result;
+import com.scausw215.train.constant.UserInfoConstant;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketRefundedDO;
+import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TicketRefundedDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.VO.TicketRefundedVO;
@@ -124,9 +126,10 @@ public class TicketRefundedController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketRefundedDTO>> getAll(){
+    public Result<List<TicketRefundedDTO>> getAll(Long trainId,HttpServletRequest request){
 
-        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.getAll();
+        UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
+        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.getAll(trainId,userInfoDO.getUserId());
 
         return ResultUtils.success(ticketRefundedDTOS);
 

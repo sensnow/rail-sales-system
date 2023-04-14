@@ -24,7 +24,7 @@ public class TicketRefundedDTO extends TicketRefundedDO {
     /**
      * 车票信息
      */
-    private TicketInfoDO ticketInfo;
+    private TicketInfoDTO ticketInfo;
 
     /**
      * 退票购票人

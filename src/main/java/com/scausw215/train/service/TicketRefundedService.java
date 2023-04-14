@@ -20,6 +20,6 @@ public interface TicketRefundedService extends IService<TicketRefundedDO> {
     void delete(List<Long> ids);
     void update(TicketRefundedRequest ticketRefundedRequest,HttpServletRequest request);
     TicketRefundedDTO getOneById(Long id);
-    List<TicketRefundedDTO> getAll();
+    List<TicketRefundedDTO> getAll(Long trainId,Long userId);
 
 }

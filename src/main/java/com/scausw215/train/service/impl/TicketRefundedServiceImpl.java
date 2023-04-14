@@ -4,15 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.constant.UserInfoConstant;
-import com.scausw215.train.entity.DO.TicketRefundedDO;
-import com.scausw215.train.entity.DO.UserInfoDO;
+import com.scausw215.train.entity.DO.*;
+import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketRefundedDTO;
+import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
 import com.scausw215.train.exception.BusinessException;
-import com.scausw215.train.mapper.PassengerMapper;
-import com.scausw215.train.mapper.TicketInfoMapper;
+import com.scausw215.train.mapper.*;
 import com.scausw215.train.service.TicketRefundedService;
-import com.scausw215.train.mapper.TicketRefundedMapper;
 import com.scausw215.train.utils.RequestToDoEntityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +35,12 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
     private PassengerMapper passengerMapper;
     @Autowired
     private TicketInfoMapper ticketInfoMapper;
+    @Autowired
+    private TrainInfoMapper trainInfoMapper;
+    @Autowired
+    private StationInfoMapper stationInfoMapper;
+    @Autowired
+    private SeatTypeMapper seatTypeMapper;
     /**
      * 新增退票信息
      * @param ticketRefundedRequest
@@ -95,9 +100,20 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
     public TicketRefundedDTO getOneById(Long id) {
         TicketRefundedDO ticketRefundedDO = this.getById(id);
         TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
-        BeanUtils.copyProperties(ticketRefundedDO,ticketRefundedDTO);
+        BeanUtils.copyProperties(ticketRefundedDO, ticketRefundedDTO);
+
         ticketRefundedDTO.setPassengerDO(passengerMapper.selectById(ticketRefundedDO.getPassengerId()));
-        ticketRefundedDTO.setTicketInfo(ticketInfoMapper.selectById(ticketRefundedDO.getTicketId()));
+        TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
+        TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketRefundedDO.getTicketId());
+        BeanUtils.copyProperties(ticketInfoDO, ticketInfoDTO);
+
+        ticketInfoDTO.setTrainInfoDO(trainInfoMapper.selectById(ticketInfoMapper.selectById(ticketRefundedDO.getTicketId()).getTrainId()));
+        TrainInfoDO trainInfoDO = trainInfoMapper.selectById(ticketInfoMapper.selectById(ticketRefundedDO.getTicketId()).getTrainId());
+        ticketInfoDTO.setStartStation(stationInfoMapper.selectById(trainInfoDO.getStartStation()));
+        ticketInfoDTO.setEndStation(stationInfoMapper.selectById(trainInfoDO.getEndStation()));
+        ticketInfoDTO.setSeatTypeDO(seatTypeMapper.selectById(ticketInfoDO.getSeatTypeId()));
+        ticketRefundedDTO.setTicketInfo(ticketInfoDTO);
+
         return ticketRefundedDTO;
     }
 
@@ -106,21 +122,62 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
      * @return
      */
     @Override
-    public List<TicketRefundedDTO> getAll() {
+    public List<TicketRefundedDTO> getAll(Long trainId,Long userId) {
+        LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
+        if (trainId!=null){
+            queryWrapper1.eq(TrainInfoDO::getTrainId,trainId);
+        }
+        List<TrainInfoDO> trainInfoDOList = trainInfoMapper.selectList(queryWrapper1);
+
+        List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
+            Long trainId1 = item.getTrainId();
+            return trainId1;
+        }).collect(Collectors.toList());
+
+        LambdaQueryWrapper<TicketInfoDO> queryWrapper2 = new LambdaQueryWrapper<>();
+        queryWrapper2.in(TicketInfoDO::getTrainId,trainIds);
+
+        List<TicketInfoDO> ticketInfoDOList = ticketInfoMapper.selectList(queryWrapper2);
+        List<Long> ticketIds = ticketInfoDOList.stream().map((item) -> {
+            Long ticketId = item.getTicketId();
+            return ticketId;
+        }).collect(Collectors.toList());
 
         LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
+        queryWrapper.in(TicketRefundedDO::getTicketId,ticketIds);
+        queryWrapper.eq(TicketRefundedDO::getUserId,userId);
+
+
         List<TicketRefundedDTO> ticketRefundedDTOS = this.list(queryWrapper).stream().map((item) -> {
 
             TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
             BeanUtils.copyProperties(item,ticketRefundedDTO);
 
             ticketRefundedDTO.setPassengerDO(passengerMapper.selectById(item.getPassengerId()));
-            ticketRefundedDTO.setTicketInfo(ticketInfoMapper.selectById(item.getTicketId()));
+
+            TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
+            TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(item.getTicketId());
+
+            BeanUtils.copyProperties(ticketInfoDO,ticketInfoDTO);
+            ticketInfoDTO.setTrainInfoDO(trainInfoMapper.selectById(ticketInfoDO.getTrainId()));
+
+            ticketRefundedDTO.setTicketInfo(ticketInfoDTO);
 
             return ticketRefundedDTO;
-
         }).collect(Collectors.toList());
+
+        for (TicketRefundedDTO ticketRefundedDTO : ticketRefundedDTOS) {
+
+            TicketInfoDTO ticketInfoDTO = ticketRefundedDTO.getTicketInfo();
+
+            ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketRefundedDTO.getTicketInfo().getTrainInfoDO().getStartStation()));
+            ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketRefundedDTO.getTicketInfo().getTrainInfoDO().getEndStation()));
+
+            ticketInfoDTO.setSeatTypeDO(seatTypeMapper.selectById(ticketRefundedDTO.getTicketInfo().getSeatTypeId()));
+        }
+
+
         return ticketRefundedDTOS;
     }
 }
