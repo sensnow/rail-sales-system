@@ -3,6 +3,7 @@ package com.scausw215.train.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
+import com.scausw215.train.entity.DO.PassengerDO;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TicketSaleDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
@@ -132,13 +133,13 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
      * @param userId
      */
     @Transactional
-    public void buyPlus(Long trainId, List<Long> passengerId, Long userId,Long seatTypeId) {
+    public void buyPlus(Long trainId, List<Long> passengerId, Long userId,Long seatTypeId,String trainName) {
 
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TicketInfoDO::getTrainId,trainId);
         queryWrapper.eq(TicketInfoDO::getIsSold,0);
         queryWrapper.orderByAsc(TicketInfoDO::getTicketId);
-        queryWrapper.eq(TicketInfoDO::getSeatTypeId,seatTypeId);//筛选特定作为类型
+        queryWrapper.eq(TicketInfoDO::getSeatTypeId,seatTypeId);//筛选特定座位类型
 
         int count = (int) this.count(queryWrapper);//查询对应车票总数
 
@@ -148,15 +149,21 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
 
         int passengerLen = (int) passengerId.stream().count();
 
+        LambdaQueryWrapper<PassengerDO> queryWrapper1 = new LambdaQueryWrapper<>();
+        queryWrapper1.in(PassengerDO::getPassengerId,passengerId);
+        if (passengerLen != passengerMapper.selectCount(queryWrapper1)){
+            throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有乘客信息");
+        }
+
         List<TicketInfoDO> list = this.list(queryWrapper);
         List<TicketInfoDO> list1 = new ArrayList<>();
 
         for (int i = 0; i < passengerLen; i++) {
-            if (passengerMapper.selectById(passengerId.get(i)) == null){
-                throw new BusinessException(ErrorCode.DATABASE_ERROR,"没有这个乘客,请先添加乘客信息");
+            if (this.IsBought(passengerId.get(i),trainId,trainName)){
+                list1.add(list.get(i));
             }
-            list1.add(list.get(i));
         }
+
 
         for (TicketInfoDO item:list1){
             //设置车票为已售
@@ -248,6 +255,30 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         ticketInfoDTO.setTrainInfoDO(trainInfoMapper.selectById(ticketInfoDO.getTrainId()));
 
         return ticketInfoDTO;
+    }
+
+    /**
+     * 判断是否重复购票
+     * @param passengerId
+     * @param trainId
+     * @return
+     */
+    @Override
+    public Boolean IsBought(Long passengerId, Long trainId,String trainName) {
+        LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TicketSaleDO::getPassengerId,passengerId);
+        queryWrapper.eq(TicketSaleDO::getIsRefunded,0);
+
+        String passengerName = passengerMapper.selectById(passengerId).getPassengerName();
+
+        for (TicketSaleDO ticketSaleDO : ticketSaleMapper.selectList(queryWrapper)) {
+            Long trainId1 = ticketInfoMapper.selectById(ticketSaleDO.getTicketId()).getTrainId();
+            if (trainId1 == trainId){
+                throw new BusinessException(ErrorCode.DATABASE_ERROR,"请勿为乘客["+passengerName+"]重复购入车次为["+trainName+"]的车票");
+            }
+        }
+
+        return true;
     }
 }
 

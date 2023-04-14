@@ -20,4 +20,5 @@ public interface TicketSalesService extends IService<TicketSaleDO> {
     void refunded(Long saleId,Long userId,String reason);
     TicketSaleDTO getOneById(Long id);
     List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long userId);
+
 }

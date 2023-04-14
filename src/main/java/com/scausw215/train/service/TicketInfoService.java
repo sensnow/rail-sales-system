@@ -31,9 +31,10 @@ public interface TicketInfoService extends IService<TicketInfoDO> {
      */
     public void addTicketInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime, int firstPrice, int secondPrice, int thirdPrice);
     void buy(Long id,Long passengerId,Long userId);
-    void buyPlus(Long trainId,List<Long> passengerId,Long userId,Long seatTypeId);
+    void buyPlus(Long trainId,List<Long> passengerId,Long userId,Long seatTypeId,String trainName);
     List<TicketInfoDTO> getAll(Long startStation, Long endStation,Date startTime,Date endTime);
     TicketInfoDTO getOneById(Long id);
+    Boolean IsBought(Long passengerId,Long trainId,String trainName);
 
 
 }
