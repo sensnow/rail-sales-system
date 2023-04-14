@@ -148,14 +148,14 @@ public class TicketInfoController {
     }
 
     @PostMapping("/test")
-    public Result<String> buyPlus(@RequestParam("trainId")Long trainId,@RequestParam("passengerId")List<Long> passengerId, HttpServletRequest request){
+    public Result<String> buyPlus(@RequestParam("trainId")Long trainId,@RequestParam("passengerId")List<Long> passengerId, HttpServletRequest request,@RequestParam("seatTypeId") Long seatTypeId){
 
         if (trainId == null||passengerId == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入id或passengerId不能为空");
         }
 
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        ticketInfoService.buyPlus(trainId,passengerId,userInfoDO.getUserId());
+        ticketInfoService.buyPlus(trainId,passengerId,userInfoDO.getUserId(),seatTypeId);
 
         return ResultUtils.success("购票成功");
     }

@@ -93,6 +93,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         //更新车票出售信息
         TicketSaleDO ticketSaleDO = this.getById(saleId);
+        ticketSaleDO.setIsRefunded(1);//把车票售票信息设置为已退票
         TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketSaleDO.getTicketId());
 
         //判断是否超过截止时间
@@ -114,8 +115,8 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         ticketRefundedMapper.insert(ticketRefundedDO);
 
-        //删除售票信息
-        this.removeById(saleId);
+        //保存售票信息
+        this.updateById(ticketSaleDO);
     }
 
     /**
