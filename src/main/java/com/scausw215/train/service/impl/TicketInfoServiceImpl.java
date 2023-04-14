@@ -221,6 +221,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(TicketInfoDO::getUpdateTime);
         queryWrapper.eq(TicketInfoDO::getIsAvailable,1);
+        queryWrapper.eq(TicketInfoDO::getIsSold,1);
         queryWrapper.in(TicketInfoDO::getTrainId,trainIds);
 
         List<TicketInfoDTO> ticketInfoDTOS = this.list(queryWrapper).stream().map((item) -> {
@@ -237,12 +238,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
             ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketInfoDTO.getTrainInfoDO().getStartStation()));
             ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketInfoDTO.getTrainInfoDO().getEndStation()));
 
-            if (ticketInfoDTO.getIsSold() == 1){
-                LambdaQueryWrapper<TicketSaleDO> queryWrapper2 = new LambdaQueryWrapper<>();
-                queryWrapper2.eq(TicketSaleDO::getTicketId,ticketInfoDTO.getTicketId());
-                ticketInfoDTO.setTicketSaleDO(ticketSaleMapper.selectOne(queryWrapper2));
-                ticketInfoDTO.setPassengerDO(passengerMapper.selectById(ticketInfoDTO.getTicketSaleDO().getPassengerId()));
-            }
+
 
         }
 

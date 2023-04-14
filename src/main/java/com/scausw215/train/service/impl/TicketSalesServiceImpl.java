@@ -9,6 +9,7 @@ import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.*;
+import com.scausw215.train.service.StationInfoService;
 import com.scausw215.train.service.TicketInfoService;
 import com.scausw215.train.service.TicketRefundedService;
 import com.scausw215.train.service.TicketSalesService;
@@ -39,6 +40,10 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
     private PassengerMapper passengerMapper;
     @Autowired
     private TrainInfoMapper trainInfoMapper;
+    @Autowired
+    private StationInfoMapper stationInfoMapper;
+    @Autowired
+    private SeatTypeMapper seatTypeMapper;
 
     /**
      * 添加新售票信息
@@ -145,7 +150,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
      * @return
      */
     @Override
-    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long userId) {
+    public List<TicketSaleDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long userId,Long trainId) {
 
         LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
 
@@ -162,12 +167,15 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         if (endTime!=null){
             queryWrapper1.le(TrainInfoDO::getEndTime,endTime);
         }
+        if (trainId!=null){
+            queryWrapper1.eq(TrainInfoDO::getTrainId,trainId);
+        }
 
         List<TrainInfoDO> trainInfoDOList = trainInfoMapper.selectList(queryWrapper1);
 
         List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
-            Long trainId = item.getTrainId();
-            return trainId;
+            Long trainId1 = item.getTrainId();
+            return trainId1;
         }).collect(Collectors.toList());
 
         LambdaQueryWrapper<TicketInfoDO> queryWrapper2 = new LambdaQueryWrapper<>();
@@ -204,6 +212,16 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
             return ticketSaleDTO;
         }).collect(Collectors.toList());
+        for (TicketSaleDTO ticketSaleDTO : ticketSaleDTOS) {
+
+            TicketInfoDTO ticketInfoDTO = ticketSaleDTO.getTicketInfo();
+
+            ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketSaleDTO.getTicketInfo().getTrainInfoDO().getStartStation()));
+            ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketSaleDTO.getTicketInfo().getTrainInfoDO().getEndStation()));
+
+            ticketInfoDTO.setSeatTypeDO(seatTypeMapper.selectById(ticketSaleDTO.getTicketInfo().getSeatTypeId()));
+        }
+
 
         return ticketSaleDTOS;
     }

@@ -153,10 +153,10 @@ public class TicketSaleController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketSaleDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,HttpServletRequest request){
+    public Result<List<TicketSaleDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,HttpServletRequest request,Long trainId){
 
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        List<TicketSaleDTO> ticketSaleDTOS = ticketSalesService.getAll(startStation, endStation, startTime, endTime,userInfoDO.getUserId());
+        List<TicketSaleDTO> ticketSaleDTOS = ticketSalesService.getAll(startStation, endStation, startTime, endTime,userInfoDO.getUserId(),trainId);
 
         return ResultUtils.success(ticketSaleDTOS);
 

@@ -27,9 +27,8 @@ public class TicketInfoDTO extends TicketInfoDO {
     private TrainInfoDO trainInfoDO;
     private StationInfoDO startStation;
     private StationInfoDO endStation;
-    private PassengerDO passengerDO;
+    private SeatTypeDO seatTypeDO;
 
-    private TicketSaleDO ticketSaleDO;
 
 
     @Serial
