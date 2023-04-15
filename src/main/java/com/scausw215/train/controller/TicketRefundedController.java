@@ -1,5 +1,6 @@
 package com.scausw215.train.controller;
 
+import ch.qos.logback.core.model.INamedModel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.scausw215.train.common.ErrorCode;
@@ -133,6 +134,19 @@ public class TicketRefundedController {
         List<TrainTicketTicketRefundedPassengerSeatType> all = ticketRefundedService.getAll(trainId, userInfoDO.getUserId());
 
         return ResultUtils.success(all);
+
+    }
+
+
+    @PutMapping("/admin/{id}")
+    public Result<Integer> refundTicketById(@PathVariable Long id)
+    {
+        if(id==null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的参数");
+        }
+       return ResultUtils.success(ticketRefundedService.refundedByTicketId(id));
+
 
     }
 }

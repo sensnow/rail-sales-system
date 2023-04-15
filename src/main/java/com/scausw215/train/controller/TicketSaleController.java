@@ -137,7 +137,7 @@ public class TicketSaleController {
      * @param reason
      * @return
      */
-    @PutMapping
+    @PostMapping
     public Result<String> refunded(@RequestParam("saleId") Long id,HttpServletRequest request,@RequestParam("reason") String reason){
         if (id == null||StringUtils.isBlank(reason)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的售票id为空或退票理由为空");

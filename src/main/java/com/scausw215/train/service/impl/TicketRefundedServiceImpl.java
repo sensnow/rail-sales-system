@@ -1,6 +1,9 @@
 package com.scausw215.train.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.constant.UserInfoConstant;
@@ -9,6 +12,7 @@ import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketRefundedDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
 import com.scausw215.train.entity.Usage.TrainTicketTicketRefundedPassengerSeatType;
+import com.scausw215.train.entity.Usage.TrainTicketTicketsalePassengerSeatType;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.*;
@@ -21,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +48,11 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
     @Autowired
     private SeatTypeMapper seatTypeMapper;
     @Autowired
+    private TicketSaleMapper ticketSaleMapper;
+    @Autowired
     private TrainTicketTicketRefundedPassengerSeatTypeMapper trainTicketTicketRefundedPassengerSeatTypeMapper;
+    @Autowired
+    private TrainTicketTicketsalePassengerSeatTypeMapper trainTicketTicketsalePassengerSeatTypeMapper;
     /**
      * 新增退票信息
      * @param ticketRefundedRequest
@@ -132,6 +141,36 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"11");
         }
         return trainTicketTicketRefundedPassengerSeatTypeMapper.getAllByTrainId(trainId);
+    }
+
+    @Override
+    public Integer refundedByTicketId(Long id) {
+        if(id==null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"11");
+        }
+        TicketSaleDO ticketSaleDO1 = new TicketSaleDO();
+        ticketSaleDO1.setTicketId(id);
+        ticketSaleDO1.setIsRefunded(1);
+        ticketSaleMapper.updateById(ticketSaleDO1);
+
+        TicketInfoDO ticketInfoDO = new TicketInfoDO();
+        ticketInfoDO.setTicketId(id);
+        ticketInfoDO.setIsSold(0);
+        ticketInfoDO.setUpdateTime(LocalDateTime.now());
+        ticketInfoMapper.updateById(ticketInfoDO);
+
+        TicketSaleDO ticketSaleDO = ticketSaleMapper.selectById(id);
+        TicketRefundedDO ticketRefundedDO = new TicketRefundedDO();
+        ticketRefundedDO.setTicketId(ticketSaleDO.getTicketId());
+        ticketRefundedDO.setUserId(ticketSaleDO.getUserId());
+        ticketRefundedDO.setRefundedId(null);
+        ticketRefundedDO.setRefundedPrice(ticketSaleDO.getPurchasePrice());
+        ticketRefundedDO.setPassengerId(ticketSaleDO.getPassengerId());
+        ticketRefundedDO.setRefundedReason("no");
+        ticketRefundedDO.setRefundedTime(LocalDateTime.now());
+        boolean save = this.save(ticketRefundedDO);
+        return save ? 1 : 0;
     }
 }
 

@@ -16,6 +16,9 @@ import java.util.List;
 public interface TrainTicketTicketRefundedPassengerSeatTypeMapper extends BaseMapper<TrainTicketTicketRefundedPassengerSeatType> {
 
     List<TrainTicketTicketRefundedPassengerSeatType> getAllByTrainId(Long id);
+
+
+    Integer refundedByTicketId(Long id);
 }
 
 
