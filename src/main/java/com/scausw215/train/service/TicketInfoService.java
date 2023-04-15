@@ -3,6 +3,7 @@ package com.scausw215.train.service;
 import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.scausw215.train.entity.Usage.TrainTicketSeatType;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface TicketInfoService extends IService<TicketInfoDO> {
     public void addTicketInfo(Long trainId, Long trainTypeId, Long startStationId, Long endStationId, Date startTime, int firstPrice, int secondPrice, int thirdPrice);
     void buy(Long id,Long passengerId,Long userId);
     void buyPlus(Long trainId,List<Long> passengerId,Long userId,Long seatTypeId,String trainName);
-    List<TicketInfoDTO> getAll(Long startStation, Long endStation,Date startTime,Date endTime,Long trainId);
+    List<TrainTicketSeatType> getAll(Long startStation, Long endStation, Date startTime, Date endTime, Long trainId);
     TicketInfoDTO getOneById(Long id);
     Boolean IsBought(Long passengerId,Long trainId,String trainName);
 

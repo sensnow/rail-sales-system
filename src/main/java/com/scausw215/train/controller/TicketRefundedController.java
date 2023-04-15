@@ -10,6 +10,7 @@ import com.scausw215.train.entity.DO.TicketRefundedDO;
 import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TicketRefundedDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
+import com.scausw215.train.entity.Usage.TrainTicketTicketRefundedPassengerSeatType;
 import com.scausw215.train.entity.VO.TicketRefundedVO;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
 import com.scausw215.train.exception.BusinessException;
@@ -126,12 +127,12 @@ public class TicketRefundedController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketRefundedDTO>> getAll(Long trainId,HttpServletRequest request){
+    public Result<List<TrainTicketTicketRefundedPassengerSeatType>> getAll(Long trainId,HttpServletRequest request){
 
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        List<TicketRefundedDTO> ticketRefundedDTOS = ticketRefundedService.getAll(trainId,userInfoDO);
+        List<TrainTicketTicketRefundedPassengerSeatType> all = ticketRefundedService.getAll(trainId, userInfoDO.getUserId());
 
-        return ResultUtils.success(ticketRefundedDTOS);
+        return ResultUtils.success(all);
 
     }
 }

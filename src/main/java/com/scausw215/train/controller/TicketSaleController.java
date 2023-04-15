@@ -11,6 +11,7 @@ import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
+import com.scausw215.train.entity.Usage.TrainTicketTicketsalePassengerSeatType;
 import com.scausw215.train.entity.VO.TicketSaleVO;
 import com.scausw215.train.entity.request.TicketSaleRequest;
 import com.scausw215.train.exception.BusinessException;
@@ -118,7 +119,6 @@ public class TicketSaleController {
      * @param request
      * @return
      */
-
     @PutMapping("/admin")
     public Result<String> update(@RequestBody TicketSaleRequest ticketSaleRequest,HttpServletRequest request){
         if (StringUtils.isAnyBlank(String.valueOf(ticketSaleRequest.getSaleId()),String.valueOf(ticketSaleRequest.getIsRefunded()),String.valueOf(ticketSaleRequest.getUserId()),String.valueOf(ticketSaleRequest.getPassengerId()),String.valueOf(ticketSaleRequest.getTicketId()),String.valueOf(ticketSaleRequest.getPurchasePrice()))){
@@ -138,12 +138,12 @@ public class TicketSaleController {
      * @return
      */
     @PutMapping
-    public Result<String> refunded(@RequestParam("saleId") Long id,HttpServletRequest request,@RequestParam(value = "reason",required = false,defaultValue = "无") String reason){
+    public Result<String> refunded(@RequestParam("saleId") Long id,HttpServletRequest request,@RequestParam("reason") String reason){
         if (id == null||StringUtils.isBlank(reason)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"输入的售票id为空或退票理由为空");
         }
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        ticketSalesService.refunded(id,userInfoDO,reason);
+        ticketSalesService.refunded(id,userInfoDO.getUserId(),reason);
 
         return ResultUtils.success("退票成功");
     }
@@ -154,12 +154,12 @@ public class TicketSaleController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketSaleDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,HttpServletRequest request,Long trainId){
+    public Result<List<TrainTicketTicketsalePassengerSeatType>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,HttpServletRequest request,Long trainId){
 
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
-        List<TicketSaleDTO> ticketSaleDTOS = ticketSalesService.getAll(startStation, endStation, startTime, endTime,userInfoDO,trainId);
+        List<TrainTicketTicketsalePassengerSeatType> all = ticketSalesService.getAll(startStation, endStation, startTime, endTime, userInfoDO.getUserId(), trainId);
 
-        return ResultUtils.success(ticketSaleDTOS);
+        return ResultUtils.success(all);
 
     }
 

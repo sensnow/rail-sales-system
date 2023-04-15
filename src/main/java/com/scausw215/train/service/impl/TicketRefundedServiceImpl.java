@@ -8,6 +8,7 @@ import com.scausw215.train.entity.DO.*;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
 import com.scausw215.train.entity.DTO.TicketRefundedDTO;
 import com.scausw215.train.entity.DTO.TicketSaleDTO;
+import com.scausw215.train.entity.Usage.TrainTicketTicketRefundedPassengerSeatType;
 import com.scausw215.train.entity.request.TicketRefundedRequest;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.*;
@@ -42,7 +43,7 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
     @Autowired
     private SeatTypeMapper seatTypeMapper;
     @Autowired
-    private TrainTypeMapper trainTypeMapper;
+    private TrainTicketTicketRefundedPassengerSeatTypeMapper trainTicketTicketRefundedPassengerSeatTypeMapper;
     /**
      * 新增退票信息
      * @param ticketRefundedRequest
@@ -54,12 +55,8 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
         UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
         ticketRefundedRequest.setUserId(userInfoDO.getUserId());
         ticketRefundedRequest.setRefundedTime(LocalDateTime.now());
-        TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketRefundedRequest.getTicketId());
-        ticketRefundedRequest.setRefundedPrice(ticketInfoDO.getTicketPrice());
-
         TicketRefundedDO ticketRefundedDO = RequestToDoEntityUtils.toTicketRefundedDO(ticketRefundedRequest);
         this.save(ticketRefundedDO);
-
         return ticketRefundedDO;
     }
 
@@ -128,65 +125,13 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
      * @return
      */
     @Override
-    public List<TicketRefundedDTO> getAll(Long trainId,UserInfoDO userInfoDO) {
-        LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
-        if (trainId!=null){
-            queryWrapper1.eq(TrainInfoDO::getTrainId,trainId);
+    public List<TrainTicketTicketRefundedPassengerSeatType> getAll(Long trainId, Long userId) {
+
+        if(trainId == null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"11");
         }
-        List<TrainInfoDO> trainInfoDOList = trainInfoMapper.selectList(queryWrapper1);
-
-        List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
-            Long trainId1 = item.getTrainId();
-            return trainId1;
-        }).collect(Collectors.toList());
-
-        LambdaQueryWrapper<TicketInfoDO> queryWrapper2 = new LambdaQueryWrapper<>();
-        queryWrapper2.in(TicketInfoDO::getTrainId,trainIds);
-
-        List<TicketInfoDO> ticketInfoDOList = ticketInfoMapper.selectList(queryWrapper2);
-        List<Long> ticketIds = ticketInfoDOList.stream().map((item) -> {
-            Long ticketId = item.getTicketId();
-            return ticketId;
-        }).collect(Collectors.toList());
-
-        LambdaQueryWrapper<TicketRefundedDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(TicketRefundedDO::getRefundedTime);
-        queryWrapper.in(TicketRefundedDO::getTicketId,ticketIds);
-        if (userInfoDO.getUserAuthority() != 1){
-            queryWrapper.eq(TicketRefundedDO::getUserId,userInfoDO.getUserId());
-        }
-
-        List<TicketRefundedDTO> ticketRefundedDTOS = this.list(queryWrapper).stream().map((item) -> {
-
-            TicketRefundedDTO ticketRefundedDTO = new TicketRefundedDTO();
-            BeanUtils.copyProperties(item,ticketRefundedDTO);
-
-            ticketRefundedDTO.setPassengerDO(passengerMapper.selectById(item.getPassengerId()));
-
-            TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
-            TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(item.getTicketId());
-
-            BeanUtils.copyProperties(ticketInfoDO,ticketInfoDTO);
-            ticketInfoDTO.setTrainInfoDO(trainInfoMapper.selectById(ticketInfoDO.getTrainId()));
-
-            ticketRefundedDTO.setTicketInfo(ticketInfoDTO);
-
-            return ticketRefundedDTO;
-        }).collect(Collectors.toList());
-
-        for (TicketRefundedDTO ticketRefundedDTO : ticketRefundedDTOS) {
-
-            TicketInfoDTO ticketInfoDTO = ticketRefundedDTO.getTicketInfo();
-
-            ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketRefundedDTO.getTicketInfo().getTrainInfoDO().getStartStation()));
-            ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketRefundedDTO.getTicketInfo().getTrainInfoDO().getEndStation()));
-            ticketInfoDTO.setSeatTypeDO(seatTypeMapper.selectById(ticketRefundedDTO.getTicketInfo().getSeatTypeId()));
-
-            ticketInfoDTO.setTrainTypeDO(trainTypeMapper.selectById(ticketInfoDTO.getTrainInfoDO().getTrainTypeId()));
-        }
-
-
-        return ticketRefundedDTOS;
+        return trainTicketTicketRefundedPassengerSeatTypeMapper.getAllByTrainId(trainId);
     }
 }
 

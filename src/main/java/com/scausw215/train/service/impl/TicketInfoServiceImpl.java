@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.scausw215.train.common.ErrorCode;
 import com.scausw215.train.entity.DO.*;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
+import com.scausw215.train.entity.Usage.TrainTicketSeatType;
 import com.scausw215.train.exception.BusinessException;
 import com.scausw215.train.mapper.*;
 import com.scausw215.train.service.TicketInfoService;
@@ -38,6 +39,8 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
     PassengerMapper passengerMapper;
     @Autowired
     StationInfoMapper stationInfoMapper;
+    @Autowired
+    TrainTicketSeatTypeMapper trainTicketSeatTypeMapper;
     /**
      * 根据id查询车票信息和对应的车次信息
      * @param id
@@ -191,59 +194,13 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
      * @return
      */
     @Override
-    public List<TicketInfoDTO> getAll(Long startStation, Long endStation, Date startTime, Date endTime,Long trainId) {
-        LambdaQueryWrapper<TrainInfoDO> queryWrapper1 = new LambdaQueryWrapper<>();
+    public List<TrainTicketSeatType> getAll(Long startStation, Long endStation, Date startTime, Date endTime, Long trainId) {
 
-        //判断查询条件
-        if (startStation!=null){
-            queryWrapper1.eq(TrainInfoDO::getStartStation,startStation);
+        if(trainId == null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"11");
         }
-        if (endStation!=null){
-            queryWrapper1.eq(TrainInfoDO::getEndStation,endStation);
-        }
-        if (startTime!=null){
-            queryWrapper1.ge(TrainInfoDO::getStartTime,startTime);
-        }
-        if (endTime!=null){
-            queryWrapper1.le(TrainInfoDO::getEndTime,endTime);
-        }
-        if (trainId!=null){
-            queryWrapper1.eq(TrainInfoDO::getTrainId,trainId);
-        }
-
-        List<TrainInfoDO> trainInfoDOList = trainInfoMapper.selectList(queryWrapper1);
-
-        List<Long> trainIds = trainInfoDOList.stream().map((item) -> {
-            Long trainId1 = item.getTrainId();
-            return trainId1;
-        }).collect(Collectors.toList());
-
-        LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByAsc(TicketInfoDO::getUpdateTime);
-        queryWrapper.eq(TicketInfoDO::getIsAvailable,1);
-        queryWrapper.eq(TicketInfoDO::getIsSold,1);
-        queryWrapper.in(TicketInfoDO::getTrainId,trainIds);
-
-        List<TicketInfoDTO> ticketInfoDTOS = this.list(queryWrapper).stream().map((item) -> {
-
-            TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
-            BeanUtils.copyProperties(item,ticketInfoDTO);
-
-            ticketInfoDTO.setTrainInfoDO(trainInfoMapper.selectById(item.getTrainId()));
-            return ticketInfoDTO;
-
-        }).collect(Collectors.toList());
-
-        for (TicketInfoDTO ticketInfoDTO : ticketInfoDTOS) {
-            ticketInfoDTO.setStartStation(stationInfoMapper.selectById(ticketInfoDTO.getTrainInfoDO().getStartStation()));
-            ticketInfoDTO.setEndStation(stationInfoMapper.selectById(ticketInfoDTO.getTrainInfoDO().getEndStation()));
-
-
-
-        }
-
-
-        return ticketInfoDTOS;
+        return trainTicketSeatTypeMapper.getAllByTrainId(trainId);
     }
 
     /**

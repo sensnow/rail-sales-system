@@ -9,6 +9,7 @@ import com.scausw215.train.entity.DO.TicketInfoDO;
 import com.scausw215.train.entity.DO.TrainInfoDO;
 import com.scausw215.train.entity.DO.UserInfoDO;
 import com.scausw215.train.entity.DTO.TicketInfoDTO;
+import com.scausw215.train.entity.Usage.TrainTicketSeatType;
 import com.scausw215.train.entity.VO.TicketVO;
 import com.scausw215.train.entity.request.TicketRequest;
 import com.scausw215.train.exception.BusinessException;
@@ -167,11 +168,11 @@ public class TicketInfoController {
      * @return
      */
     @GetMapping("/getAll")
-    public Result<List<TicketInfoDTO>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,@RequestParam(value = "trainId",required = false) Long trainId){
+    public Result<List<TrainTicketSeatType>> getAll(Long startStation, Long endStation, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")Date endTime,@RequestParam(value = "trainId",required = false) Long trainId){
 
-        List<TicketInfoDTO> ticketInfoDTOS = ticketInfoService.getAll(startStation, endStation, startTime, endTime,trainId);
+        List<TrainTicketSeatType> all = ticketInfoService.getAll(startStation, endStation, startTime, endTime, trainId);
 
-        return ResultUtils.success(ticketInfoDTOS);
+        return ResultUtils.success(all);
     }
 
 
