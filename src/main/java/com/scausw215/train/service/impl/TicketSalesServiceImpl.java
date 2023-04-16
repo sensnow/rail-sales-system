@@ -96,19 +96,22 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
     }
 
     /**
-     * 退票操作
-     *
-     * @param saleId
+     * 退票
+     * @param ticketId
      * @param userId
      * @param reason
      */
     @Transactional
-    public void refunded(Long saleId, Long userId, String reason) {
+    public void refunded(Long ticketId, Long userId, String reason) {
 
-        //更新车票出售信息
-        TicketSaleDO ticketSaleDO = this.getById(saleId);
-        ticketSaleDO.setIsRefunded(1);//把车票售票信息设置为已退票
-        TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketSaleDO.getTicketId());
+        LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TicketSaleDO::getTicketId,ticketId);
+        queryWrapper.eq(TicketSaleDO::getIsRefunded,0);
+        TicketSaleDO ticketSaleDO = this.getOne(queryWrapper);
+        ticketSaleDO.setIsRefunded(1);
+        this.updateById(ticketSaleDO);
+
+        TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketId);
 
         //判断是否超过截止时间
         if (LocalDateTime.now().isAfter(ticketInfoDO.getEndSaleTime())) {
@@ -129,8 +132,6 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
         ticketRefundedMapper.insert(ticketRefundedDO);
 
-        //保存售票信息
-        this.updateById(ticketSaleDO);
     }
 
     /**

@@ -129,7 +129,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
      * @param userId
      */
     @Transactional
-    public void buyPlus(Long trainId, List<Long> passengerId, Long userId,Long seatTypeId,String trainName) {
+    public void buyPlus(Long trainId, List<Long> passengerId, Long userId,Long seatTypeId) {
 
         LambdaQueryWrapper<TicketInfoDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TicketInfoDO::getTrainId,trainId);
@@ -155,7 +155,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         List<TicketInfoDO> list1 = new ArrayList<>();
 
         for (int i = 0; i < passengerLen; i++) {
-            if (this.IsBought(passengerId.get(i),trainId,trainName)){
+            if (this.IsBought(passengerId.get(i),trainId)){
                 list1.add(list.get(i));
             }
         }
@@ -228,7 +228,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
      * @return
      */
     @Override
-    public Boolean IsBought(Long passengerId, Long trainId,String trainName) {
+    public Boolean IsBought(Long passengerId, Long trainId) {
         LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TicketSaleDO::getPassengerId,passengerId);
         queryWrapper.eq(TicketSaleDO::getIsRefunded,0);
@@ -238,7 +238,7 @@ public class TicketInfoServiceImpl extends ServiceImpl<TicketInfoMapper, TicketI
         for (TicketSaleDO ticketSaleDO : ticketSaleMapper.selectList(queryWrapper)) {
             Long trainId1 = ticketInfoMapper.selectById(ticketSaleDO.getTicketId()).getTrainId();
             if (trainId1 == trainId){
-                throw new BusinessException(ErrorCode.DATABASE_ERROR,"请勿为乘客["+passengerName+"]重复购入车次为["+trainName+"]的车票");
+                throw new BusinessException(ErrorCode.DATABASE_ERROR,"请勿为乘客["+passengerName+"]重复购入该车次的车票");
             }
         }
 
