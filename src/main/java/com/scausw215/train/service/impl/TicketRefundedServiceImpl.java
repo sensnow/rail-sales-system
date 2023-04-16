@@ -172,6 +172,15 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
         boolean save = this.save(ticketRefundedDO);
         return save ? 1 : 0;
     }
+
+    @Override
+    public List<TrainTicketTicketRefundedPassengerSeatType> getUserTicket(Long userId) {
+        if(userId==null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"11");
+        }
+        return trainTicketTicketRefundedPassengerSeatTypeMapper.getUserTicket(userId);
+    }
 }
 
 

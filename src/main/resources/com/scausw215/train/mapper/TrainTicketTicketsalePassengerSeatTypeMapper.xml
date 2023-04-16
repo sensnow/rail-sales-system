@@ -31,6 +31,10 @@
             resultType="com.scausw215.train.entity.Usage.TrainTicketTicketsalePassengerSeatType">
             select * from train_ticket_ticketSale_passenger_seat_type where train_id = #{id}
     </select>
+    <select id="getAllByUserId"
+            resultType="com.scausw215.train.entity.Usage.TrainTicketTicketsalePassengerSeatType">
+            select * from train_ticket_ticketSale_passenger_seat_type where user_id = #{id}
+    </select>
 
 
 </mapper>

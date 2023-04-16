@@ -23,4 +23,6 @@ public interface TicketRefundedService extends IService<TicketRefundedDO> {
     TicketRefundedDTO getOneById(Long id);
     List<TrainTicketTicketRefundedPassengerSeatType> getAll(Long trainId, Long userId);
     Integer refundedByTicketId(Long id);
+
+    List<TrainTicketTicketRefundedPassengerSeatType> getUserTicket(Long userId);
 }

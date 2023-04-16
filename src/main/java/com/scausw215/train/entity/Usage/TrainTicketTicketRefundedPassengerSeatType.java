@@ -49,6 +49,23 @@ public class TrainTicketTicketRefundedPassengerSeatType implements Serializable 
      */
     private Integer ticketPrice;
 
+    private String passengerName;
+
+    /**
+     * 购票人证件类型
+     */
+    private Integer passengerType;
+
+    /**
+     * 证件号号码
+     */
+    private String passengerCardNumber;
+
+    /**
+     * 购票人手机号
+     */
+    private String passengerPhone;
+
     /**
      * 售票时间
      */
