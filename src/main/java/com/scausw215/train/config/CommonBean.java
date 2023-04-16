@@ -21,7 +21,7 @@ public class CommonBean {
     public ArrayList<String> getTrainNameList(){
         ArrayList<String> trainNameList = new ArrayList<>();
         trainNameList.add("高铁动车");
-        trainNameList.add("普通列车");
+        trainNameList.add("普通动车");
         trainNameList.add("火车");
         return trainNameList;
     }
