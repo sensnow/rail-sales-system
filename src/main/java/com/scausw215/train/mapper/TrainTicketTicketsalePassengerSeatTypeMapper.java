@@ -18,6 +18,8 @@ import java.util.List;
 public interface TrainTicketTicketsalePassengerSeatTypeMapper extends BaseMapper<TrainTicketTicketsalePassengerSeatType> {
 
     List<TrainTicketTicketsalePassengerSeatType> getAllByTrainId(Long id);
+
+    List<TrainTicketTicketsalePassengerSeatType> getAllByUserId(Long userId);
 }
 
 

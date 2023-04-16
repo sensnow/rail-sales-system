@@ -19,6 +19,8 @@ public interface TrainTicketTicketRefundedPassengerSeatTypeMapper extends BaseMa
 
 
     Integer refundedByTicketId(Long id);
+
+    List<TrainTicketTicketRefundedPassengerSeatType> getUserTicket(Long userId);
 }
 
 

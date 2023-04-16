@@ -22,4 +22,11 @@ public interface TicketSalesService extends IService<TicketSaleDO> {
     TicketSaleDTO getOneById(Long id);
     List<TrainTicketTicketsalePassengerSeatType> getAll(Long startStation, Long endStation, Date startTime, Date endTime, Long userId, Long trainId);
 
+    /**
+     * 获取用户的所有购票信息
+     * @param userId 用户id
+     * @return 用户的所有购票信息
+     *
+     */
+    List<TrainTicketTicketsalePassengerSeatType> getUserTicket(Long userId);
 }

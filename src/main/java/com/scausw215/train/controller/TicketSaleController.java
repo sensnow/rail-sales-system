@@ -164,4 +164,19 @@ public class TicketSaleController {
     }
 
 
+    /**
+     * 查询用户的买的车票
+     * @param request
+     * @return
+     */
+    @GetMapping("/getUserTicket")
+    public Result<List<TrainTicketTicketsalePassengerSeatType>> getUserTicket(HttpServletRequest request){
+
+        UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
+        List<TrainTicketTicketsalePassengerSeatType> all = ticketSalesService.getUserTicket(userInfoDO.getUserId());
+
+        return ResultUtils.success(all);
+    }
+
+
 }

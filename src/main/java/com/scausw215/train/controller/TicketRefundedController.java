@@ -146,7 +146,18 @@ public class TicketRefundedController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请输入正确的参数");
         }
        return ResultUtils.success(ticketRefundedService.refundedByTicketId(id));
+    }
 
-
+    /**
+     * 获取用户的退票信息
+     * @param request request
+     * @return Result
+     */
+    @GetMapping("/getUserTicket")
+    public Result<List<TrainTicketTicketRefundedPassengerSeatType>> getUserTicket(HttpServletRequest request)
+    {
+        UserInfoDO userInfoDO = (UserInfoDO) request.getSession().getAttribute(UserInfoConstant.USER_INFO_STATE);
+        List<TrainTicketTicketRefundedPassengerSeatType> all = ticketRefundedService.getUserTicket(userInfoDO.getUserId());
+        return ResultUtils.success(all);
     }
 }

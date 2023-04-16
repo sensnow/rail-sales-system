@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 */
 @Service
 public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, TicketSaleDO>
-    implements TicketSalesService{
+    implements TicketSalesService {
     @Autowired
     private TicketInfoMapper ticketInfoMapper;
     @Autowired
@@ -51,6 +51,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
     /**
      * 添加新售票信息
+     *
      * @param ticketSaleDO
      * @param request
      */
@@ -64,21 +65,23 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
     /**
      * 删除售票信息
+     *
      * @param ids
      */
     @Override
     public void delete(List<Long> ids) {
         LambdaQueryWrapper<TicketSaleDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(TicketSaleDO::getSaleId,ids);
+        queryWrapper.in(TicketSaleDO::getSaleId, ids);
         int count = (int) this.count(queryWrapper);
-        if (count == 0){
-            throw new BusinessException(ErrorCode.DATABASE_ERROR,"找不到要删除的信息");
+        if (count == 0) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR, "找不到要删除的信息");
         }
         this.removeByIds(ids);
     }
 
     /**
      * 更新售票信息
+     *
      * @param ticketSaleDO
      * @param request
      */
@@ -91,14 +94,16 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         this.updateById(ticketSaleDO);
 
     }
+
     /**
      * 退票操作
+     *
      * @param saleId
      * @param userId
      * @param reason
      */
     @Transactional
-    public void refunded(Long saleId,Long userId,String reason) {
+    public void refunded(Long saleId, Long userId, String reason) {
 
         //更新车票出售信息
         TicketSaleDO ticketSaleDO = this.getById(saleId);
@@ -106,8 +111,8 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
         TicketInfoDO ticketInfoDO = ticketInfoMapper.selectById(ticketSaleDO.getTicketId());
 
         //判断是否超过截止时间
-        if(LocalDateTime.now().isAfter(ticketInfoDO.getEndSaleTime())){
-            throw new BusinessException(ErrorCode.DATABASE_ERROR,"对不起，已超过售票时间，无法退票");
+        if (LocalDateTime.now().isAfter(ticketInfoDO.getEndSaleTime())) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR, "对不起，已超过售票时间，无法退票");
         }
         ticketInfoDO.setIsSold(0);
         ticketInfoMapper.updateById(ticketInfoDO);
@@ -130,6 +135,7 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
 
     /**
      * 根据id获取单个售票信息
+     *
      * @param id
      * @return
      */
@@ -137,16 +143,17 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
     public TicketSaleDTO getOneById(Long id) {
         TicketSaleDO ticketSaleDO = this.getById(id);
         TicketSaleDTO ticketSaleDTO = new TicketSaleDTO();
-        BeanUtils.copyProperties(ticketSaleDO,ticketSaleDTO);
+        BeanUtils.copyProperties(ticketSaleDO, ticketSaleDTO);
         ticketSaleDTO.setPassengerDO(passengerMapper.selectById(ticketSaleDO.getPassengerId()));
         TicketInfoDTO ticketInfoDTO = new TicketInfoDTO();
-        BeanUtils.copyProperties(ticketInfoMapper.selectById(ticketSaleDO.getTicketId()),ticketInfoDTO);
+        BeanUtils.copyProperties(ticketInfoMapper.selectById(ticketSaleDO.getTicketId()), ticketInfoDTO);
         ticketSaleDTO.setTicketInfo(ticketInfoDTO);
         return ticketSaleDTO;
     }
 
     /**
      * 查询所有
+     *
      * @param startStation
      * @param endStation
      * @param startTime
@@ -155,14 +162,20 @@ public class TicketSalesServiceImpl extends ServiceImpl<TicketSaleMapper, Ticket
      */
     @Override
     public List<TrainTicketTicketsalePassengerSeatType> getAll(Long startStation, Long endStation, Date startTime, Date endTime, Long userId, Long trainId) {
-        if(trainId == null)
-        {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"cuole");
+        if (trainId == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "cuole");
         }
         return trainTicketTicketsalePassengerSeatTypeMapper.getAllByTrainId(trainId);
     }
 
-
+    @Override
+    public List<TrainTicketTicketsalePassengerSeatType> getUserTicket(Long userId) {
+        if (userId == null)
+        {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "cuole");
+        }
+        return trainTicketTicketsalePassengerSeatTypeMapper.getAllByUserId(userId);
+    }
 }
 
 
