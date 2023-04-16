@@ -159,8 +159,7 @@ public class TicketRefundedServiceImpl extends ServiceImpl<TicketRefundedMapper,
         ticketInfoDO.setIsSold(0);
         ticketInfoDO.setUpdateTime(LocalDateTime.now());
         ticketInfoMapper.updateById(ticketInfoDO);
-
-        TicketSaleDO ticketSaleDO = ticketSaleMapper.selectById(id);
+        TicketSaleDO ticketSaleDO = ticketSaleMapper.selectOne(new LambdaQueryWrapper<TicketSaleDO>().eq(TicketSaleDO::getTicketId,id));
         TicketRefundedDO ticketRefundedDO = new TicketRefundedDO();
         ticketRefundedDO.setTicketId(ticketSaleDO.getTicketId());
         ticketRefundedDO.setUserId(ticketSaleDO.getUserId());
