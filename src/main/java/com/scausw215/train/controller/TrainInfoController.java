@@ -88,7 +88,7 @@ public class TrainInfoController {
      * @return 删除结果
      */
     @DeleteMapping("/admin")
-    public Result<Integer> deleteTrainInfo(@PathParam("id") Long trainId) {
+    public Result<Integer> deleteTrainInfo(Long trainId) {
         // 检查参数
         if (trainId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
